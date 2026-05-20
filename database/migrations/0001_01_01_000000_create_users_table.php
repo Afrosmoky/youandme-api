@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 return new class extends Migration
 {
@@ -11,15 +12,25 @@ return new class extends Migration
      */
     public function up(): void
     {
+        DB::statement('CREATE EXTENSION IF NOT EXISTS citext');
+
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
+            $table->char('ulid', 26)->unique();
+            $table->string('email');
             $table->string('password');
-            $table->rememberToken();
-            $table->timestamps();
+            $table->string('nickname');
+            $table->string('timezone', 64)->default('Europe/Warsaw');
+            $table->char('locale', 2)->default('pl');
+            $table->timestampsTz();
+            $table->softDeletesTz();
         });
+
+        DB::statement('ALTER TABLE users ALTER COLUMN email TYPE citext');
+        DB::statement('ALTER TABLE users ALTER COLUMN nickname TYPE citext');
+
+        DB::statement('CREATE UNIQUE INDEX users_email_unique_active ON users(email) WHERE deleted_at IS NULL');
+        DB::statement('CREATE UNIQUE INDEX users_nickname_unique_active ON users(nickname) WHERE deleted_at IS NULL');
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
             $table->string('email')->primary();
