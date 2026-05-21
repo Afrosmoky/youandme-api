@@ -1,0 +1,61 @@
+name: Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:18-alpine
+        env:
+          POSTGRES_DB: youandme_api_testing
+          POSTGRES_USER: youandme
+          POSTGRES_PASSWORD: lokalne
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      DB_CONNECTION: pgsql
+      DB_HOST: 127.0.0.1
+      DB_PORT: 5432
+      DB_DATABASE: youandme_api_testing
+      DB_USERNAME: youandme
+      DB_PASSWORD: lokalne
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: pdo_pgsql, mbstring, intl
+          coverage: none
+
+      - name: Copy .env
+        run: cp .env.example .env
+
+      - name: Install Composer dependencies
+        run: composer install --prefer-dist --no-interaction --no-progress
+
+      - name: Generate APP_KEY
+        run: php artisan key:generate
+
+      - name: Run Pest
+        run: ./vendor/bin/pest
+
+      - name: Run Larastan
+        run: ./vendor/bin/phpstan analyse --memory-limit=512M
+
+      - name: Run Pint
+        run: ./vendor/bin/pint --test
