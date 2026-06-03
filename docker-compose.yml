@@ -21,6 +21,16 @@ services:
             - youandme_redis_data:/data
         restart: unless-stopped
 
+    # Local mail catcher. SMTP on 1025, Web UI on http://localhost:8025.
+    # Production sends through Resend (RESEND_KEY), not Mailpit.
+    mailpit:
+        image: axllent/mailpit:latest
+        container_name: youandme_mailpit
+        ports:
+            - "1025:1025"
+            - "8025:8025"
+        restart: unless-stopped
+
 volumes:
     youandme_postgres_data:
     youandme_redis_data:
