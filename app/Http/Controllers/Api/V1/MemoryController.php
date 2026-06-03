@@ -36,14 +36,24 @@ class MemoryController extends Controller
 
     public function index(Request $request): JsonResponse
     {
-        $memories = $request->user()->memories()
+        $perPage = (int) $request->integer('per_page', 20);
+        $perPage = max(1, min($perPage, 50));
+
+        // id is the cursor tiebreaker so memories sharing an answered_at don't
+        // get skipped across pages.
+        $paginator = $request->user()->memories()
             ->with('question')
             ->orderByDesc('answered_at')
-            ->limit(50)
-            ->get();
+            ->orderByDesc('id')
+            ->cursorPaginate($perPage);
 
         return response()->json([
-            'memories' => MemoryResource::collection($memories),
+            'data' => MemoryResource::collection($paginator->items()),
+            'meta' => [
+                'next_cursor' => $paginator->nextCursor()?->encode(),
+                'prev_cursor' => $paginator->previousCursor()?->encode(),
+                'per_page' => $paginator->perPage(),
+            ],
         ]);
     }
 }

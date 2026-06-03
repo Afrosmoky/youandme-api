@@ -49,10 +49,11 @@ test('index returns user memories in order', function (): void {
     $response = $this->getJson('/api/v1/memories');
 
     $response->assertOk()
-        ->assertJsonCount(3, 'memories')
-        ->assertJsonPath('memories.0.ulid', $m3->ulid)
-        ->assertJsonPath('memories.1.ulid', $m2->ulid)
-        ->assertJsonPath('memories.2.ulid', $m1->ulid);
+        ->assertJsonCount(3, 'data')
+        ->assertJsonPath('data.0.ulid', $m3->ulid)
+        ->assertJsonPath('data.1.ulid', $m2->ulid)
+        ->assertJsonPath('data.2.ulid', $m1->ulid)
+        ->assertJsonPath('meta.per_page', 20);
 });
 
 test('create requires auth', function (): void {
