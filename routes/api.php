@@ -5,11 +5,15 @@ use App\Http\Controllers\Api\V1\EmailVerificationController;
 use App\Http\Controllers\Api\V1\MemoryController;
 use App\Http\Controllers\Api\V1\PasswordResetController;
 use App\Http\Controllers\Api\V1\QuestionController;
+use App\Http\Controllers\Api\V1\SocialAuthController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->group(function (): void {
     Route::post('auth/register', [AuthController::class, 'register']);
     Route::post('auth/login', [AuthController::class, 'login']);
+
+    Route::post('auth/google', [SocialAuthController::class, 'google']);
+    Route::post('auth/apple', [SocialAuthController::class, 'apple']);
 
     Route::post('auth/password/forgot', [PasswordResetController::class, 'forgot']);
     Route::post('auth/password/reset', [PasswordResetController::class, 'reset']);

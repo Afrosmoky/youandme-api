@@ -31,6 +31,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'nickname',
         'timezone',
         'locale',
+        'google_id',
+        'apple_id',
     ];
 
     /** @var list<string> */

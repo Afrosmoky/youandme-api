@@ -22,6 +22,15 @@ return [
         'key' => env('RESEND_KEY'),
     ],
 
+    'google' => [
+        'client_id' => env('GOOGLE_CLIENT_ID'),
+    ],
+
+    'apple' => [
+        // iOS app bundle ID; the `aud` claim of Apple ID tokens.
+        'client_id' => env('APPLE_CLIENT_ID'),
+    ],
+
     'ses' => [
         'key' => env('AWS_ACCESS_KEY_ID'),
         'secret' => env('AWS_SECRET_ACCESS_KEY'),
