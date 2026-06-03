@@ -15,7 +15,10 @@ test('user can register and receive token', function (): void {
             'token',
         ])
         ->assertJsonPath('user.email', 'ola@example.com')
-        ->assertJsonPath('user.nickname', 'ola_test');
+        ->assertJsonPath('user.nickname', 'ola_test')
+        // Regresja: $attributes w User model + DB default — patrz CLAUDE.md
+        ->assertJsonPath('user.timezone', 'Europe/Warsaw')
+        ->assertJsonPath('user.locale', 'pl');
 
     expect(User::where('email', 'ola@example.com')->exists())->toBeTrue();
 });

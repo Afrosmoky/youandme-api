@@ -20,6 +20,8 @@ class AuthController extends Controller
     {
         $user = User::create($request->validated());
 
+        $user->sendEmailVerificationNotification();
+
         $token = $user->createToken('mobile')->plainTextToken;
 
         UserRegistered::dispatch($user);
