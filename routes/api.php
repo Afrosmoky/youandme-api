@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\EmailVerificationController;
 use App\Http\Controllers\Api\V1\MemoryController;
 use App\Http\Controllers\Api\V1\PasswordResetController;
+use App\Http\Controllers\Api\V1\ProfileController;
 use App\Http\Controllers\Api\V1\QuestionController;
 use App\Http\Controllers\Api\V1\SocialAuthController;
 use Illuminate\Support\Facades\Route;
@@ -29,6 +30,9 @@ Route::prefix('v1')->group(function (): void {
 
         Route::post('auth/email/verify-notification', [EmailVerificationController::class, 'notification']);
         Route::get('me/verification-status', [EmailVerificationController::class, 'status']);
+
+        Route::get('me', [ProfileController::class, 'show']);
+        Route::patch('me', [ProfileController::class, 'update']);
 
         Route::get('questions/next', [QuestionController::class, 'next']);
 

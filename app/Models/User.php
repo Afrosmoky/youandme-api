@@ -41,22 +41,22 @@ class User extends Authenticatable implements MustVerifyEmail
     ];
 
     /**
+     * Using a property (not the casts() method) so Larastan reads the cast and
+     * infers email_verified_at as a Carbon instance — UserResource formats it.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'password' => 'hashed',
+        'email_verified_at' => 'datetime',
+    ];
+
+    /**
      * @return array<int, string>
      */
     public function uniqueIds(): array
     {
         return ['ulid'];
-    }
-
-    /**
-     * @return array<string, string>
-     */
-    protected function casts(): array
-    {
-        return [
-            'password' => 'hashed',
-            'email_verified_at' => 'datetime',
-        ];
     }
 
     /**
