@@ -21,11 +21,18 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // The reset link points at the app URL; the mobile client handles the
-        // actual reset form. Avoids depending on a web `password.reset` route.
+        // The mobile client handles the actual reset form. Prefer a custom
+        // scheme deep link (jaity://...) so the email opens the app directly;
+        // fall back to an APP_URL link when no scheme is configured (web).
         ResetPassword::createUrlUsing(function (User $user, string $token): string {
-            return config('app.url').'/reset-password?token='.$token
+            $query = 'reset-password?token='.$token
                 .'&email='.urlencode($user->getEmailForPasswordReset());
+
+            $scheme = config('app.mobile_deep_link_scheme');
+
+            return $scheme
+                ? $scheme.'://'.$query
+                : config('app.url').'/'.$query;
         });
     }
 }

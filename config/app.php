@@ -17,6 +17,19 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Mobile Deep Link Scheme
+    |--------------------------------------------------------------------------
+    |
+    | Custom URL scheme of the mobile app (e.g. "jaity"). When set, emails that
+    | link back into the app (such as password reset) use this scheme instead
+    | of a web URL. Leave empty to fall back to APP_URL links.
+    |
+    */
+
+    'mobile_deep_link_scheme' => env('MOBILE_DEEP_LINK_SCHEME'),
+
+    /*
+    |--------------------------------------------------------------------------
     | Application Environment
     |--------------------------------------------------------------------------
     |
