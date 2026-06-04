@@ -42,3 +42,35 @@ test('reset with an invalid token returns 422', function (): void {
         'password' => 'nowe-haslo-456',
     ])->assertStatus(422);
 });
+
+test('password reset email uses custom scheme deep link when configured', function (): void {
+    config(['app.mobile_deep_link_scheme' => 'jaity']);
+    Notification::fake();
+
+    $user = User::factory()->create();
+    $this->postJson('/api/v1/auth/password/forgot', ['email' => $user->email])
+        ->assertOk();
+
+    Notification::assertSentTo($user, ResetPassword::class, function ($notification) use ($user) {
+        $url = $notification->toMail($user)->actionUrl;
+
+        return str_starts_with($url, 'jaity://reset-password?token=')
+            && str_contains($url, 'email='.urlencode($user->email));
+    });
+});
+
+test('password reset email falls back to web URL when scheme is empty', function (): void {
+    config(['app.mobile_deep_link_scheme' => null]);
+    Notification::fake();
+
+    $user = User::factory()->create();
+    $this->postJson('/api/v1/auth/password/forgot', ['email' => $user->email])
+        ->assertOk();
+
+    Notification::assertSentTo($user, ResetPassword::class, function ($notification) use ($user) {
+        $url = $notification->toMail($user)->actionUrl;
+
+        return str_starts_with($url, config('app.url').'/reset-password?token=')
+            && str_contains($url, 'email='.urlencode($user->email));
+    });
+});
