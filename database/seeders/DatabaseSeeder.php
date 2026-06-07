@@ -11,6 +11,8 @@ class DatabaseSeeder extends Seeder
 
     public function run(): void
     {
+        // Categories first: questions FK -> categories and the seeder resolves slugs.
+        $this->call(CategorySeeder::class);
         $this->call(QuestionSeeder::class);
     }
 }

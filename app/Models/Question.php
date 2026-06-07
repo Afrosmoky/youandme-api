@@ -6,6 +6,7 @@ use Database\Factories\QuestionFactory;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Question extends Model
 {
@@ -17,6 +18,13 @@ class Question extends Model
         'body',
         'type',
         'locale',
+        'category_id',
+        'tags',
+    ];
+
+    /** @var array<string, string> */
+    protected $casts = [
+        'tags' => 'array',
     ];
 
     /**
@@ -25,5 +33,13 @@ class Question extends Model
     public function uniqueIds(): array
     {
         return ['ulid'];
+    }
+
+    /**
+     * @return BelongsTo<Category, $this>
+     */
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(Category::class);
     }
 }

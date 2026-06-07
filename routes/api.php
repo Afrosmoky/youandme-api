@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\V1\AuthController;
+use App\Http\Controllers\Api\V1\CategoryController;
 use App\Http\Controllers\Api\V1\EmailVerificationController;
 use App\Http\Controllers\Api\V1\MemoryController;
 use App\Http\Controllers\Api\V1\PasswordResetController;
@@ -33,6 +34,8 @@ Route::prefix('v1')->group(function (): void {
 
         Route::get('me', [ProfileController::class, 'show']);
         Route::patch('me', [ProfileController::class, 'update']);
+
+        Route::get('categories', [CategoryController::class, 'index']);
 
         Route::get('questions/next', [QuestionController::class, 'next']);
 

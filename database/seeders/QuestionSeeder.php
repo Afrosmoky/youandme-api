@@ -2,39 +2,53 @@
 
 namespace Database\Seeders;
 
+use App\Models\Category;
 use App\Models\Question;
 use Illuminate\Database\Seeder;
 use RuntimeException;
 
 class QuestionSeeder extends Seeder
 {
+    /**
+     * Re-seed the official deck from Wiktoria's parsed JSON: 100 questions, each
+     * with a category slug and 0-1 sub-tags. Idempotent via updateOrCreate on body.
+     * Depends on CategorySeeder having run first (questions FK -> categories).
+     */
     public function run(): void
     {
-        $path = database_path('seeds/questions_session_pl.csv');
+        $path = database_path('seeders/data/questions_with_categories_pl.json');
 
-        $handle = fopen($path, 'r');
-        if ($handle === false) {
+        $json = file_get_contents($path);
+        if ($json === false) {
             throw new RuntimeException("Cannot open seed file: {$path}");
         }
 
-        $header = fgetcsv($handle, escape: '');
-        if ($header === false || ($header[0] ?? null) !== 'body') {
-            fclose($handle);
-            throw new RuntimeException("Invalid CSV header in {$path}, expected 'body'");
-        }
+        /** @var list<array{body: string, category_slug: string, tags: list<string>}> $entries */
+        $entries = json_decode($json, true, flags: JSON_THROW_ON_ERROR);
 
-        while (($row = fgetcsv($handle, escape: '')) !== false) {
-            $body = trim((string) ($row[0] ?? ''));
+        // Resolve slugs once to avoid a query per question.
+        $categoryIds = Category::query()->pluck('id', 'slug');
+
+        foreach ($entries as $entry) {
+            $body = trim($entry['body']);
             if ($body === '') {
                 continue;
             }
 
-            Question::firstOrCreate(
+            $categoryId = $categoryIds[$entry['category_slug']] ?? null;
+            if ($categoryId === null) {
+                throw new RuntimeException("Unknown category slug in seed data: {$entry['category_slug']}");
+            }
+
+            Question::updateOrCreate(
                 ['body' => $body],
-                ['type' => 'session', 'locale' => 'pl'],
+                [
+                    'type' => 'session',
+                    'locale' => 'pl',
+                    'category_id' => $categoryId,
+                    'tags' => $entry['tags'] ?? [],
+                ],
             );
         }
-
-        fclose($handle);
     }
 }

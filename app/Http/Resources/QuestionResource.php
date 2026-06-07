@@ -20,6 +20,11 @@ class QuestionResource extends JsonResource
             'ulid' => $this->ulid,
             'body' => $this->body,
             'type' => $this->type,
+            'category' => $this->category ? [
+                'slug' => $this->category->slug,
+                'name' => $this->category->name,
+            ] : null,
+            'tags' => $this->tags ?? [],
         ];
     }
 }

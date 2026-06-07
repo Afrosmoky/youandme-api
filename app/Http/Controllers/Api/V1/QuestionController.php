@@ -12,6 +12,7 @@ class QuestionController extends Controller
     public function next(): JsonResponse
     {
         $question = Question::query()
+            ->with('category')
             ->where('type', 'session')
             ->where('locale', 'pl')
             ->inRandomOrder()
