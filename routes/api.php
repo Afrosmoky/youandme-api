@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\V1\MemoryController;
 use App\Http\Controllers\Api\V1\PasswordResetController;
 use App\Http\Controllers\Api\V1\ProfileController;
 use App\Http\Controllers\Api\V1\QuestionController;
+use App\Http\Controllers\Api\V1\SessionController;
 use App\Http\Controllers\Api\V1\SocialAuthController;
 use Illuminate\Support\Facades\Route;
 
@@ -36,6 +37,11 @@ Route::prefix('v1')->group(function (): void {
         Route::patch('me', [ProfileController::class, 'update']);
 
         Route::get('categories', [CategoryController::class, 'index']);
+
+        Route::post('sessions/start', [SessionController::class, 'start']);
+        Route::get('sessions/active', [SessionController::class, 'active']);
+        Route::post('sessions/{session:ulid}/end', [SessionController::class, 'end']);
+        Route::post('sessions/{session:ulid}/skip-current', [SessionController::class, 'skipCurrent']);
 
         Route::get('questions/next', [QuestionController::class, 'next']);
 
