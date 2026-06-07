@@ -1,6 +1,7 @@
 <?php
 
 use App\Events\UserRegistered;
+use App\Models\Couple;
 use App\Models\User;
 use App\Support\GoogleTokenVerifier;
 use App\Support\SocialTokenException;
@@ -28,9 +29,13 @@ test('google sign-in creates a new user and returns 201', function (): void {
         ])
         ->assertJsonPath('user.email', 'nowy@example.com');
 
+    $response->assertJsonStructure(['couple' => ['ulid', 'partner_name_local']])
+        ->assertJsonPath('couple.partner_name_local', null);
+
     $user = User::where('email', 'nowy@example.com')->firstOrFail();
     expect($user->google_id)->toBe('google-123');
     expect($user->email_verified_at)->not->toBeNull();
+    expect($user->active_couple_id)->not->toBeNull();
     Event::assertDispatched(UserRegistered::class);
 });
 
@@ -49,9 +54,12 @@ test('google sign-in logs in an existing user and returns 200', function (): voi
 
     $response = $this->postJson('/api/v1/auth/google', ['id_token' => 'fake-token']);
 
-    $response->assertOk()->assertJsonPath('user.email', 'stary@example.com');
+    $response->assertOk()
+        ->assertJsonPath('user.email', 'stary@example.com')
+        ->assertJsonPath('couple.ulid', $user->activeCouple->ulid);
     expect($user->fresh()->google_id)->toBe('google-999');
     expect(User::count())->toBe(1);
+    expect(Couple::count())->toBe(1);
     Event::assertNotDispatched(UserRegistered::class);
 });
 

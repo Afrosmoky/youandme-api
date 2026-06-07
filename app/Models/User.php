@@ -7,6 +7,7 @@ use Illuminate\Auth\MustVerifyEmail as MustVerifyEmailTrait;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -33,6 +34,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'locale',
         'google_id',
         'apple_id',
+        'active_couple_id',
     ];
 
     /** @var list<string> */
@@ -65,5 +67,21 @@ class User extends Authenticatable implements MustVerifyEmail
     public function memories(): HasMany
     {
         return $this->hasMany(Memory::class);
+    }
+
+    /**
+     * @return BelongsTo<Couple, $this>
+     */
+    public function activeCouple(): BelongsTo
+    {
+        return $this->belongsTo(Couple::class, 'active_couple_id');
+    }
+
+    /**
+     * @return HasMany<Couple, $this>
+     */
+    public function couplesAsUserA(): HasMany
+    {
+        return $this->hasMany(Couple::class, 'user_a_id');
     }
 }

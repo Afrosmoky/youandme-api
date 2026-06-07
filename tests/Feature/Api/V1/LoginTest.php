@@ -2,6 +2,22 @@
 
 use App\Models\User;
 
+test('login response carries the current couple with partner name', function (): void {
+    $user = User::factory()->create([
+        'email' => 'ola@example.com',
+        'password' => 'tajne-haslo-123',
+    ]);
+    $user->activeCouple->update(['partner_name_local' => 'Anna']);
+
+    $this->postJson('/api/v1/auth/login', [
+        'email' => 'ola@example.com',
+        'password' => 'tajne-haslo-123',
+    ])
+        ->assertOk()
+        ->assertJsonStructure(['couple' => ['ulid', 'partner_name_local']])
+        ->assertJsonPath('couple.partner_name_local', 'Anna');
+});
+
 test('login with correct password returns token', function (): void {
     User::factory()->create([
         'email' => 'ola@example.com',

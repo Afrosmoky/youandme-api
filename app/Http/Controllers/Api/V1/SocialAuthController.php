@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Api\V1;
 use App\Events\UserRegistered;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\V1\Auth\SocialSignInRequest;
+use App\Http\Resources\CoupleResource;
 use App\Http\Resources\UserResource;
+use App\Models\Couple;
 use App\Models\User;
 use App\Rules\ValidNickname;
 use App\Support\AppleTokenVerifier;
@@ -14,6 +16,7 @@ use App\Support\SocialTokenException;
 use App\Support\SocialTokenVerifier;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class SocialAuthController extends Controller
@@ -46,51 +49,63 @@ class SocialAuthController extends Controller
             $user = User::where('email', $payload['email'])->first();
         }
 
-        $isNew = false;
-
-        if ($user === null) {
-            // Apple may omit the email on repeat sign-ins; for a first sign-in we
-            // need it (the users.email column is not nullable).
-            if ($payload['email'] === null) {
-                abort(Response::HTTP_UNPROCESSABLE_ENTITY, 'Email is required to create an account.');
-            }
-
-            $user = new User;
-            $user->email = $payload['email'];
-            $user->nickname = $this->generateNickname($payload['email']);
-            $user->password = Str::random(40); // unusable; social users have no password
-            $user->{$providerColumn} = $payload['sub'];
-
-            if ($payload['email_verified']) {
-                $user->email_verified_at = now();
-            }
-
-            $user->save();
-            $isNew = true;
-
-            UserRegistered::dispatch($user);
-        } else {
-            $dirty = false;
-
-            if ($user->{$providerColumn} === null) {
-                $user->{$providerColumn} = $payload['sub'];
-                $dirty = true;
-            }
-
-            if ($payload['email_verified'] && $user->email_verified_at === null) {
-                $user->email_verified_at = now();
-                $dirty = true;
-            }
-
-            if ($dirty) {
-                $user->save();
-            }
+        // Apple may omit the email on repeat sign-ins; for a first sign-in we
+        // need it (the users.email column is not nullable).
+        if ($user === null && $payload['email'] === null) {
+            abort(Response::HTTP_UNPROCESSABLE_ENTITY, 'Email is required to create an account.');
         }
 
-        $token = $user->createToken('mobile')->plainTextToken;
+        $isNew = $user === null;
+
+        // Couple is created synchronously inside the transaction (only for a brand
+        // new user), so the response carries it. See CLAUDE.md "Wzorce z P3".
+        [$user, $token] = DB::transaction(function () use ($user, $payload, $providerColumn): array {
+            if ($user === null) {
+                $user = new User;
+                $user->email = $payload['email'];
+                $user->nickname = $this->generateNickname($payload['email']);
+                $user->password = Str::random(40); // unusable; social users have no password
+                $user->{$providerColumn} = $payload['sub'];
+
+                if ($payload['email_verified']) {
+                    $user->email_verified_at = now();
+                }
+
+                $user->save();
+
+                $couple = Couple::create(['user_a_id' => $user->id]);
+                $user->active_couple_id = $couple->id;
+                $user->save();
+            } else {
+                $dirty = false;
+
+                if ($user->{$providerColumn} === null) {
+                    $user->{$providerColumn} = $payload['sub'];
+                    $dirty = true;
+                }
+
+                if ($payload['email_verified'] && $user->email_verified_at === null) {
+                    $user->email_verified_at = now();
+                    $dirty = true;
+                }
+
+                if ($dirty) {
+                    $user->save();
+                }
+            }
+
+            $user->loadMissing('activeCouple');
+
+            return [$user, $user->createToken('mobile')->plainTextToken];
+        });
+
+        if ($isNew) {
+            UserRegistered::dispatch($user);
+        }
 
         return response()->json([
             'user' => new UserResource($user),
+            'couple' => $user->activeCouple ? new CoupleResource($user->activeCouple) : null,
             'token' => $token,
         ], $isNew ? Response::HTTP_CREATED : Response::HTTP_OK);
     }

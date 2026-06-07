@@ -21,6 +21,7 @@ class UpdateProfileRequest extends FormRequest
             'nickname' => ['sometimes', new ValidNickname($this->user()?->id)],
             'timezone' => ['sometimes', 'timezone'],
             'locale' => ['sometimes', 'string', 'size:2'],
+            'partner_name_local' => ['sometimes', 'nullable', 'string', 'max:60'],
         ];
     }
 }

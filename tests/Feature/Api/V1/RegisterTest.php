@@ -23,6 +23,34 @@ test('user can register and receive token', function (): void {
     expect(User::where('email', 'ola@example.com')->exists())->toBeTrue();
 });
 
+test('registration auto-creates a couple returned in the response', function (): void {
+    $response = $this->postJson('/api/v1/auth/register', [
+        'email' => 'ola@example.com',
+        'password' => 'tajne-haslo-123',
+        'nickname' => 'ola_test',
+    ]);
+
+    $response->assertCreated()
+        ->assertJsonStructure([
+            'couple' => [
+                'ulid',
+                'partner_name_local',
+                'streak_current',
+                'streak_longest',
+                'daily_push_hour',
+                'relationship_started_on',
+                'created_at',
+            ],
+        ])
+        ->assertJsonPath('couple.partner_name_local', null)
+        ->assertJsonPath('couple.streak_current', 0)
+        ->assertJsonPath('couple.daily_push_hour', 20);
+
+    $user = User::where('email', 'ola@example.com')->firstOrFail();
+    expect($user->active_couple_id)->not->toBeNull();
+    expect($user->activeCouple->user_a_id)->toBe($user->id);
+});
+
 test('duplicate email returns 422', function (): void {
     User::factory()->create(['email' => 'ola@example.com']);
 

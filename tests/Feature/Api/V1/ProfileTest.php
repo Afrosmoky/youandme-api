@@ -15,6 +15,40 @@ test('GET /me returns the authenticated user profile', function (): void {
         ->assertJsonPath('user.ulid', $user->ulid);
 });
 
+test('GET /me includes the active couple', function (): void {
+    $user = User::factory()->create();
+    Sanctum::actingAs($user);
+
+    $this->getJson('/api/v1/me')
+        ->assertOk()
+        ->assertJsonStructure(['couple' => ['ulid', 'partner_name_local', 'daily_push_hour']])
+        ->assertJsonPath('couple.ulid', $user->activeCouple->ulid);
+});
+
+test('PATCH /me updates partner_name_local on the couple', function (): void {
+    $user = User::factory()->create();
+    Sanctum::actingAs($user);
+
+    $this->patchJson('/api/v1/me', ['partner_name_local' => 'Tomek'])
+        ->assertOk()
+        ->assertJsonPath('couple.partner_name_local', 'Tomek');
+
+    $this->getJson('/api/v1/me')
+        ->assertOk()
+        ->assertJsonPath('couple.partner_name_local', 'Tomek');
+
+    expect($user->activeCouple->fresh()->partner_name_local)->toBe('Tomek');
+});
+
+test('PATCH /me rejects a too long partner_name_local', function (): void {
+    $user = User::factory()->create();
+    Sanctum::actingAs($user);
+
+    $this->patchJson('/api/v1/me', ['partner_name_local' => str_repeat('a', 61)])
+        ->assertStatus(422)
+        ->assertJsonValidationErrors('partner_name_local');
+});
+
 test('GET /me requires authentication', function (): void {
     $this->getJson('/api/v1/me')->assertUnauthorized();
 });
