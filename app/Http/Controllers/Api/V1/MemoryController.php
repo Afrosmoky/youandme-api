@@ -7,6 +7,7 @@ use App\Events\QuestionAnswered;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\V1\Memories\StoreMemoryRequest;
 use App\Http\Resources\MemoryResource;
+use App\Http\Resources\SessionResource;
 use App\Models\Question;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -19,18 +20,43 @@ class MemoryController extends Controller
     {
         $user = $request->user();
         $couple = $user->activeCouple;
+        $session = $couple->gameSessions()->active()->first();
 
-        $memory = DB::transaction(function () use ($request, $user, $couple) {
-            $question = Question::where('ulid', $request->string('question_ulid'))->firstOrFail();
+        if ($session === null) {
+            return response()->json([
+                'message' => 'Najpierw rozpocznij sesję.',
+                'errors' => ['session' => ['Brak aktywnej sesji.']],
+            ], Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
 
+        $state = $session->state;
+        $currentIndex = (int) ($state['current_index'] ?? 0);
+        /** @var list<int> $remainingIds */
+        $remainingIds = $state['remaining_ids'] ?? [];
+
+        if ($currentIndex >= count($remainingIds)) {
+            return response()->json([
+                'message' => 'Sesja wyczerpana, zakończ ją zanim zapiszesz wspomnienie.',
+            ], Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
+        $expectedQuestionId = $remainingIds[$currentIndex];
+        $question = Question::where('ulid', $request->string('question_ulid'))->firstOrFail();
+
+        // Race guard: the client may have submitted a stale card after a refresh.
+        if ($question->id !== $expectedQuestionId) {
+            return response()->json([
+                'message' => 'Pytanie nie pasuje do aktualnej karty sesji. Pobierz ponownie /questions/next.',
+            ], Response::HTTP_CONFLICT);
+        }
+
+        $memory = DB::transaction(function () use ($request, $user, $couple, $session, $question, $state, $currentIndex) {
             $answerB = $request->string('answer_b')->toString();
 
-            // game_session_id stays null here; the session requirement lands in
-            // step 9 (prompt #5).
             $memory = $couple->memories()->create([
                 'user_id' => $user->id,
                 'question_id' => $question->id,
-                'game_session_id' => null,
+                'game_session_id' => $session->id,
                 'origin' => 'session',
                 'answer_a' => $request->string('answer_a')->toString(),
                 'answer_b' => $answerB !== '' ? $answerB : null,
@@ -41,6 +67,19 @@ class MemoryController extends Controller
 
             $memory->setRelation('question', $question);
 
+            // Mark the question seen forever (idempotent on the composite PK) and
+            // advance the session: re-assign the whole state array so Eloquent
+            // tracks the change.
+            $couple->seenQuestions()->syncWithoutDetaching([
+                $question->id => ['seen_at' => now()],
+            ]);
+
+            $state['current_index'] = $currentIndex + 1;
+            $session->state = $state;
+            $session->cards_drawn_count++;
+            $session->cards_saved_count++;
+            $session->save();
+
             return $memory;
         });
 
@@ -49,6 +88,7 @@ class MemoryController extends Controller
 
         return response()->json([
             'memory' => new MemoryResource($memory),
+            'session' => new SessionResource($session),
         ], Response::HTTP_CREATED);
     }
 
