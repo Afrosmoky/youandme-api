@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Couple extends Model
@@ -72,9 +73,26 @@ class Couple extends Model
      */
     public function memories(): HasMany
     {
-        // dochodzi w fazie 1 krok 6 - refaktor memories (couple_id na memories)
         return $this->hasMany(Memory::class);
     }
 
-    // gameSessions(): hasMany(GameSession::class) -- dochodzi w fazie 1 krok 5
+    /**
+     * @return HasMany<GameSession, $this>
+     */
+    public function gameSessions(): HasMany
+    {
+        return $this->hasMany(GameSession::class);
+    }
+
+    /**
+     * Questions this couple has already been shown — the persistent anti-repeat
+     * set. No Eloquent model behind couple_question_seen, just the pivot.
+     *
+     * @return BelongsToMany<Question, $this>
+     */
+    public function seenQuestions(): BelongsToMany
+    {
+        return $this->belongsToMany(Question::class, 'couple_question_seen')
+            ->withPivot('seen_at');
+    }
 }
