@@ -35,6 +35,7 @@ Route::prefix('v1')->group(function (): void {
 
         Route::get('me', [ProfileController::class, 'show']);
         Route::patch('me', [ProfileController::class, 'update']);
+        Route::post('me/change-password', [ProfileController::class, 'changePassword']);
 
         Route::get('categories', [CategoryController::class, 'index']);
 
