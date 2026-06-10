@@ -50,3 +50,21 @@ test('login with wrong password returns 401', function (): void {
 
     $response->assertUnauthorized();
 });
+
+test('login is throttled after 6 attempts within a minute', function (): void {
+    User::factory()->create([
+        'email' => 'ola@example.com',
+        'password' => 'tajne-haslo-123',
+    ]);
+
+    $payload = ['email' => 'ola@example.com', 'password' => 'zle-haslo'];
+
+    // 6 attempts are allowed (each a 401), the 7th is blocked.
+    for ($i = 0; $i < 6; $i++) {
+        $this->postJson('/api/v1/auth/login', $payload)->assertUnauthorized();
+    }
+
+    $this->postJson('/api/v1/auth/login', $payload)
+        ->assertStatus(429)
+        ->assertHeader('Retry-After');
+});

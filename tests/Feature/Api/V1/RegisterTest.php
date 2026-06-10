@@ -63,3 +63,19 @@ test('duplicate email returns 422', function (): void {
     $response->assertStatus(422)
         ->assertJsonValidationErrors('email');
 });
+
+test('register is throttled after 10 attempts within a minute', function (): void {
+    User::factory()->create(['email' => 'ola@example.com']);
+
+    // Duplicate-email requests still count against the throttle (the middleware
+    // increments before the controller runs).
+    $payload = ['email' => 'ola@example.com', 'password' => 'tajne-haslo-123', 'nickname' => 'inny_nick'];
+
+    for ($i = 0; $i < 10; $i++) {
+        $this->postJson('/api/v1/auth/register', $payload)->assertStatus(422);
+    }
+
+    $this->postJson('/api/v1/auth/register', $payload)
+        ->assertStatus(429)
+        ->assertHeader('Retry-After');
+});

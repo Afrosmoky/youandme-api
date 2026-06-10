@@ -17,6 +17,21 @@ test('forgot password sends a reset link', function (): void {
     Notification::assertSentTo($user, ResetPassword::class);
 });
 
+test('forgot password is throttled after 3 attempts within a minute', function (): void {
+    Notification::fake();
+    User::factory()->create(['email' => 'ola@example.com']);
+
+    $payload = ['email' => 'ola@example.com'];
+
+    for ($i = 0; $i < 3; $i++) {
+        $this->postJson('/api/v1/auth/password/forgot', $payload)->assertOk();
+    }
+
+    $this->postJson('/api/v1/auth/password/forgot', $payload)
+        ->assertStatus(429)
+        ->assertHeader('Retry-After');
+});
+
 test('password can be reset with a valid token', function (): void {
     $user = User::factory()->create([
         'email' => 'ola@example.com',
