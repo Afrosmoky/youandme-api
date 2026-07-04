@@ -1,7 +1,7 @@
 <?php
 
 use App\Models\Couple;
-use App\Models\User;
+use Youandme\Auth\Models\User;
 
 test('couple factory creates a couple with schema defaults', function (): void {
     $couple = Couple::factory()->create();

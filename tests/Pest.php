@@ -18,6 +18,12 @@ pest()->extend(TestCase::class)
     ->use(RefreshDatabase::class)
     ->in('Feature');
 
+// Module packages keep their tests next to their code (DR-011). Bind the same
+// base TestCase + RefreshDatabase to them.
+pest()->extend(TestCase::class)
+    ->use(RefreshDatabase::class)
+    ->in(__DIR__.'/../packages/auth/src/Tests');
+
 /*
 |--------------------------------------------------------------------------
 | Expectations

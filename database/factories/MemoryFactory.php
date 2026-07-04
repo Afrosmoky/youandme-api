@@ -4,7 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Memory;
 use App\Models\Question;
-use App\Models\User;
+use Youandme\Auth\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**

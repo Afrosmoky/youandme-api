@@ -2,7 +2,7 @@
 
 use App\Models\Memory;
 use App\Models\Question;
-use App\Models\User;
+use Youandme\Auth\Models\User;
 use Laravel\Sanctum\Sanctum;
 
 test('memories use a default per_page of 20', function (): void {

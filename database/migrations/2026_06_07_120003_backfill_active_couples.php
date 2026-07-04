@@ -1,7 +1,7 @@
 <?php
 
 use App\Models\Couple;
-use App\Models\User;
+use Youandme\Auth\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\DB;
 

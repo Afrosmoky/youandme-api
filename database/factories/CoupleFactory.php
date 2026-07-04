@@ -3,7 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Couple;
-use App\Models\User;
+use Youandme\Auth\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**

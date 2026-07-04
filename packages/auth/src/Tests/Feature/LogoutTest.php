@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\User;
+use Youandme\Auth\Models\User;
 
 test('logout revokes the current token and returns 204', function (): void {
     $user = User::factory()->create();

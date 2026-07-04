@@ -1,16 +1,16 @@
 <?php
 
-use App\Events\UserRegistered;
+use Youandme\Auth\Events\UserRegistered;
 use App\Models\Couple;
-use App\Models\User;
-use App\Support\GoogleTokenVerifier;
-use App\Support\SocialTokenException;
+use Youandme\Auth\Models\User;
+use Youandme\Auth\Support\GoogleTokenVerifierInterface;
+use Youandme\Auth\Support\SocialTokenException;
 use Illuminate\Support\Facades\Event;
 
 test('google sign-in creates a new user and returns 201', function (): void {
     Event::fake([UserRegistered::class]);
 
-    $this->mock(GoogleTokenVerifier::class)
+    $this->mock(GoogleTokenVerifierInterface::class)
         ->shouldReceive('verify')
         ->once()
         ->andReturn([
@@ -43,7 +43,7 @@ test('google sign-in logs in an existing user and returns 200', function (): voi
     Event::fake([UserRegistered::class]);
     $user = User::factory()->create(['email' => 'stary@example.com']);
 
-    $this->mock(GoogleTokenVerifier::class)
+    $this->mock(GoogleTokenVerifierInterface::class)
         ->shouldReceive('verify')
         ->andReturn([
             'sub' => 'google-999',
@@ -64,7 +64,7 @@ test('google sign-in logs in an existing user and returns 200', function (): voi
 });
 
 test('google sign-in with an invalid token returns 401', function (): void {
-    $this->mock(GoogleTokenVerifier::class)
+    $this->mock(GoogleTokenVerifierInterface::class)
         ->shouldReceive('verify')
         ->andThrow(new SocialTokenException('Invalid ID token'));
 

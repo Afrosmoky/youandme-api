@@ -8,10 +8,14 @@
         <testsuite name="Feature">
             <directory>tests/Feature</directory>
         </testsuite>
+        <testsuite name="Auth">
+            <directory>packages/auth/src/Tests</directory>
+        </testsuite>
     </testsuites>
     <source>
         <include>
             <directory>app</directory>
+            <directory>packages/auth/src</directory>
         </include>
     </source>
     <php>

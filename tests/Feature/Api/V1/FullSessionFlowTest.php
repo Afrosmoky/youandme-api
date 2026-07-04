@@ -2,7 +2,7 @@
 
 use App\Models\Category;
 use App\Models\Question;
-use App\Models\User;
+use Youandme\Auth\Models\User;
 use Laravel\Sanctum\Sanctum;
 
 function answerCurrentCard(): string

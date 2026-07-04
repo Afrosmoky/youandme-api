@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\User;
+use Youandme\Auth\Models\User;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Testing\TestResponse;
 

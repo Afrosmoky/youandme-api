@@ -1,14 +1,14 @@
 <?php
 
-use App\Events\UserRegistered;
-use App\Models\User;
-use App\Support\AppleTokenVerifier;
+use Youandme\Auth\Events\UserRegistered;
+use Youandme\Auth\Models\User;
+use Youandme\Auth\Support\AppleTokenVerifierInterface;
 use Illuminate\Support\Facades\Event;
 
 test('apple sign-in creates a user with the relay email and returns 201', function (): void {
     Event::fake([UserRegistered::class]);
 
-    $this->mock(AppleTokenVerifier::class)
+    $this->mock(AppleTokenVerifierInterface::class)
         ->shouldReceive('verify')
         ->andReturn([
             'sub' => 'apple-abc',
@@ -32,7 +32,7 @@ test('apple sign-in with a null email finds the user by apple id', function (): 
         'apple_id' => 'apple-555',
     ]);
 
-    $this->mock(AppleTokenVerifier::class)
+    $this->mock(AppleTokenVerifierInterface::class)
         ->shouldReceive('verify')
         ->andReturn([
             'sub' => 'apple-555',
@@ -49,7 +49,7 @@ test('apple sign-in with a null email finds the user by apple id', function (): 
 });
 
 test('apple first sign-in without an email returns 422', function (): void {
-    $this->mock(AppleTokenVerifier::class)
+    $this->mock(AppleTokenVerifierInterface::class)
         ->shouldReceive('verify')
         ->andReturn([
             'sub' => 'apple-brand-new',

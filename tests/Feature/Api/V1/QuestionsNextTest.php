@@ -3,7 +3,7 @@
 use App\Models\Category;
 use App\Models\GameSession;
 use App\Models\Question;
-use App\Models\User;
+use Youandme\Auth\Models\User;
 use Illuminate\Support\Collection;
 use Laravel\Sanctum\Sanctum;
 

@@ -1,7 +1,7 @@
 <?php
 
 use App\Models\Category;
-use App\Models\User;
+use Youandme\Auth\Models\User;
 use Laravel\Sanctum\Sanctum;
 
 test('authenticated user can list categories sorted by ordering', function (): void {

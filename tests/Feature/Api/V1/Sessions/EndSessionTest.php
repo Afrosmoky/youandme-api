@@ -1,7 +1,7 @@
 <?php
 
 use App\Models\GameSession;
-use App\Models\User;
+use Youandme\Auth\Models\User;
 use Laravel\Sanctum\Sanctum;
 
 test('ending a session sets ended_at and returns 204', function (): void {

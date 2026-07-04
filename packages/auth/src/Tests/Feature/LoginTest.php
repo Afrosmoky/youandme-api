@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\User;
+use Youandme\Auth\Models\User;
 
 test('login response carries the current couple with partner name', function (): void {
     $user = User::factory()->create([

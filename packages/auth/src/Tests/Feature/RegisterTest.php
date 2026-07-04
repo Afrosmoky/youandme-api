@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\User;
+use Youandme\Auth\Models\User;
 
 test('user can register and receive token', function (): void {
     $response = $this->postJson('/api/v1/auth/register', [

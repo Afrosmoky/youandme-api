@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\User;
+use Youandme\Auth\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\Sanctum;
 
