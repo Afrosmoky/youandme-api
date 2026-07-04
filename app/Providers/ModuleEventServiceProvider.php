@@ -1,0 +1,36 @@
+<?php
+
+namespace App\Providers;
+
+use App\Listeners\SendPasswordResetLinkOnRequest;
+use App\Listeners\SendVerificationEmailOnVerificationRequested;
+use Illuminate\Foundation\Support\Providers\EventServiceProvider as FrameworkEventServiceProvider;
+use Illuminate\Support\Facades\Event;
+use Illuminate\Support\ServiceProvider;
+use Youandme\Auth\Events\EmailVerificationRequested;
+use Youandme\Auth\Events\PasswordResetRequested;
+
+/**
+ * The single place for cross-module / cross-package event wiring. The app is the
+ * composition root — it may depend on every package, while the packages stay
+ * mutually independent. Game→Notifications wiring (P4/P9) will be added here too.
+ *
+ * Event auto-discovery of app/Listeners is disabled so this provider is the one
+ * authoritative registry (explicit over magic, R1 philosophy) — otherwise a
+ * listener would be registered twice (discovery + here) and fire twice.
+ */
+class ModuleEventServiceProvider extends ServiceProvider
+{
+    public function register(): void
+    {
+        // Runs before the framework's EventServiceProvider discovers listeners
+        // (which happens on booting), so discovery sees the flag as false.
+        FrameworkEventServiceProvider::disableEventDiscovery();
+    }
+
+    public function boot(): void
+    {
+        Event::listen(EmailVerificationRequested::class, SendVerificationEmailOnVerificationRequested::class);
+        Event::listen(PasswordResetRequested::class, SendPasswordResetLinkOnRequest::class);
+    }
+}
