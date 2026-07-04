@@ -2,19 +2,27 @@
 
 namespace Youandme\Notifications;
 
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
+use Youandme\Auth\Events\EmailVerificationRequested;
+use Youandme\Auth\Events\PasswordResetRequested;
+use Youandme\Notifications\Listeners\SendPasswordResetLinkOnRequest;
+use Youandme\Notifications\Listeners\SendVerificationEmailOnVerificationRequested;
 
 class NotificationsServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
-        // TODO Etap 1+: bind package services, merge config, register bindings.
+        //
     }
 
     public function boot(): void
     {
-        // TODO Etap 1+: wire package routes & migrations once Notifications code is moved here.
-        // $this->loadRoutesFrom(__DIR__.'/Http/Routes/api.php');
-        // $this->loadMigrationsFrom(__DIR__.'/Database/Migrations');
+        $this->loadViewsFrom(__DIR__.'/Resources/Views', 'notifications');
+
+        // Notifications consumes Auth events (downstream). Auth never references
+        // Notifications — the coupling is one-directional through these events.
+        Event::listen(EmailVerificationRequested::class, SendVerificationEmailOnVerificationRequested::class);
+        Event::listen(PasswordResetRequested::class, SendPasswordResetLinkOnRequest::class);
     }
 }

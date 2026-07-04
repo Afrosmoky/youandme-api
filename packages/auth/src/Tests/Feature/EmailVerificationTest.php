@@ -1,13 +1,13 @@
 <?php
 
-use Youandme\Auth\Models\User;
-use Illuminate\Auth\Notifications\VerifyEmail;
-use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\URL;
 use Laravel\Sanctum\Sanctum;
+use Youandme\Auth\Events\EmailVerificationRequested;
+use Youandme\Auth\Models\User;
 
-test('registration sends a verification email', function (): void {
-    Notification::fake();
+test('registration emits a verification request with a signed URL', function (): void {
+    Event::fake([EmailVerificationRequested::class]);
 
     $this->postJson('/api/v1/auth/register', [
         'email' => 'ola@example.com',
@@ -15,18 +15,24 @@ test('registration sends a verification email', function (): void {
         'nickname' => 'ola_test',
     ])->assertCreated();
 
-    $user = User::where('email', 'ola@example.com')->firstOrFail();
-    Notification::assertSentTo($user, VerifyEmail::class);
+    Event::assertDispatched(
+        EmailVerificationRequested::class,
+        fn (EmailVerificationRequested $e): bool => $e->email === 'ola@example.com'
+            && str_contains($e->verificationUrl, '/api/v1/auth/email/verify/'),
+    );
 });
 
-test('verify-notification resends the verification email', function (): void {
-    Notification::fake();
+test('verify-notification re-emits a verification request', function (): void {
+    Event::fake([EmailVerificationRequested::class]);
     $user = User::factory()->create();
     Sanctum::actingAs($user);
 
     $this->postJson('/api/v1/auth/email/verify-notification')->assertStatus(202);
 
-    Notification::assertSentTo($user, VerifyEmail::class);
+    Event::assertDispatched(
+        EmailVerificationRequested::class,
+        fn (EmailVerificationRequested $e): bool => $e->email === $user->email,
+    );
 });
 
 test('a valid signed link verifies the email', function (): void {

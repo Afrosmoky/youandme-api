@@ -14,11 +14,15 @@
         <testsuite name="Catalog">
             <directory>app/Modules/Catalog/Tests</directory>
         </testsuite>
+        <testsuite name="Notifications">
+            <directory>packages/notifications/src/Tests</directory>
+        </testsuite>
     </testsuites>
     <source>
         <include>
             <directory>app</directory>
             <directory>packages/auth/src</directory>
+            <directory>packages/notifications/src</directory>
         </include>
     </source>
     <php>

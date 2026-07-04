@@ -1,24 +1,27 @@
 <?php
 
-use Youandme\Auth\Models\User;
-use Illuminate\Auth\Notifications\ResetPassword;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Password;
+use Youandme\Auth\Events\PasswordResetRequested;
+use Youandme\Auth\Models\User;
 
-test('forgot password sends a reset link', function (): void {
-    Notification::fake();
+test('forgot password emits a reset request', function (): void {
+    Event::fake([PasswordResetRequested::class]);
     $user = User::factory()->create(['email' => 'ola@example.com']);
 
     $this->postJson('/api/v1/auth/password/forgot', [
         'email' => 'ola@example.com',
     ])->assertOk();
 
-    Notification::assertSentTo($user, ResetPassword::class);
+    Event::assertDispatched(
+        PasswordResetRequested::class,
+        fn (PasswordResetRequested $e): bool => $e->email === 'ola@example.com',
+    );
 });
 
 test('forgot password is throttled after 3 attempts within a minute', function (): void {
-    Notification::fake();
+    Event::fake([PasswordResetRequested::class]);
     User::factory()->create(['email' => 'ola@example.com']);
 
     $payload = ['email' => 'ola@example.com'];
@@ -58,34 +61,32 @@ test('reset with an invalid token returns 422', function (): void {
     ])->assertStatus(422);
 });
 
-test('password reset email uses custom scheme deep link when configured', function (): void {
+test('reset request uses custom scheme deep link when configured', function (): void {
     config(['app.mobile_deep_link_scheme' => 'jaity']);
-    Notification::fake();
+    Event::fake([PasswordResetRequested::class]);
 
     $user = User::factory()->create();
     $this->postJson('/api/v1/auth/password/forgot', ['email' => $user->email])
         ->assertOk();
 
-    Notification::assertSentTo($user, ResetPassword::class, function ($notification) use ($user) {
-        $url = $notification->toMail($user)->actionUrl;
-
-        return str_starts_with($url, 'jaity://reset-password?token=')
-            && str_contains($url, 'email='.urlencode($user->email));
-    });
+    Event::assertDispatched(
+        PasswordResetRequested::class,
+        fn (PasswordResetRequested $e): bool => str_starts_with($e->resetUrl, 'jaity://reset-password?token=')
+            && str_contains($e->resetUrl, 'email='.urlencode($user->email)),
+    );
 });
 
-test('password reset email falls back to web URL when scheme is empty', function (): void {
+test('reset request falls back to web URL when scheme is empty', function (): void {
     config(['app.mobile_deep_link_scheme' => null]);
-    Notification::fake();
+    Event::fake([PasswordResetRequested::class]);
 
     $user = User::factory()->create();
     $this->postJson('/api/v1/auth/password/forgot', ['email' => $user->email])
         ->assertOk();
 
-    Notification::assertSentTo($user, ResetPassword::class, function ($notification) use ($user) {
-        $url = $notification->toMail($user)->actionUrl;
-
-        return str_starts_with($url, config('app.url').'/reset-password?token=')
-            && str_contains($url, 'email='.urlencode($user->email));
-    });
+    Event::assertDispatched(
+        PasswordResetRequested::class,
+        fn (PasswordResetRequested $e): bool => str_starts_with($e->resetUrl, config('app.url').'/reset-password?token=')
+            && str_contains($e->resetUrl, 'email='.urlencode($user->email)),
+    );
 });

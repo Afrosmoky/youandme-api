@@ -13,8 +13,11 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\URL;
 use Laravel\Sanctum\HasApiTokens;
 use Youandme\Auth\Database\Factories\UserFactory;
+use Youandme\Auth\Events\EmailVerificationRequested;
+use Youandme\Auth\Events\PasswordResetRequested;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -66,6 +69,44 @@ class User extends Authenticatable implements MustVerifyEmail
     protected static function newFactory(): UserFactory
     {
         return UserFactory::new();
+    }
+
+    /**
+     * Instead of sending the framework's VerifyEmail notification, build the
+     * signed verification URL and emit a domain event. Notifications listens and
+     * sends the mail — Auth stays decoupled from Notifications (event-driven,
+     * R1 Etap 3). Same URL shape as the built-in notification.
+     */
+    public function sendEmailVerificationNotification(): void
+    {
+        $url = URL::temporarySignedRoute(
+            'verification.verify',
+            now()->addMinutes((int) config('auth.verification.expire', 60)),
+            ['id' => $this->getKey(), 'hash' => sha1($this->getEmailForVerification())],
+        );
+
+        EmailVerificationRequested::dispatch($this->ulid, $this->getEmailForVerification(), $url);
+    }
+
+    /**
+     * Instead of sending the framework's ResetPassword notification, build the
+     * (deep-link) reset URL and emit a domain event for Notifications to send.
+     * Still driven by Password::sendResetLink, so the broker throttle and token
+     * creation are unchanged.
+     *
+     * @param  string  $token
+     */
+    public function sendPasswordResetNotification($token): void
+    {
+        $email = $this->getEmailForPasswordReset();
+        $query = 'reset-password?token='.$token.'&email='.urlencode($email);
+
+        $scheme = config('app.mobile_deep_link_scheme');
+        $url = $scheme
+            ? $scheme.'://'.$query
+            : config('app.url').'/'.$query;
+
+        PasswordResetRequested::dispatch($email, $url);
     }
 
     /**

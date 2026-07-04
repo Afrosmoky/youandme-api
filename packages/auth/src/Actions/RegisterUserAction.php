@@ -12,7 +12,7 @@ use Youandme\Auth\Data\UserRegisteredData;
 use Youandme\Auth\Events\UserRegistered;
 use Youandme\Auth\Models\User;
 
-class RegisterUserAction
+final class RegisterUserAction
 {
     use AsAction;
 
@@ -37,7 +37,8 @@ class RegisterUserAction
             return [$user, $user->createToken('mobile')->plainTextToken];
         });
 
-        // TODO Etap 3 (Notifications): zastąpić Notifications\SendEmailVerificationLinkAction + listener
+        // Emits EmailVerificationRequested (see User::sendEmailVerificationNotification);
+        // Notifications sends the mail. UserRegistered is the separate domain fact.
         $user->sendEmailVerificationNotification();
 
         UserRegistered::dispatch(UserRegisteredData::fromModel($user));

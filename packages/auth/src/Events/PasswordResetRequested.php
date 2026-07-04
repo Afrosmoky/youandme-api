@@ -5,15 +5,16 @@ namespace Youandme\Auth\Events;
 use Illuminate\Foundation\Events\Dispatchable;
 
 /**
- * A password reset link was requested for an email address. Consumed by
- * Notifications from Etap 3 (send the reset link); no listener in Etap 1, where
- * the link is still sent inline via Password::sendResetLink.
+ * A password reset link was requested. Carries the fully-built (deep-link)
+ * reset URL so downstream listeners never need to touch the Auth User model.
+ * Consumed by Notifications (Etap 3) to send the reset email.
  */
-class PasswordResetRequested
+final readonly class PasswordResetRequested
 {
     use Dispatchable;
 
     public function __construct(
-        public readonly string $email,
+        public string $email,
+        public string $resetUrl,
     ) {}
 }

@@ -2,10 +2,8 @@
 
 namespace Youandme\Auth;
 
-use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
-use Youandme\Auth\Models\User;
 use Youandme\Auth\Support\AppleTokenVerifier;
 use Youandme\Auth\Support\AppleTokenVerifierInterface;
 use Youandme\Auth\Support\GoogleTokenVerifier;
@@ -29,18 +27,8 @@ class AuthServiceProvider extends ServiceProvider
             ->prefix('api')
             ->group(fn () => $this->loadRoutesFrom(__DIR__.'/Http/Routes/api.php'));
 
-        // The mobile client handles the actual reset form. Prefer a custom
-        // scheme deep link (jaity://...) so the email opens the app directly;
-        // fall back to an APP_URL link when no scheme is configured (web).
-        ResetPassword::createUrlUsing(function (User $user, string $token): string {
-            $query = 'reset-password?token='.$token
-                .'&email='.urlencode($user->getEmailForPasswordReset());
-
-            $scheme = config('app.mobile_deep_link_scheme');
-
-            return $scheme
-                ? $scheme.'://'.$query
-                : config('app.url').'/'.$query;
-        });
+        // Reset / verification URLs are built inside the User model's
+        // notification hooks (which emit domain events for Notifications to send)
+        // — no ResetPassword::createUrlUsing needed anymore. See R1 Etap 3.
     }
 }

@@ -4,24 +4,23 @@ namespace Youandme\Auth\Actions;
 
 use Illuminate\Support\Facades\Password;
 use Lorisleiva\Actions\Concerns\AsAction;
-use Youandme\Auth\Events\PasswordResetRequested;
 
-class RequestPasswordResetAction
+final class RequestPasswordResetAction
 {
     use AsAction;
 
     /**
      * Trigger a password reset link. Returns the broker status string; the
      * caller always responds 200 regardless (do not leak which emails exist).
+     *
+     * Password::sendResetLink handles user lookup, broker throttle and token
+     * creation, then calls User::sendPasswordResetNotification — which (R1 Etap 3)
+     * emits PasswordResetRequested with the reset URL instead of sending a
+     * notification. Notifications listens and sends the mail; Auth never calls
+     * Notifications.
      */
     public function handle(string $email): string
     {
-        // TODO Etap 3 (Notifications): zastąpić inline send listenerem na
-        // PasswordResetRequested → Notifications\SendPasswordResetLinkAction.
-        $status = Password::sendResetLink(['email' => $email]);
-
-        PasswordResetRequested::dispatch($email);
-
-        return $status;
+        return Password::sendResetLink(['email' => $email]);
     }
 }
