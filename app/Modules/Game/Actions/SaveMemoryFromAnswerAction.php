@@ -4,6 +4,9 @@ namespace App\Modules\Game\Actions;
 
 use App\Modules\Catalog\Models\Question;
 use App\Modules\Game\Events\QuestionAnswered;
+use App\Modules\Game\Exceptions\NoActiveSessionException;
+use App\Modules\Game\Exceptions\SessionExhaustedException;
+use App\Modules\Game\Exceptions\StaleCardException;
 use App\Modules\Game\Models\Couple;
 use App\Modules\Game\Models\GameSession;
 use App\Modules\Memories\Actions\SaveMemoryAction;
@@ -15,29 +18,55 @@ use Lorisleiva\Actions\Concerns\AsAction;
 use Youandme\Auth\Models\User;
 
 /**
- * Save a memory from a session answer: persist the memory (through Memories),
- * mark the question seen forever, advance the session state, and emit
- * QuestionAnswered. The caller (MemoryController::store) has already resolved the
- * session/question and run the state + race guards.
+ * The full guarded save of a session answer, owned by Game (session state is a
+ * Game concern). Validates the active session and the current card, persists the
+ * memory through Memories\SaveMemoryAction, marks the question seen, advances the
+ * session state, and emits QuestionAnswered.
  *
- * The memory write goes through Memories\SaveMemoryAction (Game depends on the
- * Memories Public API — allowed, both are app-specific modules). Game keeps only
- * its own concerns: the seen pivot and session state.
+ * Guard failures throw exceptions whose render() reproduces the exact P3 422/409
+ * bodies, so the thin app controller stays byte-1:1. Dependency stays one-way:
+ * Game → Memories.
+ *
+ * @throws NoActiveSessionException|SessionExhaustedException|StaleCardException
  */
 final class SaveMemoryFromAnswerAction
 {
     use AsAction;
 
+    /**
+     * @return array{0: Memory, 1: GameSession}
+     */
     public function handle(
-        GameSession $session,
-        Question $question,
         User $user,
-        Couple $couple,
+        string $questionUlid,
         string $answerA,
         ?string $answerB,
         DateTimeInterface $answeredAt,
-    ): Memory {
-        return DB::transaction(function () use ($session, $question, $user, $couple, $answerA, $answerB, $answeredAt): Memory {
+    ): array {
+        $couple = Couple::findOrFail($user->active_couple_id);
+
+        $session = $couple->gameSessions()->active()->first();
+        if ($session === null) {
+            throw new NoActiveSessionException;
+        }
+
+        $state = $session->state;
+        $currentIndex = (int) ($state['current_index'] ?? 0);
+        /** @var list<int> $remainingIds */
+        $remainingIds = $state['remaining_ids'] ?? [];
+
+        if ($currentIndex >= count($remainingIds)) {
+            throw new SessionExhaustedException;
+        }
+
+        $question = Question::where('ulid', $questionUlid)->firstOrFail();
+
+        // Race guard: the client may have submitted a stale card after a refresh.
+        if ($question->id !== $remainingIds[$currentIndex]) {
+            throw new StaleCardException;
+        }
+
+        return DB::transaction(function () use ($session, $question, $user, $couple, $answerA, $answerB, $answeredAt, $state, $currentIndex): array {
             $memory = SaveMemoryAction::run(new SaveMemoryInput(
                 coupleId: $couple->id,
                 questionUlid: $question->ulid,
@@ -57,8 +86,6 @@ final class SaveMemoryFromAnswerAction
                 $question->id => ['seen_at' => now()],
             ]);
 
-            $state = $session->state;
-            $currentIndex = isset($state['current_index']) ? (int) $state['current_index'] : 0;
             $state['current_index'] = $currentIndex + 1;
             $session->state = $state;
             $session->cards_drawn_count++;
@@ -67,7 +94,7 @@ final class SaveMemoryFromAnswerAction
 
             QuestionAnswered::dispatch($couple->ulid, $question->ulid, $memory->ulid);
 
-            return $memory;
+            return [$memory, $session];
         });
     }
 }

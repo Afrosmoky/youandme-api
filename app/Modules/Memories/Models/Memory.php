@@ -3,8 +3,6 @@
 namespace App\Modules\Memories\Models;
 
 use App\Modules\Catalog\Models\Question;
-use App\Modules\Game\Models\Couple;
-use App\Modules\Game\Models\GameSession;
 use Database\Factories\MemoryFactory;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -51,18 +49,10 @@ class Memory extends Model
     }
 
     /**
-     * Cross-module relations (couples/game_sessions/questions FKs → other
-     * modules' tables, DR-009). Kept as bridges; logical reads cross modules via
-     * Query classes.
+     * couple_id and game_session_id stay as plain int FK columns (cross-module
+     * physical FKs, DR-009) — no Eloquent relations to Game, so Memories does not
+     * depend on Game. question/user relations point at Catalog/Auth (allowed).
      *
-     * @return BelongsTo<Couple, $this>
-     */
-    public function couple(): BelongsTo
-    {
-        return $this->belongsTo(Couple::class);
-    }
-
-    /**
      * @return BelongsTo<User, $this>
      */
     public function user(): BelongsTo
@@ -76,13 +66,5 @@ class Memory extends Model
     public function question(): BelongsTo
     {
         return $this->belongsTo(Question::class);
-    }
-
-    /**
-     * @return BelongsTo<GameSession, $this>
-     */
-    public function gameSession(): BelongsTo
-    {
-        return $this->belongsTo(GameSession::class);
     }
 }
