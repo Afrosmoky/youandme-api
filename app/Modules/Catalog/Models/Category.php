@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace App\Modules\Catalog\Models;
 
 use Database\Factories\CategoryFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -27,6 +27,11 @@ class Category extends Model
         'premium_only' => 'boolean',
         'ordering' => 'integer',
     ];
+
+    protected static function newFactory(): CategoryFactory
+    {
+        return CategoryFactory::new();
+    }
 
     /**
      * @return HasMany<Question, $this>

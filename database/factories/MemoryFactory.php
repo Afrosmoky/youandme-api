@@ -3,7 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Memory;
-use App\Models\Question;
+use App\Modules\Catalog\Models\Question;
 use Youandme\Auth\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 

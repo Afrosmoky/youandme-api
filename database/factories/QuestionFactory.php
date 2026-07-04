@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Models\Question;
+use App\Modules\Catalog\Models\Question;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -10,6 +10,9 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class QuestionFactory extends Factory
 {
+    /** @var class-string<Question> */
+    protected $model = Question::class;
+
     /**
      * @return array<string, mixed>
      */

@@ -8,7 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\V1\Memories\StoreMemoryRequest;
 use App\Http\Resources\MemoryResource;
 use App\Http\Resources\SessionResource;
-use App\Models\Question;
+use App\Modules\Catalog\Models\Question;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;

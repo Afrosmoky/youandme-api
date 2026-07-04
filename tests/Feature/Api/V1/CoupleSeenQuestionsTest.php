@@ -1,7 +1,7 @@
 <?php
 
 use App\Models\Couple;
-use App\Models\Question;
+use App\Modules\Catalog\Models\Question;
 use Illuminate\Database\UniqueConstraintViolationException;
 
 test('a couple can mark a question as seen via the pivot', function (): void {

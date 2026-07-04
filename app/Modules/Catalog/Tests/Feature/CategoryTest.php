@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\Category;
+use App\Modules\Catalog\Models\Category;
 use Youandme\Auth\Models\User;
 use Laravel\Sanctum\Sanctum;
 

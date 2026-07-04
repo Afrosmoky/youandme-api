@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Modules\Catalog\Models\Category;
 use Database\Factories\GameSessionFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;

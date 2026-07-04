@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Modules\Catalog\Models\Question;
 use Database\Factories\CoupleFactory;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;

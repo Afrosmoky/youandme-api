@@ -1,9 +1,9 @@
 <?php
 
-namespace Database\Seeders;
+namespace App\Modules\Catalog\Database\Seeders;
 
-use App\Models\Category;
-use App\Models\Question;
+use App\Modules\Catalog\Models\Category;
+use App\Modules\Catalog\Models\Question;
 use Illuminate\Database\Seeder;
 use RuntimeException;
 
@@ -16,7 +16,7 @@ class QuestionSeeder extends Seeder
      */
     public function run(): void
     {
-        $path = database_path('seeders/data/questions_with_categories_pl.json');
+        $path = __DIR__.'/data/questions_with_categories_pl.json';
 
         $json = file_get_contents($path);
         if ($json === false) {

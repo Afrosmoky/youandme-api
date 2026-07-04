@@ -1,8 +1,8 @@
 <?php
 
-use App\Models\Category;
+use App\Modules\Catalog\Models\Category;
 use App\Models\GameSession;
-use App\Models\Question;
+use App\Modules\Catalog\Models\Question;
 use Youandme\Auth\Models\User;
 use Laravel\Sanctum\Sanctum;
 

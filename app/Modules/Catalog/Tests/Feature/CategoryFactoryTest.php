@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\Category;
+use App\Modules\Catalog\Models\Category;
 
 test('category factory creates a valid category with defaults', function (): void {
     $category = Category::factory()->create();

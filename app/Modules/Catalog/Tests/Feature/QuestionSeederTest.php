@@ -1,7 +1,7 @@
 <?php
 
-use App\Models\Category;
-use App\Models\Question;
+use App\Modules\Catalog\Models\Category;
+use App\Modules\Catalog\Models\Question;
 
 test('seeder loads 100 questions from the deck', function (): void {
     $this->seed();

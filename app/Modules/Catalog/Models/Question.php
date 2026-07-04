@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Models;
+namespace App\Modules\Catalog\Models;
 
+use App\Models\Couple;
 use Database\Factories\QuestionFactory;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -36,6 +37,11 @@ class Question extends Model
         return ['ulid'];
     }
 
+    protected static function newFactory(): QuestionFactory
+    {
+        return QuestionFactory::new();
+    }
+
     /**
      * @return BelongsTo<Category, $this>
      */
@@ -45,6 +51,10 @@ class Question extends Model
     }
 
     /**
+     * TODO Etap 4 (Game): couple_question_seen is a Game table; this cross-module
+     * relation is kept 1:1 during R1 and moves out when Game is extracted.
+     * Catalog Queries deliberately do NOT touch that pivot.
+     *
      * @return BelongsToMany<Couple, $this>
      */
     public function seenByCouples(): BelongsToMany

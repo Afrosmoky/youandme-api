@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Modules\Catalog\Database\Seeders\CategorySeeder;
+use App\Modules\Catalog\Database\Seeders\QuestionSeeder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 

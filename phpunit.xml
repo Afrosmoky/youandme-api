@@ -11,6 +11,9 @@
         <testsuite name="Auth">
             <directory>packages/auth/src/Tests</directory>
         </testsuite>
+        <testsuite name="Catalog">
+            <directory>app/Modules/Catalog/Tests</directory>
+        </testsuite>
     </testsuites>
     <source>
         <include>
