@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use App\Modules\Catalog\Models\Question;
+use App\Modules\Game\Models\Couple;
+use App\Modules\Game\Models\GameSession;
 use Database\Factories\MemoryFactory;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;

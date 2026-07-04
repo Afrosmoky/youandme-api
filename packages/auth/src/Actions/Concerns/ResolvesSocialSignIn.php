@@ -2,7 +2,7 @@
 
 namespace Youandme\Auth\Actions\Concerns;
 
-use App\Models\Couple;
+use App\Modules\Game\Models\Couple;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;

@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\Couple;
+use App\Modules\Game\Models\Couple;
 use Youandme\Auth\Models\User;
 
 test('couple factory creates a couple with schema defaults', function (): void {

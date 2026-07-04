@@ -1,7 +1,7 @@
 <?php
 
 use App\Modules\Catalog\Models\Category;
-use App\Models\GameSession;
+use App\Modules\Game\Models\GameSession;
 use App\Modules\Catalog\Models\Question;
 use Youandme\Auth\Models\User;
 use Illuminate\Support\Collection;

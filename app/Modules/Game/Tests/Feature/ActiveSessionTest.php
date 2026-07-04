@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\GameSession;
+use App\Modules\Game\Models\GameSession;
 use Youandme\Auth\Models\User;
 use Laravel\Sanctum\Sanctum;
 

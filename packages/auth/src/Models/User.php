@@ -2,7 +2,7 @@
 
 namespace Youandme\Auth\Models;
 
-use App\Models\Couple;
+use App\Modules\Game\Models\Couple;
 use App\Models\Memory;
 use Illuminate\Auth\MustVerifyEmail as MustVerifyEmailTrait;
 use Illuminate\Contracts\Auth\MustVerifyEmail;

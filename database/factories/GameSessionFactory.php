@@ -2,8 +2,8 @@
 
 namespace Database\Factories;
 
-use App\Models\Couple;
-use App\Models\GameSession;
+use App\Modules\Game\Models\Couple;
+use App\Modules\Game\Models\GameSession;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -11,6 +11,9 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class GameSessionFactory extends Factory
 {
+    /** @var class-string<GameSession> */
+    protected $model = GameSession::class;
+
     /**
      * @return array<string, mixed>
      */

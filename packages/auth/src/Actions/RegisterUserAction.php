@@ -2,7 +2,7 @@
 
 namespace Youandme\Auth\Actions;
 
-use App\Models\Couple;
+use App\Modules\Game\Models\Couple;
 use Illuminate\Support\Facades\DB;
 use Lorisleiva\Actions\Concerns\AsAction;
 use Youandme\Auth\Data\AuthResult;

@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Models;
+namespace App\Modules\Game\Models;
 
+use App\Models\Memory;
 use App\Modules\Catalog\Models\Category;
 use Database\Factories\GameSessionFactory;
 use Illuminate\Database\Eloquent\Builder;
@@ -54,6 +55,11 @@ class GameSession extends Model
         return ['ulid'];
     }
 
+    protected static function newFactory(): GameSessionFactory
+    {
+        return GameSessionFactory::new();
+    }
+
     /**
      * @return BelongsTo<Couple, $this>
      */
@@ -63,6 +69,8 @@ class GameSession extends Model
     }
 
     /**
+     * Cross-module relation to Catalog's Category (game_sessions.category_id).
+     *
      * @return BelongsTo<Category, $this>
      */
     public function category(): BelongsTo
@@ -71,6 +79,8 @@ class GameSession extends Model
     }
 
     /**
+     * TODO Etap 5 (Memories): Memory lives in App\Models until extracted.
+     *
      * @return HasMany<Memory, $this>
      */
     public function memories(): HasMany

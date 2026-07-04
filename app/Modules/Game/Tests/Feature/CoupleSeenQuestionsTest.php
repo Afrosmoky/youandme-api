@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\Couple;
+use App\Modules\Game\Models\Couple;
 use App\Modules\Catalog\Models\Question;
 use Illuminate\Database\UniqueConstraintViolationException;
 

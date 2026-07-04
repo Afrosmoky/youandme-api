@@ -1,7 +1,7 @@
 <?php
 
 use Youandme\Auth\Events\UserRegistered;
-use App\Models\Couple;
+use App\Modules\Game\Models\Couple;
 use Youandme\Auth\Models\User;
 use Youandme\Auth\Support\GoogleTokenVerifierInterface;
 use Youandme\Auth\Support\SocialTokenException;

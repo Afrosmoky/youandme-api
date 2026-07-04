@@ -1,7 +1,7 @@
 <?php
 
-use App\Models\Couple;
-use App\Models\GameSession;
+use App\Modules\Game\Models\Couple;
+use App\Modules\Game\Models\GameSession;
 
 test('game session factory creates a session with a valid state shape', function (): void {
     $session = GameSession::factory()->create();

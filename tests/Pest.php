@@ -32,6 +32,10 @@ pest()->extend(TestCase::class)
     ->use(RefreshDatabase::class)
     ->in(__DIR__.'/../packages/notifications/src/Tests');
 
+pest()->extend(TestCase::class)
+    ->use(RefreshDatabase::class)
+    ->in(__DIR__.'/../app/Modules/Game/Tests');
+
 /*
 |--------------------------------------------------------------------------
 | Expectations

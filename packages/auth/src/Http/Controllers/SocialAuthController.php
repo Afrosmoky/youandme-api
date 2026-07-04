@@ -2,7 +2,7 @@
 
 namespace Youandme\Auth\Http\Controllers;
 
-use App\Http\Resources\CoupleResource;
+use App\Modules\Game\Http\Resources\CoupleResource;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Youandme\Auth\Actions\SignInWithAppleAction;

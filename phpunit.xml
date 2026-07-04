@@ -17,6 +17,9 @@
         <testsuite name="Notifications">
             <directory>packages/notifications/src/Tests</directory>
         </testsuite>
+        <testsuite name="Game">
+            <directory>app/Modules/Game/Tests</directory>
+        </testsuite>
     </testsuites>
     <source>
         <include>

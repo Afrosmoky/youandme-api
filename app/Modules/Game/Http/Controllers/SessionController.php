@@ -1,26 +1,19 @@
 <?php
 
-namespace App\Http\Controllers\Api\V1;
+namespace App\Modules\Game\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\Api\V1\Sessions\StartSessionRequest;
-use App\Http\Resources\SessionResource;
-use App\Modules\Catalog\Models\Category;
-use App\Models\GameSession;
-use App\Modules\Catalog\Models\Question;
+use App\Modules\Game\Actions\EndGameSessionAction;
+use App\Modules\Game\Actions\SkipCurrentQuestionInSessionAction;
+use App\Modules\Game\Actions\StartGameSessionAction;
+use App\Modules\Game\Http\Requests\StartSessionRequest;
+use App\Modules\Game\Http\Resources\SessionResource;
+use App\Modules\Game\Models\GameSession;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\DB;
 
-class SessionController extends Controller
+class SessionController
 {
-    /**
-     * Number of questions drawn into a fresh session (hardcoded for P3, see
-     * docs/third-slice.md section 11.2).
-     */
-    private const POOL_SIZE = 20;
-
     public function start(StartSessionRequest $request): JsonResponse
     {
         $couple = $request->user()->activeCouple;
@@ -31,42 +24,13 @@ class SessionController extends Controller
             return response()->json(['session' => new SessionResource($active)], Response::HTTP_CONFLICT);
         }
 
-        $categorySlug = $request->input('category_slug');
-        $category = $categorySlug !== null
-            ? Category::where('slug', $categorySlug)->first()
-            : null;
+        $session = StartGameSessionAction::run($couple, $request->input('category_slug'));
 
-        $seenIds = $couple->seenQuestions()->pluck('questions.id')->all();
-
-        $query = Question::query()
-            ->whereNotIn('id', $seenIds)
-            ->where('type', 'session')
-            ->where('locale', 'pl');
-
-        if ($category !== null) {
-            $query->where('category_id', $category->id);
-        }
-
-        /** @var list<int> $poolIds */
-        $poolIds = $query->inRandomOrder()->limit(self::POOL_SIZE)->pluck('id')->all();
-
-        if ($poolIds === []) {
+        if ($session === null) {
             return response()->json([
                 'message' => 'Pula pytań w tej kategorii została wyczerpana. Spróbuj innej kategorii lub trybu mix.',
             ], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
-
-        $session = GameSession::create([
-            'couple_id' => $couple->id,
-            'category_id' => $category?->id,
-            'mode' => 'local',
-            'state' => [
-                'remaining_ids' => $poolIds,
-                'current_index' => 0,
-                'draft_answer' => '',
-            ],
-            'started_at' => now(),
-        ]);
 
         return response()->json(['session' => new SessionResource($session)], Response::HTTP_CREATED);
     }
@@ -90,8 +54,7 @@ class SessionController extends Controller
             abort(Response::HTTP_GONE, 'Sesja już zakończona.');
         }
 
-        $session->ended_at = now();
-        $session->save();
+        EndGameSessionAction::run($session);
 
         return response()->noContent();
     }
@@ -106,33 +69,21 @@ class SessionController extends Controller
 
         $state = $session->state;
         /** @var list<int> $remainingIds */
-        $remainingIds = $state['remaining_ids'] ?? [];
-        $currentIndex = (int) ($state['current_index'] ?? 0);
+        $remainingIds = is_array($state['remaining_ids'] ?? null) ? $state['remaining_ids'] : [];
+        $currentIndex = isset($state['current_index']) ? (int) $state['current_index'] : 0;
 
         if ($currentIndex >= count($remainingIds)) {
             abort(Response::HTTP_UNPROCESSABLE_ENTITY, 'Sesja już wyczerpana, nie ma czego pomijać.');
         }
 
-        $questionId = $remainingIds[$currentIndex];
-
-        DB::transaction(function () use ($session, $state, $currentIndex, $questionId): void {
-            // Skip marks the question as seen forever — no recycling back into the pool.
-            // syncWithoutDetaching keeps it idempotent on the composite PK.
-            $session->couple->seenQuestions()->syncWithoutDetaching([
-                $questionId => ['seen_at' => now()],
-            ]);
-
-            $state['current_index'] = $currentIndex + 1;
-            $session->state = $state;
-            $session->cards_drawn_count++;
-            $session->save();
-        });
+        SkipCurrentQuestionInSessionAction::run($session);
 
         return response()->json(['session' => new SessionResource($session)]);
     }
 
     /**
      * Controller-level authorization (no policies in P3 — deliberate deviation).
+     * Reads the authenticated Auth user's active_couple_id — the Game↔Auth seam.
      */
     private function authorizeCouple(Request $request, GameSession $session): void
     {

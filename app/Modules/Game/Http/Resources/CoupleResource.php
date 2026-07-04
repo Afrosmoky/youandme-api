@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\Modules\Game\Http\Resources;
 
-use App\Models\Couple;
+use App\Modules\Game\Models\Couple;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 

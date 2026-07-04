@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\Couple;
+use App\Modules\Game\Models\Couple;
 use Youandme\Auth\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\DB;

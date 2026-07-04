@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Models\Couple;
+use App\Modules\Game\Models\Couple;
 use Youandme\Auth\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -11,6 +11,9 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class CoupleFactory extends Factory
 {
+    /** @var class-string<Couple> */
+    protected $model = Couple::class;
+
     /**
      * @return array<string, mixed>
      */

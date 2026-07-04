@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Models;
+namespace App\Modules\Game\Models;
 
+use App\Models\Memory;
 use App\Modules\Catalog\Models\Question;
 use Database\Factories\CoupleFactory;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
@@ -54,7 +55,15 @@ class Couple extends Model
         return ['ulid'];
     }
 
+    protected static function newFactory(): CoupleFactory
+    {
+        return CoupleFactory::new();
+    }
+
     /**
+     * Cross-module relation to Auth's User (couples.user_a_id FK → users.id,
+     * allowed per DR-009). Logical reads across modules go through Query classes.
+     *
      * @return BelongsTo<User, $this>
      */
     public function userA(): BelongsTo
@@ -71,6 +80,8 @@ class Couple extends Model
     }
 
     /**
+     * TODO Etap 5 (Memories): Memory lives in App\Models until extracted.
+     *
      * @return HasMany<Memory, $this>
      */
     public function memories(): HasMany
@@ -88,7 +99,8 @@ class Couple extends Model
 
     /**
      * Questions this couple has already been shown — the persistent anti-repeat
-     * set. No Eloquent model behind couple_question_seen, just the pivot.
+     * set (couple_question_seen pivot, no Eloquent model). Cross-module relation
+     * to Catalog's Question.
      *
      * @return BelongsToMany<Question, $this>
      */
