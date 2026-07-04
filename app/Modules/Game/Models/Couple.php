@@ -2,7 +2,7 @@
 
 namespace App\Modules\Game\Models;
 
-use App\Models\Memory;
+use App\Modules\Memories\Models\Memory;
 use App\Modules\Catalog\Models\Question;
 use Database\Factories\CoupleFactory;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;

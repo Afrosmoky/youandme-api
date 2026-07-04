@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\Memory;
+use App\Modules\Memories\Models\Memory;
 use App\Modules\Catalog\Models\Question;
 use Youandme\Auth\Models\User;
 use Laravel\Sanctum\Sanctum;

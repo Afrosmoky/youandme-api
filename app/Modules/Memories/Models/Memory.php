@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace App\Modules\Memories\Models;
 
 use App\Modules\Catalog\Models\Question;
 use App\Modules\Game\Models\Couple;
@@ -45,7 +45,16 @@ class Memory extends Model
         'answered_at' => 'datetime',
     ];
 
+    protected static function newFactory(): MemoryFactory
+    {
+        return MemoryFactory::new();
+    }
+
     /**
+     * Cross-module relations (couples/game_sessions/questions FKs → other
+     * modules' tables, DR-009). Kept as bridges; logical reads cross modules via
+     * Query classes.
+     *
      * @return BelongsTo<Couple, $this>
      */
     public function couple(): BelongsTo

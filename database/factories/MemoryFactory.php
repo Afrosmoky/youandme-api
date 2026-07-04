@@ -2,21 +2,25 @@
 
 namespace Database\Factories;
 
-use App\Models\Memory;
+use App\Modules\Memories\Models\Memory;
 use App\Modules\Catalog\Models\Question;
 use App\Modules\Game\Models\Couple;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Youandme\Auth\Models\User;
 
 /**
- * TODO Etap 5 (Memories): Memory + this factory stay in the app layer until
- * extracted. Couple is a Game model — resolved/created here (bridge) because the
- * Auth UserFactory no longer auto-creates couples.
+ * Kept in the central database/factories dir (like the other module factories);
+ * the model defines newFactory(). Couple is a Game model — a couple is
+ * resolved/created here for the user because the Auth UserFactory no longer
+ * auto-creates couples.
  *
  * @extends Factory<Memory>
  */
 class MemoryFactory extends Factory
 {
+    /** @var class-string<Memory> */
+    protected $model = Memory::class;
+
     /**
      * @return array<string, mixed>
      */

@@ -20,6 +20,9 @@
         <testsuite name="Game">
             <directory>app/Modules/Game/Tests</directory>
         </testsuite>
+        <testsuite name="Memories">
+            <directory>app/Modules/Memories/Tests</directory>
+        </testsuite>
     </testsuites>
     <source>
         <include>

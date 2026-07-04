@@ -1,26 +1,55 @@
 <?php
 
-namespace App\Http\Controllers\Api\V1;
+namespace App\Modules\Memories\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\Api\V1\Memories\StoreMemoryRequest;
-use App\Http\Resources\MemoryResource;
 use App\Modules\Catalog\Models\Question;
 use App\Modules\Game\Actions\SaveMemoryFromAnswerAction;
 use App\Modules\Game\Http\Resources\SessionResource;
 use App\Modules\Game\Models\Couple;
+use App\Modules\Memories\Http\Requests\StoreMemoryRequest;
+use App\Modules\Memories\Http\Resources\MemoryResource;
+use App\Modules\Memories\Models\Memory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
-/**
- * TODO Etap 5 (Memories): this controller (and MemoryResource) still live in the
- * app layer until Memories is extracted. `store` is the session-answer flow —
- * its guards + response stay here (byte-1:1) while the write is delegated to
- * Game\SaveMemoryFromAnswerAction.
- */
-class MemoryController extends Controller
+class MemoryController
 {
+    /**
+     * List the couple's memories. Resolves the couple id from the Auth user's
+     * active_couple_id (a plain int) and filters Memories' own table — no Game
+     * import needed here. Serializes via MemoryResource for byte-1:1 output;
+     * ListMemoriesForCoupleQuery is the DTO Public API.
+     */
+    public function index(Request $request): JsonResponse
+    {
+        $perPage = (int) $request->integer('per_page', 20);
+        $perPage = max(1, min($perPage, 50));
+
+        // id is the cursor tiebreaker so memories sharing an answered_at don't
+        // get skipped across pages.
+        $paginator = Memory::query()
+            ->where('couple_id', $request->user()->active_couple_id)
+            ->with('question.category')
+            ->orderByDesc('answered_at')
+            ->orderByDesc('id')
+            ->cursorPaginate($perPage);
+
+        return response()->json([
+            'data' => MemoryResource::collection($paginator->items()),
+            'meta' => [
+                'next_cursor' => $paginator->nextCursor()?->encode(),
+                'prev_cursor' => $paginator->previousCursor()?->encode(),
+                'per_page' => $paginator->perPage(),
+            ],
+        ]);
+    }
+
+    /**
+     * Save an answer from the active session. The session/state/race guards stay
+     * here (byte-1:1) — the write is delegated to Game\SaveMemoryFromAnswerAction,
+     * which persists through Memories\SaveMemoryAction.
+     */
     public function store(StoreMemoryRequest $request): JsonResponse
     {
         $user = $request->user();
@@ -71,28 +100,5 @@ class MemoryController extends Controller
             'memory' => new MemoryResource($memory),
             'session' => new SessionResource($session),
         ], Response::HTTP_CREATED);
-    }
-
-    public function index(Request $request): JsonResponse
-    {
-        $perPage = (int) $request->integer('per_page', 20);
-        $perPage = max(1, min($perPage, 50));
-
-        // id is the cursor tiebreaker so memories sharing an answered_at don't
-        // get skipped across pages.
-        $paginator = Couple::findOrFail($request->user()->active_couple_id)->memories()
-            ->with('question.category')
-            ->orderByDesc('answered_at')
-            ->orderByDesc('id')
-            ->cursorPaginate($perPage);
-
-        return response()->json([
-            'data' => MemoryResource::collection($paginator->items()),
-            'meta' => [
-                'next_cursor' => $paginator->nextCursor()?->encode(),
-                'prev_cursor' => $paginator->previousCursor()?->encode(),
-                'per_page' => $paginator->perPage(),
-            ],
-        ]);
     }
 }
