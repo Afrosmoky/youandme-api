@@ -16,7 +16,7 @@
         }
     ],
     "require": {
-        "php": "^8.3",
+        "php": "^8.4",
         "firebase/php-jwt": "^7.0",
         "laravel/framework": "^13.8",
         "laravel/sanctum": "^4.0",
@@ -101,6 +101,9 @@
         "optimize-autoloader": true,
         "preferred-install": "dist",
         "sort-packages": true,
+        "platform": {
+            "php": "8.4.15"
+        },
         "allow-plugins": {
             "pestphp/pest-plugin": true,
             "php-http/discovery": true

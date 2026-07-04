@@ -4,4 +4,11 @@ includes:
 parameters:
     paths:
         - app/
+        - packages/
+    # Pest test closures confuse PHPStan (sees Pest\PendingCalls\TestCall, not
+    # Tests\TestCase) — known issue, tests are run by Pest, not analysed. Same
+    # policy as the excluded root tests/ dir, applied to per-module test dirs.
+    excludePaths:
+        - app/Modules/*/Tests/*
+        - packages/*/src/Tests/*
     level: 6

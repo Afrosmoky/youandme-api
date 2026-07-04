@@ -23,7 +23,7 @@ class QuestionSeeder extends Seeder
             throw new RuntimeException("Cannot open seed file: {$path}");
         }
 
-        /** @var list<array{body: string, category_slug: string, tags: list<string>}> $entries */
+        /** @var list<array{body: string, category_slug: string, tags?: list<string>}> $entries */
         $entries = json_decode($json, true, flags: JSON_THROW_ON_ERROR);
 
         // Resolve slugs once to avoid a query per question.
