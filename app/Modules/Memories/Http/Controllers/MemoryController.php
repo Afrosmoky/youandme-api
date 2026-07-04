@@ -13,7 +13,7 @@ use Illuminate\Http\Request;
  * import, so Memories does not depend on Game. POST /memories (the session-answer
  * save) lives in the app layer (App\Http\Controllers\Api\V1\MemoryController).
  */
-class MemoryController
+final class MemoryController
 {
     public function index(Request $request): JsonResponse
     {

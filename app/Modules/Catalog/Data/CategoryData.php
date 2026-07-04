@@ -10,15 +10,15 @@ use Spatie\LaravelData\Data;
  * serializes via CategoryResource (byte-identical, snake_case + data wrapper);
  * this DTO is the typed Public API returned by Catalog Queries for other modules.
  */
-class CategoryData extends Data
+final class CategoryData extends Data
 {
     public function __construct(
-        public string $slug,
-        public string $name,
-        public ?string $description,
-        public ?string $tone,
-        public bool $premiumOnly,
-        public int $ordering,
+        public readonly string $slug,
+        public readonly string $name,
+        public readonly ?string $description,
+        public readonly ?string $tone,
+        public readonly bool $premiumOnly,
+        public readonly int $ordering,
     ) {}
 
     public static function fromModel(Category $category): self

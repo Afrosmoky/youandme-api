@@ -8,11 +8,11 @@ use Spatie\LaravelData\Data;
  * Input for RegisterUserAction. Built from the already-validated
  * RegisterRequest payload.
  */
-class RegisterUserInput extends Data
+final class RegisterUserInput extends Data
 {
     public function __construct(
-        public string $email,
-        public string $password,
-        public string $nickname,
+        public readonly string $email,
+        public readonly string $password,
+        public readonly string $nickname,
     ) {}
 }

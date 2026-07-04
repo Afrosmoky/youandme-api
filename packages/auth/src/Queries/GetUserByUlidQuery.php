@@ -10,7 +10,7 @@ use Youandme\Auth\Models\User;
  * Public identifier (ULID) → UserData. The Public API read used by other
  * modules to resolve a user without touching Auth's Eloquent model.
  */
-class GetUserByUlidQuery
+final class GetUserByUlidQuery
 {
     use AsAction;
 

@@ -7,7 +7,7 @@ use Youandme\Auth\Actions\Concerns\ResolvesSocialSignIn;
 use Youandme\Auth\Data\AuthResult;
 use Youandme\Auth\Support\GoogleTokenVerifierInterface;
 
-class SignInWithGoogleAction
+final class SignInWithGoogleAction
 {
     use AsAction, ResolvesSocialSignIn;
 

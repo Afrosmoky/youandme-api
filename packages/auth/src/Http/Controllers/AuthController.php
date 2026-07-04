@@ -10,7 +10,7 @@ use Youandme\Auth\Actions\LogoutUserAction;
  * Couple-free Auth endpoints only. register + login return a couple and are
  * orchestrated in the app layer (App\Http\Controllers\Api\V1\AuthController).
  */
-class AuthController
+final class AuthController
 {
     public function logout(Request $request): Response
     {

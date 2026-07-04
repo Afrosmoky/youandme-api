@@ -8,7 +8,7 @@ use Lorisleiva\Actions\Concerns\AsAction;
 use Youandme\Auth\Events\EmailVerified;
 use Youandme\Auth\Models\User;
 
-class VerifyEmailAction
+final class VerifyEmailAction
 {
     use AsAction;
 

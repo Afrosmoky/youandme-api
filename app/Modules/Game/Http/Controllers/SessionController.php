@@ -13,7 +13,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
-class SessionController
+final class SessionController
 {
     public function start(StartSessionRequest $request): JsonResponse
     {

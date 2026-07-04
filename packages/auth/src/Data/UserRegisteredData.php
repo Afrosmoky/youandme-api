@@ -9,12 +9,12 @@ use Youandme\Auth\Models\User;
  * Payload for the UserRegistered event. DTO (not the Eloquent model) so
  * listeners in other modules depend on a stable contract, not on Auth internals.
  */
-class UserRegisteredData extends Data
+final class UserRegisteredData extends Data
 {
     public function __construct(
-        public string $userUlid,
-        public string $email,
-        public string $nickname,
+        public readonly string $userUlid,
+        public readonly string $email,
+        public readonly string $nickname,
     ) {}
 
     public static function fromModel(User $user): self

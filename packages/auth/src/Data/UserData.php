@@ -11,16 +11,16 @@ use Youandme\Auth\Models\User;
  * serialize via UserResource (byte-identical); this DTO is the typed Public API
  * returned by Queries and consumed by other modules / event payloads.
  */
-class UserData extends Data
+final class UserData extends Data
 {
     public function __construct(
-        public string $ulid,
-        public string $email,
-        public string $nickname,
-        public string $timezone,
-        public string $locale,
-        public ?string $emailVerifiedAt,
-        public string $createdAt,
+        public readonly string $ulid,
+        public readonly string $email,
+        public readonly string $nickname,
+        public readonly string $timezone,
+        public readonly string $locale,
+        public readonly ?string $emailVerifiedAt,
+        public readonly string $createdAt,
     ) {}
 
     public static function fromModel(User $user): self

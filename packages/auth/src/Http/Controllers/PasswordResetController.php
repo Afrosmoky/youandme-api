@@ -10,7 +10,7 @@ use Youandme\Auth\Actions\ResetPasswordAction;
 use Youandme\Auth\Http\Requests\ForgotPasswordRequest;
 use Youandme\Auth\Http\Requests\ResetPasswordRequest;
 
-class PasswordResetController
+final class PasswordResetController
 {
     /**
      * Email a password reset link. Always 200 regardless of whether the address

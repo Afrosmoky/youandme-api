@@ -12,11 +12,11 @@ use Spatie\LaravelData\Data;
  * sign-in (which registers or logs in through one endpoint) can drive the
  * 201-vs-200 status without a second lookup. False for plain login.
  */
-class AuthResult extends Data
+final class AuthResult extends Data
 {
     public function __construct(
-        public UserData $user,
-        public string $token,
-        public bool $isNewUser = false,
+        public readonly UserData $user,
+        public readonly string $token,
+        public readonly bool $isNewUser = false,
     ) {}
 }

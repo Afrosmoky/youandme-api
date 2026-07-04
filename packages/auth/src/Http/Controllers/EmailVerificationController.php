@@ -9,7 +9,7 @@ use Youandme\Auth\Actions\SendVerificationEmailAction;
 use Youandme\Auth\Actions\VerifyEmailAction;
 use Youandme\Auth\Queries\GetVerificationStatusQuery;
 
-class EmailVerificationController
+final class EmailVerificationController
 {
     /**
      * Handle the signed verification link from the email.

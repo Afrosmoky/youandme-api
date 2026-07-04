@@ -6,7 +6,7 @@ use Illuminate\Support\Arr;
 use Lorisleiva\Actions\Concerns\AsAction;
 use Youandme\Auth\Models\User;
 
-class UpdateProfileAction
+final class UpdateProfileAction
 {
     use AsAction;
 

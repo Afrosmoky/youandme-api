@@ -6,7 +6,7 @@ use App\Modules\Catalog\Data\QuestionData;
 use App\Modules\Catalog\Models\Question;
 use Lorisleiva\Actions\Concerns\AsAction;
 
-class GetQuestionByUlidQuery
+final class GetQuestionByUlidQuery
 {
     use AsAction;
 

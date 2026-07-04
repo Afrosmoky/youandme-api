@@ -10,7 +10,7 @@ use Lorisleiva\Actions\Concerns\AsAction;
  * Internal id → QuestionData. Game holds question ids in a session's
  * remaining_ids (number[]); this resolves one back to its public contract.
  */
-class GetQuestionByIdQuery
+final class GetQuestionByIdQuery
 {
     use AsAction;
 

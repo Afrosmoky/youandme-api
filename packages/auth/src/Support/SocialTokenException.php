@@ -4,4 +4,4 @@ namespace Youandme\Auth\Support;
 
 use RuntimeException;
 
-class SocialTokenException extends RuntimeException {}
+final class SocialTokenException extends RuntimeException {}

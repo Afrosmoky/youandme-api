@@ -2,7 +2,7 @@
 
 namespace Youandme\Auth\Support;
 
-class AppleTokenVerifier extends JwksTokenVerifier implements AppleTokenVerifierInterface
+final class AppleTokenVerifier extends JwksTokenVerifier implements AppleTokenVerifierInterface
 {
     protected function jwksUrl(): string
     {

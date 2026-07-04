@@ -21,7 +21,7 @@ use Youandme\Auth\Models\User;
  * token and finds-or-creates the user; the couple (only for a brand-new user) is
  * created here via Game. 201 for a new account, 200 for an existing one.
  */
-class SocialAuthController
+final class SocialAuthController
 {
     public function google(SocialSignInRequest $request): JsonResponse
     {

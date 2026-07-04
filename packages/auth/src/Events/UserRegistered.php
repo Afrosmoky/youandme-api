@@ -10,7 +10,7 @@ use Youandme\Auth\Data\UserRegisteredData;
  * Consumed by Notifications from Etap 3 (welcome + verification email); no
  * listener in Etap 1.
  */
-class UserRegistered
+final readonly class UserRegistered
 {
     use Dispatchable;
 

@@ -9,7 +9,7 @@ use Lorisleiva\Actions\Concerns\AsAction;
 use Youandme\Auth\Events\PasswordChanged;
 use Youandme\Auth\Models\User;
 
-class ChangePasswordAction
+final class ChangePasswordAction
 {
     use AsAction;
 

@@ -18,7 +18,7 @@ use Youandme\Auth\Http\Resources\UserResource;
  * PATCH orchestrates Auth (profile fields) + Game (couple settings) in one
  * transaction. See docs r1-architecture-proposal §3.1.
  */
-class ProfileController
+final class ProfileController
 {
     public function show(Request $request): JsonResponse
     {

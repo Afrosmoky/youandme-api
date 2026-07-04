@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Youandme\Auth\Models\User;
 
-class ValidNickname implements ValidationRule
+final class ValidNickname implements ValidationRule
 {
     /**
      * Reserved nicknames that must not be claimed by users.

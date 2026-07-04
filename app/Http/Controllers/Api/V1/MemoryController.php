@@ -16,7 +16,7 @@ use Illuminate\Http\Response;
  * save is owned by Game\SaveMemoryFromAnswerAction (guards + state), the write by
  * Memories. GET /memories (a pure list) stays in the Memories module.
  */
-class MemoryController
+final class MemoryController
 {
     public function store(StoreMemoryRequest $request): JsonResponse
     {

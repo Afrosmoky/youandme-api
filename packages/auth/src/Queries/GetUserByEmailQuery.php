@@ -10,7 +10,7 @@ use Youandme\Auth\Models\User;
  * Email → UserData, for the internal auth flow. Not exposed in the public HTTP
  * API (email lookups are an implementation detail).
  */
-class GetUserByEmailQuery
+final class GetUserByEmailQuery
 {
     use AsAction;
 

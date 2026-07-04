@@ -7,7 +7,7 @@ use Youandme\Auth\Actions\Concerns\ResolvesSocialSignIn;
 use Youandme\Auth\Data\AuthResult;
 use Youandme\Auth\Support\AppleTokenVerifierInterface;
 
-class SignInWithAppleAction
+final class SignInWithAppleAction
 {
     use AsAction, ResolvesSocialSignIn;
 

@@ -22,7 +22,7 @@ use Youandme\Auth\Models\User;
  * pure Auth actions with Game (couple creation) in one transaction and composes
  * the {user, couple, token} response (byte-1:1 with P3). See §3.1.
  */
-class AuthController
+final class AuthController
 {
     public function register(RegisterRequest $request): JsonResponse
     {

@@ -2,7 +2,7 @@
 
 namespace Youandme\Auth\Support;
 
-class GoogleTokenVerifier extends JwksTokenVerifier implements GoogleTokenVerifierInterface
+final class GoogleTokenVerifier extends JwksTokenVerifier implements GoogleTokenVerifierInterface
 {
     protected function jwksUrl(): string
     {

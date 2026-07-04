@@ -11,7 +11,7 @@ use Youandme\Auth\Http\Requests\ChangePasswordRequest;
  * touch the couple and are orchestrated in the app layer
  * (App\Http\Controllers\Api\V1\ProfileController).
  */
-class ProfileController
+final class ProfileController
 {
     public function changePassword(ChangePasswordRequest $request): JsonResponse
     {

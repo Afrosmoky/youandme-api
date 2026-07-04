@@ -9,7 +9,7 @@ use Youandme\Auth\Models\User;
  * Soft verification status for the mobile app: whether the email is verified
  * and how long the account has existed.
  */
-class GetVerificationStatusQuery
+final class GetVerificationStatusQuery
 {
     use AsAction;
 

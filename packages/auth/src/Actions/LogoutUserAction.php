@@ -5,7 +5,7 @@ namespace Youandme\Auth\Actions;
 use Lorisleiva\Actions\Concerns\AsAction;
 use Youandme\Auth\Models\User;
 
-class LogoutUserAction
+final class LogoutUserAction
 {
     use AsAction;
 

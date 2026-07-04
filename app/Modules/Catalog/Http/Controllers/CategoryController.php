@@ -11,7 +11,7 @@ use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
  * CategoryResource (byte-identical `data`-wrapped, snake_case); ListCategoriesQuery
  * is the DTO Public API for other modules — see docs r1-architecture-proposal §2.2.
  */
-class CategoryController
+final class CategoryController
 {
     public function index(): AnonymousResourceCollection
     {

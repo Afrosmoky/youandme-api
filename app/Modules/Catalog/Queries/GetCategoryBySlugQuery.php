@@ -6,7 +6,7 @@ use App\Modules\Catalog\Data\CategoryData;
 use App\Modules\Catalog\Models\Category;
 use Lorisleiva\Actions\Concerns\AsAction;
 
-class GetCategoryBySlugQuery
+final class GetCategoryBySlugQuery
 {
     use AsAction;
 
