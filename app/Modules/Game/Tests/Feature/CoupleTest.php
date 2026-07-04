@@ -16,9 +16,9 @@ test('couple factory creates a couple with schema defaults', function (): void {
 });
 
 test('User factory gives every user an active couple as user A', function (): void {
-    $user = User::factory()->create();
+    $user = createUserWithCouple();
 
     expect($user->active_couple_id)->not->toBeNull();
-    expect($user->activeCouple)->not->toBeNull();
-    expect($user->activeCouple->user_a_id)->toBe($user->id);
+    expect(activeCoupleOf($user))->not->toBeNull();
+    expect(activeCoupleOf($user)->user_a_id)->toBe($user->id);
 });

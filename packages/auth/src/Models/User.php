@@ -2,14 +2,10 @@
 
 namespace Youandme\Auth\Models;
 
-use App\Modules\Game\Models\Couple;
-use App\Models\Memory;
 use Illuminate\Auth\MustVerifyEmail as MustVerifyEmailTrait;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -30,7 +26,13 @@ class User extends Authenticatable implements MustVerifyEmail
         'locale' => 'pl',
     ];
 
-    /** @var list<string> */
+    /**
+     * active_couple_id is an Auth-owned column pointing at a Game couple id (a
+     * cross-module FK, DR-009). Auth stores it (via SetActiveCoupleForUserAction)
+     * but has no couple relation — resolving the couple is Game's job.
+     *
+     * @var list<string>
+     */
     protected $fillable = [
         'email',
         'password',
@@ -107,37 +109,5 @@ class User extends Authenticatable implements MustVerifyEmail
             : config('app.url').'/'.$query;
 
         PasswordResetRequested::dispatch($email, $url);
-    }
-
-    /**
-     * TODO Etap 5 (Memories): cross-module relation kept during R1 migration.
-     * Memory lives in App\Models until the Memories module is extracted.
-     *
-     * @return HasMany<Memory, $this>
-     */
-    public function memories(): HasMany
-    {
-        return $this->hasMany(Memory::class);
-    }
-
-    /**
-     * TODO Etap 4 (Game): cross-module relation kept during R1 migration.
-     * Couple lives in App\Models until the Game module is extracted.
-     *
-     * @return BelongsTo<Couple, $this>
-     */
-    public function activeCouple(): BelongsTo
-    {
-        return $this->belongsTo(Couple::class, 'active_couple_id');
-    }
-
-    /**
-     * TODO Etap 4 (Game): cross-module relation kept during R1 migration.
-     *
-     * @return HasMany<Couple, $this>
-     */
-    public function couplesAsUserA(): HasMany
-    {
-        return $this->hasMany(Couple::class, 'user_a_id');
     }
 }

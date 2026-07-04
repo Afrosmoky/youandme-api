@@ -7,6 +7,7 @@ use App\Modules\Game\Actions\SkipCurrentQuestionInSessionAction;
 use App\Modules\Game\Actions\StartGameSessionAction;
 use App\Modules\Game\Http\Requests\StartSessionRequest;
 use App\Modules\Game\Http\Resources\SessionResource;
+use App\Modules\Game\Models\Couple;
 use App\Modules\Game\Models\GameSession;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -16,7 +17,7 @@ class SessionController
 {
     public function start(StartSessionRequest $request): JsonResponse
     {
-        $couple = $request->user()->activeCouple;
+        $couple = Couple::findOrFail($request->user()->active_couple_id);
 
         $active = $couple->gameSessions()->active()->first();
         if ($active !== null) {
@@ -37,7 +38,7 @@ class SessionController
 
     public function active(Request $request): JsonResponse
     {
-        $session = $request->user()->activeCouple->gameSessions()->active()->first();
+        $session = Couple::findOrFail($request->user()->active_couple_id)->gameSessions()->active()->first();
 
         if ($session === null) {
             abort(Response::HTTP_NOT_FOUND);

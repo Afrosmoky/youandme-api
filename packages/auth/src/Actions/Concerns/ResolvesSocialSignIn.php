@@ -2,7 +2,6 @@
 
 namespace Youandme\Auth\Actions\Concerns;
 
-use App\Modules\Game\Models\Couple;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -44,8 +43,8 @@ trait ResolvesSocialSignIn
 
         $isNew = $user === null;
 
-        // Couple is created synchronously inside the transaction (only for a brand
-        // new user), so the response carries it. See CLAUDE.md "Wzorce z P3".
+        // Pure Auth: create/update the user only. The couple (for a new user) is
+        // created by the app composition root after this action returns.
         [$user, $token] = DB::transaction(function () use ($user, $payload, $providerColumn): array {
             if ($user === null) {
                 $user = new User;
@@ -58,11 +57,6 @@ trait ResolvesSocialSignIn
                     $user->email_verified_at = now();
                 }
 
-                $user->save();
-
-                // TODO Etap 4 (Game): zastąpić Game\CreateCoupleForUserAction
-                $couple = Couple::create(['user_a_id' => $user->id]);
-                $user->active_couple_id = $couple->id;
                 $user->save();
             } else {
                 $dirty = false;
@@ -81,8 +75,6 @@ trait ResolvesSocialSignIn
                     $user->save();
                 }
             }
-
-            $user->loadMissing('activeCouple');
 
             return [$user, $user->createToken('mobile')->plainTextToken];
         });

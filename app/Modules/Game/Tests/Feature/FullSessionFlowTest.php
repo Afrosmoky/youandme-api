@@ -19,7 +19,7 @@ function answerCurrentCard(): string
 }
 
 test('a full session lifecycle works end to end', function (): void {
-    $user = User::factory()->create();
+    $user = createUserWithCouple();
     $category = Category::factory()->create(['slug' => 'na_poznanie', 'name' => 'Na poznanie']);
     Question::factory()->count(3)->create(['category_id' => $category->id]);
     Sanctum::actingAs($user);
@@ -61,7 +61,7 @@ test('a full session lifecycle works end to end', function (): void {
 });
 
 test('seen questions never come back in a later session of the same category', function (): void {
-    $user = User::factory()->create();
+    $user = createUserWithCouple();
     $category = Category::factory()->create(['slug' => 'na_poznanie', 'name' => 'Na poznanie']);
     Question::factory()->count(5)->create(['category_id' => $category->id]);
     Sanctum::actingAs($user);
@@ -84,11 +84,11 @@ test('seen questions never come back in a later session of the same category', f
     $this->postJson('/api/v1/sessions/start', ['category_slug' => 'na_poznanie'])
         ->assertStatus(422);
 
-    expect($user->activeCouple->seenQuestions()->count())->toBe(5);
+    expect(activeCoupleOf($user)->seenQuestions()->count())->toBe(5);
 });
 
 test('an interrupted session resumes from its current index', function (): void {
-    $user = User::factory()->create();
+    $user = createUserWithCouple();
     $category = Category::factory()->create(['slug' => 'na_poznanie', 'name' => 'Na poznanie']);
     Question::factory()->count(5)->create(['category_id' => $category->id]);
     Sanctum::actingAs($user);

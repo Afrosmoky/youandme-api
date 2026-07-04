@@ -9,13 +9,14 @@ use Youandme\Auth\Data\AuthResult;
 use Youandme\Auth\Data\UserData;
 use Youandme\Auth\Models\User;
 
-class LoginUserAction
+final class LoginUserAction
 {
     use AsAction;
 
     /**
      * Manual credential check (not Auth::attempt): stateless API, no session.
-     * See CLAUDE.md "Świadome odstępstwa z P1".
+     * See CLAUDE.md "Świadome odstępstwa z P1". Pure Auth — the couple in the
+     * login response is resolved by the app controller.
      *
      * @throws AuthenticationException on invalid credentials (rendered as 401)
      */
@@ -28,8 +29,6 @@ class LoginUserAction
         }
 
         $token = $user->createToken('mobile')->plainTextToken;
-
-        $user->loadMissing('activeCouple');
 
         return new AuthResult(UserData::fromModel($user), $token);
     }

@@ -4,7 +4,7 @@ use Youandme\Auth\Models\User;
 use Laravel\Sanctum\Sanctum;
 
 test('GET /me returns the authenticated user profile', function (): void {
-    $user = User::factory()->create();
+    $user = createUserWithCouple();
     Sanctum::actingAs($user);
 
     $this->getJson('/api/v1/me')
@@ -16,17 +16,17 @@ test('GET /me returns the authenticated user profile', function (): void {
 });
 
 test('GET /me includes the active couple', function (): void {
-    $user = User::factory()->create();
+    $user = createUserWithCouple();
     Sanctum::actingAs($user);
 
     $this->getJson('/api/v1/me')
         ->assertOk()
         ->assertJsonStructure(['couple' => ['ulid', 'partner_name_local', 'daily_push_hour']])
-        ->assertJsonPath('couple.ulid', $user->activeCouple->ulid);
+        ->assertJsonPath('couple.ulid', activeCoupleOf($user)->ulid);
 });
 
 test('PATCH /me updates partner_name_local on the couple', function (): void {
-    $user = User::factory()->create();
+    $user = createUserWithCouple();
     Sanctum::actingAs($user);
 
     $this->patchJson('/api/v1/me', ['partner_name_local' => 'Tomek'])
@@ -37,11 +37,11 @@ test('PATCH /me updates partner_name_local on the couple', function (): void {
         ->assertOk()
         ->assertJsonPath('couple.partner_name_local', 'Tomek');
 
-    expect($user->activeCouple->fresh()->partner_name_local)->toBe('Tomek');
+    expect(activeCoupleOf($user)->fresh()->partner_name_local)->toBe('Tomek');
 });
 
 test('PATCH /me rejects a too long partner_name_local', function (): void {
-    $user = User::factory()->create();
+    $user = createUserWithCouple();
     Sanctum::actingAs($user);
 
     $this->patchJson('/api/v1/me', ['partner_name_local' => str_repeat('a', 61)])
@@ -54,7 +54,7 @@ test('GET /me requires authentication', function (): void {
 });
 
 test('PATCH /me updates nickname, timezone and locale', function (): void {
-    $user = User::factory()->create();
+    $user = createUserWithCouple();
     Sanctum::actingAs($user);
 
     $this->patchJson('/api/v1/me', [
@@ -71,14 +71,14 @@ test('PATCH /me updates nickname, timezone and locale', function (): void {
 });
 
 test('PATCH /me allows keeping the current nickname', function (): void {
-    $user = User::factory()->create(['nickname' => 'moj_nick']);
+    $user = createUserWithCouple(['nickname' => 'moj_nick']);
     Sanctum::actingAs($user);
 
     $this->patchJson('/api/v1/me', ['nickname' => 'moj_nick'])->assertOk();
 });
 
 test('PATCH /me rejects an invalid or reserved nickname', function (): void {
-    $user = User::factory()->create();
+    $user = createUserWithCouple();
     Sanctum::actingAs($user);
 
     $this->patchJson('/api/v1/me', ['nickname' => 'WielkieLitery'])
@@ -91,7 +91,7 @@ test('PATCH /me rejects an invalid or reserved nickname', function (): void {
 });
 
 test('PATCH /me rejects an invalid timezone', function (): void {
-    $user = User::factory()->create();
+    $user = createUserWithCouple();
     Sanctum::actingAs($user);
 
     $this->patchJson('/api/v1/me', ['timezone' => 'Mars/Phobos'])

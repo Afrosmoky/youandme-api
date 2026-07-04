@@ -15,10 +15,10 @@ use Laravel\Sanctum\Sanctum;
  */
 function memorySession(int $count = 5): array
 {
-    $user = User::factory()->create();
+    $user = createUserWithCouple();
     $questions = Question::factory()->count($count)->create();
 
-    $session = GameSession::factory()->for($user->activeCouple)->create([
+    $session = GameSession::factory()->for(activeCoupleOf($user))->create([
         'state' => [
             'remaining_ids' => $questions->pluck('id')->all(),
             'current_index' => 0,
@@ -44,7 +44,7 @@ function memoryPayload(Question $question, string $answerA = 'Odpowiedź.'): arr
 }
 
 test('store returns 422 when there is no active session', function (): void {
-    $user = User::factory()->create();
+    $user = createUserWithCouple();
     $question = Question::factory()->create();
     Sanctum::actingAs($user);
 
@@ -79,7 +79,7 @@ test('store inserts the question into couple_question_seen', function (): void {
 
     $this->postJson('/api/v1/memories', memoryPayload($current))->assertCreated();
 
-    expect($user->activeCouple->seenQuestions->contains($current))->toBeTrue();
+    expect(activeCoupleOf($user)->seenQuestions->contains($current))->toBeTrue();
 });
 
 test('store advances the session state', function (): void {
@@ -111,14 +111,14 @@ test('store keeps the seen insert idempotent on a replayed card', function (): v
 
     $this->postJson('/api/v1/memories', memoryPayload($current))->assertCreated();
 
-    expect($user->activeCouple->fresh()->seenQuestions()->count())->toBe(1);
+    expect(activeCoupleOf($user)->fresh()->seenQuestions()->count())->toBe(1);
     expect(Memory::count())->toBe(2);
 });
 
 test('store snapshots both player names', function (): void {
     [$user, , $questions] = memorySession();
     $user->update(['nickname' => 'ola']);
-    $user->activeCouple->update(['partner_name_local' => 'Tomek']);
+    activeCoupleOf($user)->update(['partner_name_local' => 'Tomek']);
 
     $this->postJson('/api/v1/memories', memoryPayload($questions->first()))
         ->assertCreated()

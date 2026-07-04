@@ -21,7 +21,7 @@ test('handle creates a user and returns an AuthResult', function (): void {
     $this->assertDatabaseHas('users', ['email' => 'unit@example.com']);
 });
 
-test('handle auto-creates an active couple for the new user (P3 bridge)', function (): void {
+test('handle is pure Auth: it does not create a couple (that is the app orchestration)', function (): void {
     $result = RegisterUserAction::run(new RegisterUserInput(
         email: 'unit2@example.com',
         password: 'tajne-haslo-123',
@@ -30,6 +30,6 @@ test('handle auto-creates an active couple for the new user (P3 bridge)', functi
 
     $user = User::where('ulid', $result->user->ulid)->firstOrFail();
 
-    expect($user->active_couple_id)->not->toBeNull();
-    expect($user->activeCouple->user_a_id)->toBe($user->id);
+    expect($user->active_couple_id)->toBeNull();
+    $this->assertDatabaseCount('couples', 0);
 });

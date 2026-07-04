@@ -41,7 +41,7 @@ test('google sign-in creates a new user and returns 201', function (): void {
 
 test('google sign-in logs in an existing user and returns 200', function (): void {
     Event::fake([UserRegistered::class]);
-    $user = User::factory()->create(['email' => 'stary@example.com']);
+    $user = createUserWithCouple(['email' => 'stary@example.com']);
 
     $this->mock(GoogleTokenVerifierInterface::class)
         ->shouldReceive('verify')
@@ -56,7 +56,7 @@ test('google sign-in logs in an existing user and returns 200', function (): voi
 
     $response->assertOk()
         ->assertJsonPath('user.email', 'stary@example.com')
-        ->assertJsonPath('couple.ulid', $user->activeCouple->ulid);
+        ->assertJsonPath('couple.ulid', activeCoupleOf($user)->ulid);
     expect($user->fresh()->google_id)->toBe('google-999');
     expect(User::count())->toBe(1);
     expect(Couple::count())->toBe(1);

@@ -48,11 +48,11 @@ test('registration auto-creates a couple returned in the response', function ():
 
     $user = User::where('email', 'ola@example.com')->firstOrFail();
     expect($user->active_couple_id)->not->toBeNull();
-    expect($user->activeCouple->user_a_id)->toBe($user->id);
+    expect(activeCoupleOf($user)->user_a_id)->toBe($user->id);
 });
 
 test('duplicate email returns 422', function (): void {
-    User::factory()->create(['email' => 'ola@example.com']);
+    createUserWithCouple(['email' => 'ola@example.com']);
 
     $response = $this->postJson('/api/v1/auth/register', [
         'email' => 'ola@example.com',
@@ -65,7 +65,7 @@ test('duplicate email returns 422', function (): void {
 });
 
 test('register is throttled after 10 attempts within a minute', function (): void {
-    User::factory()->create(['email' => 'ola@example.com']);
+    createUserWithCouple(['email' => 'ola@example.com']);
 
     // Duplicate-email requests still count against the throttle (the middleware
     // increments before the controller runs).

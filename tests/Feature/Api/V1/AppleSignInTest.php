@@ -27,7 +27,7 @@ test('apple sign-in creates a user with the relay email and returns 201', functi
 });
 
 test('apple sign-in with a null email finds the user by apple id', function (): void {
-    $user = User::factory()->create([
+    $user = createUserWithCouple([
         'email' => 'real@example.com',
         'apple_id' => 'apple-555',
     ]);

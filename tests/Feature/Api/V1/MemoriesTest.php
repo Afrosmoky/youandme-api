@@ -6,8 +6,8 @@ use Youandme\Auth\Models\User;
 use Laravel\Sanctum\Sanctum;
 
 test('index returns only the couple memories in order', function (): void {
-    $userA = User::factory()->create();
-    $userB = User::factory()->create();
+    $userA = createUserWithCouple();
+    $userB = createUserWithCouple();
     $question = Question::factory()->create();
 
     $m1 = Memory::factory()->for($userA)->for($question)->create(['answered_at' => '2026-05-19T10:00:00Z']);
@@ -27,7 +27,7 @@ test('index returns only the couple memories in order', function (): void {
 });
 
 test('index exposes the refactored memory shape', function (): void {
-    $user = User::factory()->create();
+    $user = createUserWithCouple();
     $question = Question::factory()->create();
     Memory::factory()->for($user)->for($question)->create([
         'answer_a' => 'Moja',

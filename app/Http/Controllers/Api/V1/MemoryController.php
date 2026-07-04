@@ -8,6 +8,7 @@ use App\Http\Resources\MemoryResource;
 use App\Modules\Catalog\Models\Question;
 use App\Modules\Game\Actions\SaveMemoryFromAnswerAction;
 use App\Modules\Game\Http\Resources\SessionResource;
+use App\Modules\Game\Models\Couple;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -23,7 +24,7 @@ class MemoryController extends Controller
     public function store(StoreMemoryRequest $request): JsonResponse
     {
         $user = $request->user();
-        $couple = $user->activeCouple;
+        $couple = Couple::findOrFail($user->active_couple_id);
         $session = $couple->gameSessions()->active()->first();
 
         if ($session === null) {
@@ -79,7 +80,7 @@ class MemoryController extends Controller
 
         // id is the cursor tiebreaker so memories sharing an answered_at don't
         // get skipped across pages.
-        $paginator = $request->user()->activeCouple->memories()
+        $paginator = Couple::findOrFail($request->user()->active_couple_id)->memories()
             ->with('question.category')
             ->orderByDesc('answered_at')
             ->orderByDesc('id')

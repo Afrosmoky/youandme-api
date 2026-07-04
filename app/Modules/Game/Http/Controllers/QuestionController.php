@@ -4,6 +4,7 @@ namespace App\Modules\Game\Http\Controllers;
 
 use App\Modules\Catalog\Data\QuestionData;
 use App\Modules\Game\Http\Resources\SessionResource;
+use App\Modules\Game\Models\Couple;
 use App\Modules\Game\Queries\GetNextQuestionInSessionQuery;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -14,7 +15,7 @@ class QuestionController
 {
     public function next(Request $request): JsonResponse
     {
-        $couple = $request->user()->activeCouple;
+        $couple = Couple::findOrFail($request->user()->active_couple_id);
         $session = $couple->gameSessions()->active()->first();
 
         if ($session === null) {

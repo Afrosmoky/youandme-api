@@ -20,7 +20,7 @@ class CoupleFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_a_id' => User::factory()->withoutCouple(),
+            'user_a_id' => User::factory(),
             'user_b_id' => null,
             'partner_name_local' => null,
             // streak_current, streak_longest, daily_push_hour fall back to the

@@ -6,7 +6,7 @@ use Youandme\Auth\Models\User;
 use Laravel\Sanctum\Sanctum;
 
 test('memories use a default per_page of 20', function (): void {
-    $user = User::factory()->create();
+    $user = createUserWithCouple();
     $question = Question::factory()->create();
     Memory::factory()->for($user)->for($question)->count(25)->create();
     Sanctum::actingAs($user);
@@ -22,7 +22,7 @@ test('memories use a default per_page of 20', function (): void {
 });
 
 test('per_page is respected and capped at 50', function (): void {
-    $user = User::factory()->create();
+    $user = createUserWithCouple();
     $question = Question::factory()->create();
     Memory::factory()->for($user)->for($question)->count(10)->create();
     Sanctum::actingAs($user);
@@ -38,7 +38,7 @@ test('per_page is respected and capped at 50', function (): void {
 });
 
 test('the cursor walks through pages without overlap', function (): void {
-    $user = User::factory()->create();
+    $user = createUserWithCouple();
     $question = Question::factory()->create();
     Memory::factory()->for($user)->for($question)->count(30)->create();
     Sanctum::actingAs($user);

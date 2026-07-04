@@ -5,27 +5,18 @@ use Youandme\Auth\Http\Controllers\AuthController;
 use Youandme\Auth\Http\Controllers\EmailVerificationController;
 use Youandme\Auth\Http\Controllers\PasswordResetController;
 use Youandme\Auth\Http\Controllers\ProfileController;
-use Youandme\Auth\Http\Controllers\SocialAuthController;
 
 /*
- | Youandme\Auth package API routes. Loaded by AuthServiceProvider wrapped in the
- | `api` prefix + middleware group (matching bootstrap withRouting), so paths
- | resolve to /api/v1/... exactly as before extraction.
+ | Youandme\Auth package API routes — couple-free endpoints only. Loaded by
+ | AuthServiceProvider wrapped in the `api` prefix + middleware group.
+ |
+ | register / login / google / apple / GET me / PATCH me return or touch the
+ | couple (Game) and are registered in the app layer (routes/api.php).
  */
 
 Route::prefix('v1')->group(function (): void {
     // Throttle is per IP (Laravel default). Sensitive auth endpoints get tighter
     // limits to blunt brute force and mail spam; tuned per endpoint.
-    Route::post('auth/register', [AuthController::class, 'register'])
-        ->middleware('throttle:10,1');
-    Route::post('auth/login', [AuthController::class, 'login'])
-        ->middleware('throttle:6,1');
-
-    Route::post('auth/google', [SocialAuthController::class, 'google'])
-        ->middleware('throttle:10,1');
-    Route::post('auth/apple', [SocialAuthController::class, 'apple'])
-        ->middleware('throttle:10,1');
-
     Route::post('auth/password/forgot', [PasswordResetController::class, 'forgot'])
         ->middleware('throttle:3,1');
     Route::post('auth/password/reset', [PasswordResetController::class, 'reset']);
@@ -42,8 +33,6 @@ Route::prefix('v1')->group(function (): void {
         Route::post('auth/email/verify-notification', [EmailVerificationController::class, 'notification']);
         Route::get('me/verification-status', [EmailVerificationController::class, 'status']);
 
-        Route::get('me', [ProfileController::class, 'show']);
-        Route::patch('me', [ProfileController::class, 'update']);
         Route::post('me/change-password', [ProfileController::class, 'changePassword']);
     });
 });

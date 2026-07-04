@@ -3,11 +3,11 @@
 use Youandme\Auth\Models\User;
 
 test('login response carries the current couple with partner name', function (): void {
-    $user = User::factory()->create([
+    $user = createUserWithCouple([
         'email' => 'ola@example.com',
         'password' => 'tajne-haslo-123',
     ]);
-    $user->activeCouple->update(['partner_name_local' => 'Anna']);
+    activeCoupleOf($user)->update(['partner_name_local' => 'Anna']);
 
     $this->postJson('/api/v1/auth/login', [
         'email' => 'ola@example.com',
@@ -19,7 +19,7 @@ test('login response carries the current couple with partner name', function ():
 });
 
 test('login with correct password returns token', function (): void {
-    User::factory()->create([
+    createUserWithCouple([
         'email' => 'ola@example.com',
         'password' => 'tajne-haslo-123',
     ]);
@@ -38,7 +38,7 @@ test('login with correct password returns token', function (): void {
 });
 
 test('login with wrong password returns 401', function (): void {
-    User::factory()->create([
+    createUserWithCouple([
         'email' => 'ola@example.com',
         'password' => 'tajne-haslo-123',
     ]);
@@ -52,7 +52,7 @@ test('login with wrong password returns 401', function (): void {
 });
 
 test('login is throttled after 6 attempts within a minute', function (): void {
-    User::factory()->create([
+    createUserWithCouple([
         'email' => 'ola@example.com',
         'password' => 'tajne-haslo-123',
     ]);

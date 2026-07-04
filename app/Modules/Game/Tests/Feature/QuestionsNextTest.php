@@ -13,12 +13,12 @@ use Laravel\Sanctum\Sanctum;
  */
 function sessionWithQuestions(int $count = 3, int $currentIndex = 0, ?Category $category = null): array
 {
-    $user = User::factory()->create();
+    $user = createUserWithCouple();
     $questions = Question::factory()->count($count)->create(
         $category !== null ? ['category_id' => $category->id] : []
     );
 
-    $session = GameSession::factory()->for($user->activeCouple)->create([
+    $session = GameSession::factory()->for(activeCoupleOf($user))->create([
         'category_id' => $category?->id,
         'state' => [
             'remaining_ids' => $questions->pluck('id')->all(),
@@ -31,7 +31,7 @@ function sessionWithQuestions(int $count = 3, int $currentIndex = 0, ?Category $
 }
 
 test('next returns 422 when there is no active session', function (): void {
-    Sanctum::actingAs(User::factory()->create());
+    Sanctum::actingAs(createUserWithCouple());
 
     $this->getJson('/api/v1/questions/next')
         ->assertStatus(422)
@@ -70,9 +70,9 @@ test('next reports session_complete when the pool is exhausted', function (): vo
 
 test('next includes the question category and tags', function (): void {
     $category = Category::factory()->create(['slug' => 'intymnosc', 'name' => 'Intymność']);
-    $user = User::factory()->create();
+    $user = createUserWithCouple();
     $question = Question::factory()->create(['category_id' => $category->id, 'tags' => ['libido']]);
-    GameSession::factory()->for($user->activeCouple)->create([
+    GameSession::factory()->for(activeCoupleOf($user))->create([
         'category_id' => $category->id,
         'state' => ['remaining_ids' => [$question->id], 'current_index' => 0, 'draft_answer' => ''],
     ]);

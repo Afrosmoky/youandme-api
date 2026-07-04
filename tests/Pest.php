@@ -55,6 +55,38 @@ expect()->extend('toBeOne', function () {
 |--------------------------------------------------------------------------
 | Functions
 |--------------------------------------------------------------------------
+*/
+
+/**
+ * Create a user together with an active solo couple (Game), the way registration
+ * does. The Auth UserFactory is now couple-agnostic (R1 Etap 4), so tests that
+ * need the full set-up use this helper instead of relying on an auto-couple.
+ *
+ * @param  array<string, mixed>  $attributes
+ */
+function createUserWithCouple(array $attributes = []): \Youandme\Auth\Models\User
+{
+    $user = \Youandme\Auth\Models\User::factory()->create($attributes);
+    $couple = \App\Modules\Game\Models\Couple::factory()->create(['user_a_id' => $user->id]);
+    $user->active_couple_id = $couple->id;
+    $user->save();
+
+    return $user->refresh();
+}
+
+/**
+ * Resolve a user's active couple (the User model no longer has the relation —
+ * couple resolution lives in Game/app).
+ */
+function activeCoupleOf(\Youandme\Auth\Models\User $user): \App\Modules\Game\Models\Couple
+{
+    return \App\Modules\Game\Models\Couple::findOrFail($user->active_couple_id);
+}
+
+/*
+|--------------------------------------------------------------------------
+| Functions
+|--------------------------------------------------------------------------
 |
 | While Pest is very powerful out-of-the-box, you may have some testing code specific to your
 | project that you don't want to repeat in every file. Here you can also expose helpers as

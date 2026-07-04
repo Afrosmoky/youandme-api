@@ -10,7 +10,7 @@ test('authenticated user can start a session with a category', function (): void
     $category = Category::factory()->create(['slug' => 'na_poznanie', 'name' => 'Na poznanie']);
     Question::factory()->count(5)->create(['category_id' => $category->id]);
 
-    Sanctum::actingAs(User::factory()->create());
+    Sanctum::actingAs(createUserWithCouple());
 
     $response = $this->postJson('/api/v1/sessions/start', ['category_slug' => 'na_poznanie']);
 
@@ -26,7 +26,7 @@ test('authenticated user can start a session with a category', function (): void
 test('authenticated user can start a session in mix mode', function (): void {
     Question::factory()->count(5)->create();
 
-    Sanctum::actingAs(User::factory()->create());
+    Sanctum::actingAs(createUserWithCouple());
 
     $this->postJson('/api/v1/sessions/start', ['category_slug' => null])
         ->assertCreated()
@@ -35,7 +35,7 @@ test('authenticated user can start a session in mix mode', function (): void {
 
 test('starting a session does not expose internal remaining_ids', function (): void {
     Question::factory()->count(3)->create();
-    Sanctum::actingAs(User::factory()->create());
+    Sanctum::actingAs(createUserWithCouple());
 
     $response = $this->postJson('/api/v1/sessions/start', ['category_slug' => null]);
 
@@ -45,7 +45,7 @@ test('starting a session does not expose internal remaining_ids', function (): v
 
 test('returns 409 with the current session when one is already active', function (): void {
     Question::factory()->count(5)->create();
-    Sanctum::actingAs(User::factory()->create());
+    Sanctum::actingAs(createUserWithCouple());
 
     $first = $this->postJson('/api/v1/sessions/start', ['category_slug' => null])->assertCreated();
 
@@ -60,8 +60,8 @@ test('returns 422 when the category pool is exhausted', function (): void {
     $category = Category::factory()->create(['slug' => 'intymnosc', 'name' => 'Intymność']);
     $questions = Question::factory()->count(3)->create(['category_id' => $category->id]);
 
-    $user = User::factory()->create();
-    $user->activeCouple->seenQuestions()->attach(
+    $user = createUserWithCouple();
+    activeCoupleOf($user)->seenQuestions()->attach(
         $questions->mapWithKeys(fn ($q) => [$q->id => ['seen_at' => now()]])->all()
     );
     Sanctum::actingAs($user);
@@ -72,7 +72,7 @@ test('returns 422 when the category pool is exhausted', function (): void {
 });
 
 test('returns 422 when the category does not exist', function (): void {
-    Sanctum::actingAs(User::factory()->create());
+    Sanctum::actingAs(createUserWithCouple());
 
     $this->postJson('/api/v1/sessions/start', ['category_slug' => 'nieistnieje'])
         ->assertStatus(422)
