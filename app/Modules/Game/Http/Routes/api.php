@@ -3,6 +3,7 @@
 use App\Modules\Game\Http\Controllers\DailyCardController;
 use App\Modules\Game\Http\Controllers\QuestionController;
 use App\Modules\Game\Http\Controllers\SessionController;
+use App\Modules\Game\Http\Controllers\WeeklyRitualController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,4 +23,8 @@ Route::prefix('v1')->middleware('auth:sanctum')->group(function (): void {
     // Daily card read (aggregate: question + streak state). The answer save lives
     // in the app layer (peer-combines memory + couple).
     Route::get('daily-card', [DailyCardController::class, 'show']);
+
+    // Weekly ritual read (aggregate: current ritual + "day X of 7"). Assignment is
+    // the Sunday cron; a fresh couple is assigned lazily on first read.
+    Route::get('weekly-ritual', [WeeklyRitualController::class, 'show']);
 });

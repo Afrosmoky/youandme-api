@@ -2,6 +2,7 @@
 
 namespace App\Modules\Game;
 
+use App\Modules\Game\Console\Commands\AssignWeeklyRitualsCommand;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 
@@ -9,7 +10,9 @@ class GameServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
-        //
+        $this->commands([
+            AssignWeeklyRitualsCommand::class,
+        ]);
     }
 
     public function boot(): void

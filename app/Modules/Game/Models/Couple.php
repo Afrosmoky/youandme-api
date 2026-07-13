@@ -2,8 +2,8 @@
 
 namespace App\Modules\Game\Models;
 
-use App\Modules\Memories\Models\Memory;
 use App\Modules\Catalog\Models\Question;
+use App\Modules\Memories\Models\Memory;
 use Database\Factories\CoupleFactory;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -95,6 +95,14 @@ class Couple extends Model
     public function gameSessions(): HasMany
     {
         return $this->hasMany(GameSession::class);
+    }
+
+    /**
+     * @return HasMany<CoupleWeeklyRitual, $this>
+     */
+    public function weeklyRituals(): HasMany
+    {
+        return $this->hasMany(CoupleWeeklyRitual::class);
     }
 
     /**
