@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Modules\Catalog\Database\Seeders\CategorySeeder;
+use App\Modules\Catalog\Database\Seeders\DailyQuestionSeeder;
 use App\Modules\Catalog\Database\Seeders\QuestionSeeder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -16,5 +17,6 @@ class DatabaseSeeder extends Seeder
         // Categories first: questions FK -> categories and the seeder resolves slugs.
         $this->call(CategorySeeder::class);
         $this->call(QuestionSeeder::class);
+        $this->call(DailyQuestionSeeder::class);
     }
 }

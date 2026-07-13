@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\V1\AuthController;
+use App\Http\Controllers\Api\V1\DailyCardController;
 use App\Http\Controllers\Api\V1\MemoryController;
 use App\Http\Controllers\Api\V1\ProfileController;
 use App\Http\Controllers\Api\V1\SocialAuthController;
@@ -29,5 +30,9 @@ Route::prefix('v1')->group(function (): void {
         // Session-answer save (peer-combines memory + session). GET /memories
         // (a pure list) is registered by the Memories module.
         Route::post('memories', [MemoryController::class, 'store']);
+
+        // Daily-card answer (peer-combines memory + couple/streak). GET /daily-card
+        // (a Game aggregate) is registered by the Game module.
+        Route::post('daily-card/answer', [DailyCardController::class, 'answer']);
     });
 });
