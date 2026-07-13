@@ -10,6 +10,10 @@ Artisan::command('inspire', function () {
 })->purpose('Display an inspiring quote');
 
 // Weekly ritual assignment — the project's first scheduled task. One global
-// (UTC) run on Sunday evening; the command is idempotent. bootstrap/app.php
-// delegates scheduling here (withRouting: commands), so no global-config change.
-Schedule::command('rituals:assign-weekly')->weeklyOn(CarbonInterface::SUNDAY, '18:00');
+// (UTC) run early Sunday; the command is idempotent. bootstrap/app.php delegates
+// scheduling here (withRouting: commands), so no global-config change.
+//
+// 00:30 UTC (not Sunday evening) so the assignment lands before the mobile
+// client's local Sunday-evening ritual push fires in any timezone — the
+// earliest that push can occur is 05:00 UTC (UTC+14: Sunday 19:00 local).
+Schedule::command('rituals:assign-weekly')->weeklyOn(CarbonInterface::SUNDAY, '00:30');
