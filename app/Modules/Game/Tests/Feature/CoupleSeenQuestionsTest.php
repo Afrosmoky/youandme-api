@@ -1,7 +1,7 @@
 <?php
 
-use App\Modules\Game\Models\Couple;
 use App\Modules\Catalog\Models\Question;
+use App\Modules\Game\Models\Couple;
 use Illuminate\Database\UniqueConstraintViolationException;
 
 test('a couple can mark a question as seen via the pivot', function (): void {
@@ -12,7 +12,9 @@ test('a couple can mark a question as seen via the pivot', function (): void {
 
     expect($couple->seenQuestions()->count())->toBe(1);
     expect($couple->seenQuestions->contains($question))->toBeTrue();
-    expect($question->seenByCouples->contains($couple))->toBeTrue();
+    // Re-read from the DB, from the Game side of the boundary — the pivot owns the
+    // couple_question_seen relation; Catalog's Question does not point back at Couple.
+    expect($couple->fresh()->seenQuestions->contains($question))->toBeTrue();
 });
 
 test('the composite primary key prevents duplicate seen rows', function (): void {
