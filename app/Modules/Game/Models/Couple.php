@@ -28,6 +28,7 @@ class Couple extends Model
         'streak_current' => 0,
         'streak_longest' => 0,
         'daily_push_hour' => 20,
+        'card_balance' => 0,
     ];
 
     /** @var list<string> */
@@ -45,6 +46,7 @@ class Couple extends Model
         'streak_current' => 'integer',
         'streak_longest' => 'integer',
         'daily_push_hour' => 'integer',
+        'card_balance' => 'integer',
     ];
 
     /**
