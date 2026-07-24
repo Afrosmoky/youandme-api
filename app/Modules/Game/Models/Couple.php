@@ -47,6 +47,7 @@ class Couple extends Model
         'streak_longest' => 'integer',
         'daily_push_hour' => 'integer',
         'card_balance' => 'integer',
+        'share_reward_claimed_at' => 'datetime',
     ];
 
     /**
