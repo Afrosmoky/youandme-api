@@ -44,6 +44,7 @@ final class GetDailyCardForCoupleQuery
 
         return new DailyCardData(
             question: $question,
+            liked: IsQuestionLikedByCoupleQuery::run($couple, $questionId),
             answeredToday: $state === DailyStreakState::AnsweredToday,
             streakCurrent: $card->effectiveStreak($couple->streak_current, $state),
             streakLongest: $couple->streak_longest,

@@ -6,6 +6,7 @@ use App\Modules\Catalog\Data\QuestionData;
 use App\Modules\Game\Http\Resources\SessionResource;
 use App\Modules\Game\Models\Couple;
 use App\Modules\Game\Queries\GetNextQuestionInSessionQuery;
+use App\Modules\Game\Queries\IsQuestionLikedByCoupleQuery;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -52,19 +53,24 @@ final class QuestionController
             abort(Response::HTTP_INTERNAL_SERVER_ERROR, 'Pytanie z puli nie istnieje, zgłoś bug.');
         }
 
+        // The served card's internal id is already in the pool — no ulid
+        // resolution needed to check the like state (single PK lookup, no N+1).
+        $liked = IsQuestionLikedByCoupleQuery::run($couple, (int) $remainingIds[$currentIndex]);
+
         return response()->json([
-            'question' => $this->questionPayload($question),
+            'question' => $this->questionPayload($question, $liked),
             'session' => new SessionResource($session),
         ]);
     }
 
     /**
      * Reproduce the Catalog QuestionResource shape from QuestionData (byte-1:1
-     * with P3) — category trimmed to slug + name.
+     * with P3) — category trimmed to slug + name — plus the couple's like state
+     * (added additively; liked is a Game concern, not part of QuestionData).
      *
      * @return array<string, mixed>
      */
-    private function questionPayload(QuestionData $question): array
+    private function questionPayload(QuestionData $question, bool $liked): array
     {
         return [
             'ulid' => $question->ulid,
@@ -75,6 +81,7 @@ final class QuestionController
                 'name' => $question->category->name,
             ] : null,
             'tags' => $question->tags,
+            'liked' => $liked,
         ];
     }
 }

@@ -117,4 +117,17 @@ class Couple extends Model
         return $this->belongsToMany(Question::class, 'couple_question_seen')
             ->withPivot('seen_at');
     }
+
+    /**
+     * Questions this couple has liked — intentional hearts (couple_question_likes
+     * pivot, no Eloquent model). A disjoint relation from seenQuestions: liking a
+     * question does not mark it seen and vice versa.
+     *
+     * @return BelongsToMany<Question, $this>
+     */
+    public function likedQuestions(): BelongsToMany
+    {
+        return $this->belongsToMany(Question::class, 'couple_question_likes')
+            ->withPivot('liked_at');
+    }
 }

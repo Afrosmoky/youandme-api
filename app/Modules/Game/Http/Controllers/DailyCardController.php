@@ -28,6 +28,7 @@ final class DailyCardController
 
         return response()->json([
             'question' => $this->questionPayload($card->question),
+            'liked' => $card->liked,
             'answered_today' => $card->answeredToday,
             'streak_current' => $card->streakCurrent,
             'streak_longest' => $card->streakLongest,

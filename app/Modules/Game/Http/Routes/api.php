@@ -2,6 +2,7 @@
 
 use App\Modules\Game\Http\Controllers\DailyCardController;
 use App\Modules\Game\Http\Controllers\QuestionController;
+use App\Modules\Game\Http\Controllers\QuestionLikeController;
 use App\Modules\Game\Http\Controllers\SessionController;
 use App\Modules\Game\Http\Controllers\WeeklyRitualController;
 use Illuminate\Support\Facades\Route;
@@ -19,6 +20,12 @@ Route::prefix('v1')->middleware('auth:sanctum')->group(function (): void {
     Route::post('sessions/{session:ulid}/skip-current', [SessionController::class, 'skipCurrent']);
 
     Route::get('questions/next', [QuestionController::class, 'next']);
+
+    // Question likes (toggle via two REST verbs). Question addressed by ulid as a
+    // plain string param — resolved via Catalog Query in the Action, not by
+    // route-model binding, so Game never Eloquent-loads Question.
+    Route::post('questions/{questionUlid}/like', [QuestionLikeController::class, 'store']);
+    Route::delete('questions/{questionUlid}/like', [QuestionLikeController::class, 'destroy']);
 
     // Daily card read (aggregate: question + streak state). The answer save lives
     // in the app layer (peer-combines memory + couple).
