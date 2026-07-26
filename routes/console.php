@@ -17,3 +17,9 @@ Artisan::command('inspire', function () {
 // client's local Sunday-evening ritual push fires in any timezone — the
 // earliest that push can occur is 05:00 UTC (UTC+14: Sunday 19:00 local).
 Schedule::command('rituals:assign-weekly')->weeklyOn(CarbonInterface::SUNDAY, '00:30');
+
+// Ad-reward counters are daily buckets — anything older than a week is dead
+// weight (each day's cap is independent). Pruning is what keeps the "bucket, not
+// log" choice bounded. 03:15 UTC daily: off-hours everywhere that matters and
+// clear of the Sunday 00:30 ritual run.
+Schedule::command('rewards:prune-ad-counters')->dailyAt('03:15');

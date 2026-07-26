@@ -2,6 +2,7 @@
 
 namespace App\Modules\Rewards;
 
+use App\Modules\Rewards\Console\Commands\PruneAdRewardCountersCommand;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 
@@ -9,7 +10,9 @@ class RewardsServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
-        //
+        $this->commands([
+            PruneAdRewardCountersCommand::class,
+        ]);
     }
 
     public function boot(): void
