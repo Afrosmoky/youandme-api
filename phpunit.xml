@@ -23,6 +23,9 @@
         <testsuite name="Memories">
             <directory>app/Modules/Memories/Tests</directory>
         </testsuite>
+        <testsuite name="Rewards">
+            <directory>app/Modules/Rewards/Tests</directory>
+        </testsuite>
     </testsuites>
     <source>
         <include>

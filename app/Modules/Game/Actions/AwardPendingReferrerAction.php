@@ -4,6 +4,7 @@ namespace App\Modules\Game\Actions;
 
 use App\Modules\Game\Models\Couple;
 use App\Modules\Game\Models\Referral;
+use App\Modules\Rewards\Actions\GrantCreditsAction;
 use Lorisleiva\Actions\Concerns\AsAction;
 
 /**
@@ -52,6 +53,6 @@ final class AwardPendingReferrerAction
             return;
         }
 
-        GrantCardsAction::run($couple, self::REFERRAL_BONUS);
+        GrantCreditsAction::run($couple->id, self::REFERRAL_BONUS);
     }
 }

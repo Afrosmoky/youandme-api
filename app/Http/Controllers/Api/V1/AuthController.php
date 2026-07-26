@@ -4,10 +4,10 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Requests\RegisterRequest;
 use App\Modules\Game\Actions\CreateCoupleForUserAction;
-use App\Modules\Game\Actions\GrantCardsAction;
 use App\Modules\Game\Actions\RecordReferralAction;
 use App\Modules\Game\Http\Resources\CoupleResource;
 use App\Modules\Game\Models\Couple;
+use App\Modules\Rewards\Actions\GrantCreditsAction;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
@@ -48,7 +48,7 @@ final class AuthController
                 $referrerId = GetUserIdByNicknameQuery::run($referrerNickname);
                 if ($referrerId !== null) {
                     RecordReferralAction::run($referrerId, $user->id);
-                    GrantCardsAction::run($couple, self::REFERRAL_BONUS);
+                    GrantCreditsAction::run($couple->id, self::REFERRAL_BONUS);
                 }
             }
 

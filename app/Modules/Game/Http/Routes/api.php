@@ -4,7 +4,6 @@ use App\Modules\Game\Http\Controllers\DailyCardController;
 use App\Modules\Game\Http\Controllers\QuestionController;
 use App\Modules\Game\Http\Controllers\QuestionLikeController;
 use App\Modules\Game\Http\Controllers\SessionController;
-use App\Modules\Game\Http\Controllers\ShareRewardController;
 use App\Modules\Game\Http\Controllers\WeeklyRitualController;
 use Illuminate\Support\Facades\Route;
 
@@ -35,8 +34,4 @@ Route::prefix('v1')->middleware('auth:sanctum')->group(function (): void {
     // Weekly ritual read (aggregate: current ritual + "day X of 7"). Assignment is
     // the Sunday cron; a fresh couple is assigned lazily on first read.
     Route::get('weekly-ritual', [WeeklyRitualController::class, 'show']);
-
-    // One-time share reward (rewards the gesture, not a verified share).
-    // Idempotent — always 200 {claimed:true}; the grant happens once.
-    Route::post('share-reward', [ShareRewardController::class, 'store']);
 });

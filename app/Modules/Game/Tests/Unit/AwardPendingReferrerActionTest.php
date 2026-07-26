@@ -11,7 +11,7 @@ test('AwardPendingReferrerAction pays the referrer +5 and stamps referrer_awarde
 
     AwardPendingReferrerAction::run($referred->id);
 
-    expect(activeCoupleOf($referrer)->card_balance)->toBe(5);
+    expect(creditsOfCouple(activeCoupleOf($referrer)->id))->toBe(5);
     expect(Referral::where('referred_user_id', $referred->id)->firstOrFail()->referrer_awarded_at)->not->toBeNull();
 });
 
@@ -23,7 +23,7 @@ test('AwardPendingReferrerAction is idempotent — a second call does not pay ag
     AwardPendingReferrerAction::run($referred->id);
     AwardPendingReferrerAction::run($referred->id);
 
-    expect(activeCoupleOf($referrer)->card_balance)->toBe(5);
+    expect(creditsOfCouple(activeCoupleOf($referrer)->id))->toBe(5);
 });
 
 test('AwardPendingReferrerAction is a no-op when the user has no referral', function (): void {
@@ -31,5 +31,5 @@ test('AwardPendingReferrerAction is a no-op when the user has no referral', func
 
     AwardPendingReferrerAction::run($user->id);
 
-    expect(activeCoupleOf($user)->card_balance)->toBe(0);
+    expect(creditsOfCouple(activeCoupleOf($user)->id))->toBe(0);
 });

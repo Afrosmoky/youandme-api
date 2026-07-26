@@ -1,7 +1,10 @@
 <?php
 
+use App\Modules\Game\Models\Couple;
+use App\Modules\Rewards\Models\CoupleReward;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+use Youandme\Auth\Models\User;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,6 +43,10 @@ pest()->extend(TestCase::class)
     ->use(RefreshDatabase::class)
     ->in(__DIR__.'/../app/Modules/Memories/Tests');
 
+pest()->extend(TestCase::class)
+    ->use(RefreshDatabase::class)
+    ->in(__DIR__.'/../app/Modules/Rewards/Tests');
+
 /*
 |--------------------------------------------------------------------------
 | Expectations
@@ -68,10 +75,10 @@ expect()->extend('toBeOne', function () {
  *
  * @param  array<string, mixed>  $attributes
  */
-function createUserWithCouple(array $attributes = []): \Youandme\Auth\Models\User
+function createUserWithCouple(array $attributes = []): User
 {
-    $user = \Youandme\Auth\Models\User::factory()->create($attributes);
-    $couple = \App\Modules\Game\Models\Couple::factory()->create(['user_a_id' => $user->id]);
+    $user = User::factory()->create($attributes);
+    $couple = Couple::factory()->create(['user_a_id' => $user->id]);
     $user->active_couple_id = $couple->id;
     $user->save();
 
@@ -82,9 +89,20 @@ function createUserWithCouple(array $attributes = []): \Youandme\Auth\Models\Use
  * Resolve a user's active couple (the User model no longer has the relation —
  * couple resolution lives in Game/app).
  */
-function activeCoupleOf(\Youandme\Auth\Models\User $user): \App\Modules\Game\Models\Couple
+function activeCoupleOf(User $user): Couple
 {
-    return \App\Modules\Game\Models\Couple::findOrFail($user->active_couple_id);
+    return Couple::findOrFail($user->active_couple_id);
+}
+
+/**
+ * Read a couple's earned credits (Rewards). The reward account row is created
+ * lazily on the first grant, so "no row" means "nothing granted yet" — 0.
+ */
+function creditsOfCouple(int $coupleId): int
+{
+    return (int) CoupleReward::query()
+        ->where('couple_id', $coupleId)
+        ->value('credits');
 }
 
 /*
