@@ -34,5 +34,6 @@ class CoupleReward extends Model
     protected $casts = [
         'credits' => 'integer',
         'share_reward_claimed_at' => 'datetime',
+        'rating_reward_claimed_at' => 'datetime',
     ];
 }
