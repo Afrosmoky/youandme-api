@@ -31,6 +31,17 @@ return [
         'client_id' => env('APPLE_CLIENT_ID'),
     ],
 
+    // Firebase Cloud Messaging (server push, P7). One setting: the path to the
+    // service account JSON downloaded from the Firebase console (project_id,
+    // client_email and private_key are read out of it). A path rather than three
+    // env values keeps a multi-line PEM out of .env entirely — the file is
+    // gitignored under storage/. Relative paths resolve from the project root.
+    //
+    // Unset or unreadable means "no pushes": logged and skipped, never fatal.
+    'fcm' => [
+        'credentials' => env('FCM_CREDENTIALS'),
+    ],
+
     'ses' => [
         'key' => env('AWS_ACCESS_KEY_ID'),
         'secret' => env('AWS_SECRET_ACCESS_KEY'),

@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Listeners\SendAdRewardPushOnGrant;
 use App\Listeners\SendPasswordResetLinkOnRequest;
 use App\Listeners\SendVerificationEmailOnVerificationRequested;
+use App\Modules\Rewards\Events\AdRewardGranted;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as FrameworkEventServiceProvider;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
@@ -32,5 +34,9 @@ class ModuleEventServiceProvider extends ServiceProvider
     {
         Event::listen(EmailVerificationRequested::class, SendVerificationEmailOnVerificationRequested::class);
         Event::listen(PasswordResetRequested::class, SendPasswordResetLinkOnRequest::class);
+
+        // Rewards → Notifications (P7): with SSV the server, not the client,
+        // learns about an ad reward, so the user is told by push.
+        Event::listen(AdRewardGranted::class, SendAdRewardPushOnGrant::class);
     }
 }

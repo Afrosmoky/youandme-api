@@ -2,6 +2,8 @@
 
 namespace App\Modules\Rewards\Actions;
 
+use App\Modules\Rewards\Data\AdRewardGrantedData;
+use App\Modules\Rewards\Events\AdRewardGranted;
 use App\Modules\Rewards\Models\AdRewardNonce;
 use App\Modules\Rewards\Models\CoupleDailyAdReward;
 use App\Modules\Rewards\Support\AdRewardOutcome;
@@ -55,7 +57,7 @@ final class GrantVerifiedAdRewardAction
             ]);
         }
 
-        return DB::transaction(function () use ($row, $coupleId, $day, $deckComplete): AdRewardOutcome {
+        $outcome = DB::transaction(function () use ($row, $coupleId, $day, $deckComplete): AdRewardOutcome {
             $burned = AdRewardNonce::query()
                 ->whereKey($row->id)
                 ->whereNull('consumed_at')
@@ -88,5 +90,17 @@ final class GrantVerifiedAdRewardAction
 
             return AdRewardOutcome::Granted;
         });
+
+        // After the commit, never inside it (the P3 rule): a listener must not see
+        // — or worse, be rolled back with — a grant that never landed.
+        if ($outcome === AdRewardOutcome::Granted) {
+            AdRewardGranted::dispatch(new AdRewardGrantedData(
+                coupleId: $coupleId,
+                userId: (int) $row->user_id,
+                amount: AdRewardPolicy::CREDITS_PER_AD,
+            ));
+        }
+
+        return $outcome;
     }
 }
