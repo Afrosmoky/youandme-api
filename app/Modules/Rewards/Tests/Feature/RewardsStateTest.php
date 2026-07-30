@@ -1,6 +1,9 @@
 <?php
 
 use App\Modules\Rewards\Actions\GrantCreditsAction;
+use App\Modules\Rewards\Actions\GrantVerifiedAdRewardAction;
+use App\Modules\Rewards\Actions\IssueAdRewardNonceAction;
+use Carbon\CarbonImmutable;
 use Laravel\Sanctum\Sanctum;
 use Youandme\Auth\Models\User;
 
@@ -38,15 +41,24 @@ test('the balance reflects granted credits and claimed one-time rewards', functi
         ->assertJsonPath('credits', fn (int $credits): bool => $credits > 7);
 });
 
-test('watching an ad lowers the remaining ad budget for today', function (): void {
+test('a verified ad lowers the remaining ad budget for today', function (): void {
     $user = createUserWithCouple();
-    Sanctum::actingAs($user);
+    $coupleId = activeCoupleOf($user)->id;
 
-    $this->postJson('/api/v1/ad-reward')->assertOk();
+    // The grant now comes from the SSV webhook, so the budget is driven from the
+    // verified path rather than a client call (P7 slice 2).
+    GrantVerifiedAdRewardAction::run(
+        IssueAdRewardNonceAction::run($coupleId, $user->id),
+        CarbonImmutable::now($user->timezone)->startOfDay(),
+        deckComplete: false,
+    );
+
+    Sanctum::actingAs($user);
 
     $this->getJson('/api/v1/rewards')
         ->assertOk()
-        ->assertJsonPath('ads.remaining_today', 4);
+        ->assertJsonPath('ads.remaining_today', 4)
+        ->assertJsonPath('credits', 1);
 });
 
 test('the balance requires a token', function (): void {

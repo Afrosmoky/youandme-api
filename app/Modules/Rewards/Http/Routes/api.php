@@ -1,6 +1,6 @@
 <?php
 
-use App\Modules\Rewards\Http\Controllers\AdRewardController;
+use App\Modules\Rewards\Http\Controllers\AdRewardNonceController;
 use App\Modules\Rewards\Http\Controllers\RatingRewardController;
 use App\Modules\Rewards\Http\Controllers\RewardsController;
 use App\Modules\Rewards\Http\Controllers\ShareRewardController;
@@ -21,9 +21,14 @@ Route::prefix('v1')->middleware('auth:sanctum')->group(function (): void {
     // Idempotent — always 200 {claimed:true}; the grant happens once.
     Route::post('share-reward', [ShareRewardController::class, 'store']);
 
-    // Rewarded ad — repeatable, capped per local day. Always 200: hitting the cap
-    // is a business outcome (granted:false), not an error.
-    Route::post('ad-reward', [AdRewardController::class, 'store']);
+    // Rewarded ad, step 1 of 2: authorize one view. The credit itself arrives
+    // through the SSV webhook (app layer) — the P6 endpoint that granted it on the
+    // client's word is gone, deliberately and without a deprecation window.
+    // Throttled per IP: unlike the other reward endpoints this one INSERTS a row
+    // per call, so an unthrottled client could pad the table indefinitely. 20/min
+    // is far above honest use (five ads a day is the cap) and far below spam.
+    Route::post('ad-reward/nonce', [AdRewardNonceController::class, 'store'])
+        ->middleware('throttle:20,1');
 
     // One-time app-rating reward (rewards asking for the prompt — In-App Review
     // reports nothing back). Idempotent, like the share reward.

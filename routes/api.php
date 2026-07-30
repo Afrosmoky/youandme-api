@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\V1\AdMobSsvWebhookController;
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\DailyCardController;
 use App\Http\Controllers\Api\V1\MemoryController;
@@ -18,6 +19,15 @@ Route::prefix('v1')->group(function (): void {
         ->middleware('throttle:10,1');
     Route::post('auth/login', [AuthController::class, 'login'])
         ->middleware('throttle:6,1');
+
+    // AdMob server-side verification. Unauthenticated (Google holds no token) and
+    // a GET, because that is how the network delivers it; trust comes from the
+    // signature plus our own nonce. In the app layer, not Rewards: granting needs
+    // Game's "deck already complete?" answer, which Rewards must not ask for
+    // itself. Throttled per IP as a crude flood guard — every rejection is cheap
+    // and logged.
+    Route::get('webhooks/admob-ssv', [AdMobSsvWebhookController::class, 'handle'])
+        ->middleware('throttle:120,1');
 
     Route::post('auth/google', [SocialAuthController::class, 'google'])
         ->middleware('throttle:10,1');

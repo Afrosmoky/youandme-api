@@ -23,3 +23,8 @@ Schedule::command('rituals:assign-weekly')->weeklyOn(CarbonInterface::SUNDAY, '0
 // log" choice bounded. 03:15 UTC daily: off-hours everywhere that matters and
 // clear of the Sunday 00:30 ritual run.
 Schedule::command('rewards:prune-ad-counters')->dailyAt('03:15');
+
+// SSV nonces are even shorter-lived than the buckets — issued seconds before
+// their callback. Same retention (a week), five minutes later so the two prunes
+// do not overlap.
+Schedule::command('rewards:prune-ad-nonces')->dailyAt('03:20');

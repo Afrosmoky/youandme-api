@@ -2,8 +2,11 @@
 
 use App\Modules\Game\Actions\RecordReferralAction;
 use App\Modules\Game\Models\Referral;
+use App\Modules\Rewards\Actions\GrantVerifiedAdRewardAction;
+use App\Modules\Rewards\Actions\IssueAdRewardNonceAction;
 use App\Modules\Rewards\Models\CoupleDailyAdReward;
 use App\Modules\Rewards\Models\CoupleReward;
+use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\DB;
 use Laravel\Sanctum\Sanctum;
 use Youandme\Auth\Models\User;
@@ -83,7 +86,13 @@ test('rating, share, ad and referral bonuses sum on credits', function (): void 
 
     $this->postJson('/api/v1/share-reward')->assertOk();  // +5
     $this->postJson('/api/v1/rating-reward')->assertOk(); // +5
-    $this->postJson('/api/v1/ad-reward')->assertOk();     // +1
+
+    // The ad credit now arrives through the verified SSV path (P7 slice 2).
+    GrantVerifiedAdRewardAction::run(                     // +1
+        IssueAdRewardNonceAction::run($coupleId, $user->id),
+        CarbonImmutable::now($user->timezone)->startOfDay(),
+        deckComplete: false,
+    );
 
     expect(creditsOfCouple($coupleId))->toBe(11);
 });
