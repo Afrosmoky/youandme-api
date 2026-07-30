@@ -26,6 +26,9 @@
         <testsuite name="Rewards">
             <directory>app/Modules/Rewards/Tests</directory>
         </testsuite>
+        <testsuite name="Premium">
+            <directory>app/Modules/Premium/Tests</directory>
+        </testsuite>
     </testsuites>
     <source>
         <include>

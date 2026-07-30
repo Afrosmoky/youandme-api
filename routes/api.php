@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\V1\DailyCardController;
 use App\Http\Controllers\Api\V1\MemoryController;
 use App\Http\Controllers\Api\V1\ProfileController;
 use App\Http\Controllers\Api\V1\QuestionUnlockController;
+use App\Http\Controllers\Api\V1\RedeemController;
 use App\Http\Controllers\Api\V1\SocialAuthController;
 use Illuminate\Support\Facades\Route;
 
@@ -50,5 +51,11 @@ Route::prefix('v1')->group(function (): void {
         // in one transaction. GET /deck (Game) and GET /rewards (Rewards) are
         // registered by their own modules — only the write spans both.
         Route::post('questions/{questionUlid}/unlock', [QuestionUnlockController::class, 'store']);
+
+        // Promo code: validation + register (Premium) and the deck unlock (Game)
+        // in one transaction. Throttled — a code is guessable material, and this
+        // is the only endpoint that tells you whether a guess was right.
+        Route::post('redeem', [RedeemController::class, 'store'])
+            ->middleware('throttle:10,1');
     });
 });
