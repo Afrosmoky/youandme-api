@@ -14,6 +14,10 @@ use Lorisleiva\Actions\Concerns\AsAction;
  * question ids (Game's own couple_question_seen) and asks Catalog for a random
  * pool of unseen session questions. Returns null when the pool is empty (caller
  * turns that into a 422). The caller guards against an already-active session.
+ *
+ * P7: the couple's unlocked ids (Game's own couple_unlocked_questions) go in as
+ * well — the pool is free cards plus the locked cards this couple bought. Both
+ * lists are read here and passed as values; Catalog never touches Game's tables.
  */
 final class StartGameSessionAction
 {
@@ -30,7 +34,10 @@ final class StartGameSessionAction
         /** @var list<int> $seenIds */
         $seenIds = $couple->seenQuestions()->pluck('questions.id')->all();
 
-        $poolIds = GetSessionQuestionPoolQuery::run($seenIds, $categorySlug, self::POOL_SIZE);
+        /** @var list<int> $unlockedIds */
+        $unlockedIds = $couple->unlockedQuestions()->pluck('questions.id')->all();
+
+        $poolIds = GetSessionQuestionPoolQuery::run($seenIds, $unlockedIds, $categorySlug, self::POOL_SIZE);
 
         if ($poolIds === []) {
             return null;

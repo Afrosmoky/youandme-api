@@ -22,6 +22,16 @@ class QuestionFactory extends Factory
             'body' => fake()->sentence(8).'?',
             'type' => 'session',
             'locale' => 'pl',
+            'is_locked' => false,
         ];
+    }
+
+    /**
+     * A card from the closed part of the deck (P7) — playable only by a couple
+     * that unlocked it with a credit or a promo code.
+     */
+    public function locked(): static
+    {
+        return $this->state(fn (): array => ['is_locked' => true]);
     }
 }

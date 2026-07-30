@@ -2,6 +2,7 @@
 
 use App\Modules\Rewards\Http\Controllers\AdRewardController;
 use App\Modules\Rewards\Http\Controllers\RatingRewardController;
+use App\Modules\Rewards\Http\Controllers\RewardsController;
 use App\Modules\Rewards\Http\Controllers\ShareRewardController;
 use Illuminate\Support\Facades\Route;
 
@@ -12,6 +13,10 @@ use Illuminate\Support\Facades\Route;
  */
 
 Route::prefix('v1')->middleware('auth:sanctum')->group(function (): void {
+    // Balance + what is still earnable. First read endpoint of the module (P7) —
+    // before that, credits were write-only.
+    Route::get('rewards', [RewardsController::class, 'show']);
+
     // One-time share reward (rewards the gesture, not a verified share).
     // Idempotent — always 200 {claimed:true}; the grant happens once.
     Route::post('share-reward', [ShareRewardController::class, 'store']);

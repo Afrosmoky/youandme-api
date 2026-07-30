@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\DailyCardController;
 use App\Http\Controllers\Api\V1\MemoryController;
 use App\Http\Controllers\Api\V1\ProfileController;
+use App\Http\Controllers\Api\V1\QuestionUnlockController;
 use App\Http\Controllers\Api\V1\SocialAuthController;
 use Illuminate\Support\Facades\Route;
 
@@ -34,5 +35,10 @@ Route::prefix('v1')->group(function (): void {
         // Daily-card answer (peer-combines memory + couple/streak). GET /daily-card
         // (a Game aggregate) is registered by the Game module.
         Route::post('daily-card/answer', [DailyCardController::class, 'answer']);
+
+        // Buy one locked card for a credit: debit (Rewards) + entitlement (Game)
+        // in one transaction. GET /deck (Game) and GET /rewards (Rewards) are
+        // registered by their own modules — only the write spans both.
+        Route::post('questions/{questionUlid}/unlock', [QuestionUnlockController::class, 'store']);
     });
 });

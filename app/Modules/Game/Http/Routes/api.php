@@ -1,6 +1,7 @@
 <?php
 
 use App\Modules\Game\Http\Controllers\DailyCardController;
+use App\Modules\Game\Http\Controllers\DeckController;
 use App\Modules\Game\Http\Controllers\QuestionController;
 use App\Modules\Game\Http\Controllers\QuestionLikeController;
 use App\Modules\Game\Http\Controllers\SessionController;
@@ -30,6 +31,10 @@ Route::prefix('v1')->middleware('auth:sanctum')->group(function (): void {
     // Daily card read (aggregate: question + streak state). The answer save lives
     // in the app layer (peer-combines memory + couple).
     Route::get('daily-card', [DailyCardController::class, 'show']);
+
+    // Closed-deck read: which locked cards this couple owns. The unlock itself
+    // spans Rewards + Game, so it lives in the app layer.
+    Route::get('deck', [DeckController::class, 'show']);
 
     // Weekly ritual read (aggregate: current ritual + "day X of 7"). Assignment is
     // the Sunday cron; a fresh couple is assigned lazily on first read.

@@ -42,7 +42,7 @@ test('respects the category slug filter', function (): void {
     $r2 = Question::factory()->create(['category_id' => $randka->id]);
     Question::factory()->create(['category_id' => $intymnosc->id]);
 
-    $result = GetSessionQuestionPoolQuery::run([], 'randka');
+    $result = GetSessionQuestionPoolQuery::run([], [], 'randka');
 
     expect($result)->toHaveCount(2);
     expect(collect($result)->sort()->values()->all())
@@ -53,5 +53,31 @@ test('respects the limit', function (): void {
     $cat = Category::factory()->create();
     Question::factory()->count(5)->create(['category_id' => $cat->id]);
 
-    expect(GetSessionQuestionPoolQuery::run([], null, 2))->toHaveCount(2);
+    expect(GetSessionQuestionPoolQuery::run([], [], null, 2))->toHaveCount(2);
+});
+
+test('excludes locked questions the couple has not unlocked', function (): void {
+    $cat = Category::factory()->create();
+    $free = Question::factory()->create(['category_id' => $cat->id]);
+    Question::factory()->locked()->create(['category_id' => $cat->id]);
+
+    expect(GetSessionQuestionPoolQuery::run([], []))->toBe([$free->id]);
+});
+
+test('includes a locked question once its id is in the unlocked list', function (): void {
+    $cat = Category::factory()->create();
+    $free = Question::factory()->create(['category_id' => $cat->id]);
+    $locked = Question::factory()->locked()->create(['category_id' => $cat->id]);
+
+    $result = GetSessionQuestionPoolQuery::run([], [$locked->id]);
+
+    expect(collect($result)->sort()->values()->all())
+        ->toBe(collect([$free->id, $locked->id])->sort()->values()->all());
+});
+
+test('an unlocked card that was already seen stays out of the pool', function (): void {
+    $cat = Category::factory()->create();
+    $locked = Question::factory()->locked()->create(['category_id' => $cat->id]);
+
+    expect(GetSessionQuestionPoolQuery::run([$locked->id], [$locked->id]))->toBe([]);
 });

@@ -107,7 +107,7 @@ test('the daily pool never overlaps the session pool', function (): void {
     seedDailyCardDeck();
     Question::factory()->count(5)->create(['type' => 'session']);
 
-    $sessionPool = GetSessionQuestionPoolQuery::run([], null, null);
+    $sessionPool = GetSessionQuestionPoolQuery::run([], [], null, null);
     $dailyIds = Question::where('type', 'daily')->pluck('id')->all();
 
     expect(array_values(array_intersect($sessionPool, $dailyIds)))->toBe([]);

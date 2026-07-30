@@ -13,6 +13,11 @@ use Lorisleiva\Actions\Concerns\AsAction;
  *
  * Module boundary (doc §5): Catalog returns ids, Game picks and resolves. Same
  * precedent as GetSessionQuestionPoolQuery.
+ *
+ * The 60/40 closed-deck split (P7) applies to the SESSION deck; daily questions
+ * are a separate pool and stay free. The is_locked filter here is purely
+ * defensive — it costs nothing and keeps a mis-flipped seed row out of the free
+ * daily card (canon §1, note).
  */
 final class GetDailyQuestionPoolQuery
 {
@@ -27,6 +32,7 @@ final class GetDailyQuestionPoolQuery
         $ids = Question::query()
             ->where('type', 'daily')
             ->where('locale', 'pl')
+            ->where('is_locked', false)
             ->orderBy('id')
             ->pluck('id')
             ->all();

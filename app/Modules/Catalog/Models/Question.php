@@ -13,6 +13,16 @@ class Question extends Model
     /** @use HasFactory<QuestionFactory> */
     use HasFactory, HasUlids;
 
+    /**
+     * DB defaults are not loaded into the model on create(), so is_locked is also
+     * declared here — the deliberate two-places pattern from P1 (see CLAUDE.md).
+     *
+     * @var array<string, bool>
+     */
+    protected $attributes = [
+        'is_locked' => false,
+    ];
+
     /** @var list<string> */
     protected $fillable = [
         'body',
@@ -20,11 +30,13 @@ class Question extends Model
         'locale',
         'category_id',
         'tags',
+        'is_locked',
     ];
 
     /** @var array<string, string> */
     protected $casts = [
         'tags' => 'array',
+        'is_locked' => 'boolean',
     ];
 
     /**

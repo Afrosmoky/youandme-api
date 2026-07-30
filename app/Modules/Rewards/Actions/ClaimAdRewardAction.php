@@ -3,6 +3,7 @@
 namespace App\Modules\Rewards\Actions;
 
 use App\Modules\Rewards\Models\CoupleDailyAdReward;
+use App\Modules\Rewards\Support\AdRewardPolicy;
 use App\Modules\Rewards\Support\AdRewardResult;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\DB;
@@ -29,19 +30,6 @@ use Lorisleiva\Actions\Concerns\AsAction;
  */
 final class ClaimAdRewardAction
 {
-    /**
-     * Credits per watched ad. A product number (placeholder 1, to confirm with
-     * Wiktoria) — not a technical constant.
-     */
-    private const AD_REWARD_CREDITS = 1;
-
-    /**
-     * Rewarded ads per couple per local day. A product number (placeholder 5, to
-     * confirm with Wiktoria) — the whole anti-abuse story in P6, since nothing
-     * verifies the view.
-     */
-    private const AD_REWARD_DAILY_CAP = 5;
-
     use AsAction;
 
     public function handle(int $coupleId, CarbonImmutable $localDate): AdRewardResult
@@ -58,7 +46,7 @@ final class ClaimAdRewardAction
             $claimed = CoupleDailyAdReward::query()
                 ->where('couple_id', $coupleId)
                 ->where('reward_date', $day)
-                ->where('count', '<', self::AD_REWARD_DAILY_CAP)
+                ->where('count', '<', AdRewardPolicy::DAILY_CAP)
                 ->increment('count');
 
             if ($claimed !== 1) {
@@ -67,7 +55,7 @@ final class ClaimAdRewardAction
 
             // In the same transaction as the increment, so a failed grant rolls the
             // counter back — no "counted but not credited" state (share self-heal).
-            GrantCreditsAction::run($coupleId, self::AD_REWARD_CREDITS);
+            GrantCreditsAction::run($coupleId, AdRewardPolicy::CREDITS_PER_AD);
 
             return true;
         });
@@ -79,8 +67,8 @@ final class ClaimAdRewardAction
 
         return new AdRewardResult(
             granted: $granted,
-            creditsAwarded: $granted ? self::AD_REWARD_CREDITS : 0,
-            remainingToday: max(0, self::AD_REWARD_DAILY_CAP - $count),
+            creditsAwarded: $granted ? AdRewardPolicy::CREDITS_PER_AD : 0,
+            remainingToday: max(0, AdRewardPolicy::DAILY_CAP - $count),
         );
     }
 }

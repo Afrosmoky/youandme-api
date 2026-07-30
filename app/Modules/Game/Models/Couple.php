@@ -130,4 +130,18 @@ class Couple extends Model
         return $this->belongsToMany(Question::class, 'couple_question_likes')
             ->withPivot('liked_at');
     }
+
+    /**
+     * Locked questions this couple may play — the entitlement written when a
+     * credit is spent or a promo code is redeemed (couple_unlocked_questions
+     * pivot, no Eloquent model). Disjoint from seenQuestions and likedQuestions:
+     * unlocking says "you may draw this card", not "you have drawn it".
+     *
+     * @return BelongsToMany<Question, $this>
+     */
+    public function unlockedQuestions(): BelongsToMany
+    {
+        return $this->belongsToMany(Question::class, 'couple_unlocked_questions')
+            ->withPivot(['unlocked_at', 'source']);
+    }
 }
