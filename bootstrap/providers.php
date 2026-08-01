@@ -4,6 +4,7 @@ use App\Modules\Catalog\CatalogServiceProvider;
 use App\Modules\Game\GameServiceProvider;
 use App\Modules\Memories\MemoriesServiceProvider;
 use App\Modules\Premium\PremiumServiceProvider;
+use App\Modules\Progress\ProgressServiceProvider;
 use App\Modules\Rewards\RewardsServiceProvider;
 use App\Providers\AppServiceProvider;
 use App\Providers\ModuleEventServiceProvider;
@@ -22,4 +23,5 @@ return [
     MemoriesServiceProvider::class,
     RewardsServiceProvider::class,
     PremiumServiceProvider::class,
+    ProgressServiceProvider::class,
 ];

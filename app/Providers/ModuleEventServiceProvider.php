@@ -2,9 +2,11 @@
 
 namespace App\Providers;
 
+use App\Listeners\CheckMilestonesOnMemoryCreated;
 use App\Listeners\SendAdRewardPushOnGrant;
 use App\Listeners\SendPasswordResetLinkOnRequest;
 use App\Listeners\SendVerificationEmailOnVerificationRequested;
+use App\Modules\Memories\Events\MemoryCreated;
 use App\Modules\Rewards\Events\AdRewardGranted;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as FrameworkEventServiceProvider;
 use Illuminate\Support\Facades\Event;
@@ -38,5 +40,10 @@ class ModuleEventServiceProvider extends ServiceProvider
         // Rewards → Notifications (P7): with SSV the server, not the client,
         // learns about an ad reward, so the user is told by push.
         Event::listen(AdRewardGranted::class, SendAdRewardPushOnGrant::class);
+
+        // Memories → Progress (P8): a played card may advance the progress map.
+        // The first consumer of a DOMAIN event here — unlike the notification
+        // wirings above, both sides are app modules, and neither knows the other.
+        Event::listen(MemoryCreated::class, CheckMilestonesOnMemoryCreated::class);
     }
 }

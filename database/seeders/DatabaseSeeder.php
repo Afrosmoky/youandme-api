@@ -6,6 +6,7 @@ use App\Modules\Catalog\Database\Seeders\CategorySeeder;
 use App\Modules\Catalog\Database\Seeders\DailyQuestionSeeder;
 use App\Modules\Catalog\Database\Seeders\QuestionSeeder;
 use App\Modules\Catalog\Database\Seeders\RitualSeeder;
+use App\Modules\Progress\Database\Seeders\ProgressMilestoneSeeder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -20,5 +21,8 @@ class DatabaseSeeder extends Seeder
         $this->call(QuestionSeeder::class);
         $this->call(DailyQuestionSeeder::class);
         $this->call(RitualSeeder::class);
+        // Progress dictionary: independent of Catalog (a milestone is progress
+        // vocabulary, not content), so the order here does not matter.
+        $this->call(ProgressMilestoneSeeder::class);
     }
 }
