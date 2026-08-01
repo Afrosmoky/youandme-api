@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\DailyCardController;
 use App\Http\Controllers\Api\V1\MemoryController;
 use App\Http\Controllers\Api\V1\ProfileController;
+use App\Http\Controllers\Api\V1\ProgressController;
 use App\Http\Controllers\Api\V1\QuestionUnlockController;
 use App\Http\Controllers\Api\V1\RedeemController;
 use App\Http\Controllers\Api\V1\SocialAuthController;
@@ -57,5 +58,9 @@ Route::prefix('v1')->group(function (): void {
         // is the only endpoint that tells you whether a guess was right.
         Route::post('redeem', [RedeemController::class, 'store'])
             ->middleware('throttle:10,1');
+
+        // Progress map: the card count belongs to Memories, the milestones to
+        // Progress, and neither knows the other — so the app joins them.
+        Route::get('progress', [ProgressController::class, 'show']);
     });
 });
