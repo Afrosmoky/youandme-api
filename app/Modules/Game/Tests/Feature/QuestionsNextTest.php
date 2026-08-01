@@ -1,11 +1,11 @@
 <?php
 
 use App\Modules\Catalog\Models\Category;
-use App\Modules\Game\Models\GameSession;
 use App\Modules\Catalog\Models\Question;
-use Youandme\Auth\Models\User;
+use App\Modules\Game\Models\GameSession;
 use Illuminate\Support\Collection;
 use Laravel\Sanctum\Sanctum;
+use Youandme\Auth\Models\User;
 
 /**
  * @param  array<int, int>|null  $questionIds
@@ -92,7 +92,7 @@ test('next includes session metadata', function (): void {
     $this->getJson('/api/v1/questions/next')
         ->assertOk()
         ->assertJsonStructure([
-            'question' => ['ulid', 'body', 'type', 'category', 'tags'],
+            'question' => ['ulid', 'body', 'type', 'category', 'tags', 'liked', 'is_locked'],
             'session' => ['ulid', 'current_index', 'remaining_count', 'cards_drawn_count', 'cards_saved_count'],
         ])
         ->assertJsonPath('session.remaining_count', 4);

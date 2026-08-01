@@ -29,6 +29,11 @@ test('GET /daily-card returns a daily-type question', function (): void {
     $response->assertJsonPath('question.type', 'daily')
         ->assertJsonPath('question.category', null)
         ->assertJsonPath('answered_today', false);
+
+    // The closed deck is a session-deck concept. The daily card keeps its P4
+    // shape — no badge, nothing to unlock — and the daily pool filters
+    // is_locked=false anyway.
+    expect($response->json('question'))->not->toHaveKey('is_locked');
 });
 
 test('GET /daily-card is deterministic — the same card twice on the same day', function (): void {

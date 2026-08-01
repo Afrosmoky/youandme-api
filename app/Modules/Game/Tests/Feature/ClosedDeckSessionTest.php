@@ -42,6 +42,37 @@ test('an unlocked card joins the pool of the next session', function (): void {
         ->assertJsonPath('session.remaining_count', 2);
 });
 
+test('a card from the closed deck is served with is_locked true', function (): void {
+    $locked = Question::factory()->locked()->create();
+
+    $user = createUserWithCouple();
+    UnlockQuestionForCoupleAction::run(activeCoupleOf($user)->id, $locked->id, UnlockSource::Credits);
+    Sanctum::actingAs($user);
+
+    $this->postJson('/api/v1/sessions/start')->assertCreated();
+
+    // The pool holds free cards plus the ones this couple bought, so is_locked
+    // true on a SERVED card means "unlocked by you" — that is the badge mobile
+    // draws.
+    $this->getJson('/api/v1/questions/next')
+        ->assertOk()
+        ->assertJsonPath('question.ulid', $locked->ulid)
+        ->assertJsonPath('question.is_locked', true);
+});
+
+test('a free card is served with is_locked false', function (): void {
+    $free = Question::factory()->create();
+
+    Sanctum::actingAs(createUserWithCouple());
+
+    $this->postJson('/api/v1/sessions/start')->assertCreated();
+
+    $this->getJson('/api/v1/questions/next')
+        ->assertOk()
+        ->assertJsonPath('question.ulid', $free->ulid)
+        ->assertJsonPath('question.is_locked', false);
+});
+
 test('a couple with nothing unlocked and a fully locked deck cannot start a session', function (): void {
     $category = Category::factory()->create(['slug' => 'randka']);
     Question::factory()->locked()->count(2)->create(['category_id' => $category->id]);

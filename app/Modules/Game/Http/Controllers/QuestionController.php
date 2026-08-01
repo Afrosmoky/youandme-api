@@ -68,6 +68,11 @@ final class QuestionController
      * with P3) — category trimmed to slug + name — plus the couple's like state
      * (added additively; liked is a Game concern, not part of QuestionData).
      *
+     * is_locked rides along for the client's "unlocked" badge. Inside a session it
+     * reads as "this couple paid for this card": the pool only ever contains free
+     * cards plus the ones they unlocked, so a locked card being served IS an
+     * unlocked one (GetSessionQuestionPoolQuery).
+     *
      * @return array<string, mixed>
      */
     private function questionPayload(QuestionData $question, bool $liked): array
@@ -82,6 +87,7 @@ final class QuestionController
             ] : null,
             'tags' => $question->tags,
             'liked' => $liked,
+            'is_locked' => $question->isLocked,
         ];
     }
 }
