@@ -3,8 +3,8 @@
 namespace Database\Factories;
 
 use App\Modules\Game\Models\Couple;
-use Youandme\Auth\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Youandme\Auth\Models\User;
 
 /**
  * @extends Factory<Couple>

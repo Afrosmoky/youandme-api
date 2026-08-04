@@ -1,11 +1,11 @@
 <?php
 
-use Youandme\Auth\Events\UserRegistered;
 use App\Modules\Game\Models\Couple;
+use Illuminate\Support\Facades\Event;
+use Youandme\Auth\Events\UserRegistered;
 use Youandme\Auth\Models\User;
 use Youandme\Auth\Support\GoogleTokenVerifierInterface;
 use Youandme\Auth\Support\SocialTokenException;
-use Illuminate\Support\Facades\Event;
 
 test('google sign-in creates a new user and returns 201', function (): void {
     Event::fake([UserRegistered::class]);

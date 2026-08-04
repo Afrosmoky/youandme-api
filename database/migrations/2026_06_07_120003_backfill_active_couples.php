@@ -1,9 +1,9 @@
 <?php
 
 use App\Modules\Game\Models\Couple;
-use Youandme\Auth\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\DB;
+use Youandme\Auth\Models\User;
 
 return new class extends Migration
 {

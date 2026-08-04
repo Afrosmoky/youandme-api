@@ -1,8 +1,7 @@
 <?php
 
-use App\Modules\Memories\Models\Memory;
 use App\Modules\Catalog\Models\Question;
-use Youandme\Auth\Models\User;
+use App\Modules\Memories\Models\Memory;
 use Laravel\Sanctum\Sanctum;
 
 test('memories use a default per_page of 20', function (): void {

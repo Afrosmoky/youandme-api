@@ -1,9 +1,8 @@
 <?php
 
 use App\Modules\Catalog\Models\Category;
-use App\Modules\Game\Models\GameSession;
 use App\Modules\Catalog\Models\Question;
-use Youandme\Auth\Models\User;
+use App\Modules\Game\Models\GameSession;
 use Laravel\Sanctum\Sanctum;
 
 test('authenticated user can start a session with a category', function (): void {

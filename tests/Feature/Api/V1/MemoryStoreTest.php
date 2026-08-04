@@ -1,11 +1,11 @@
 <?php
 
+use App\Modules\Catalog\Models\Question;
 use App\Modules\Game\Models\GameSession;
 use App\Modules\Memories\Models\Memory;
-use App\Modules\Catalog\Models\Question;
-use Youandme\Auth\Models\User;
 use Illuminate\Support\Collection;
 use Laravel\Sanctum\Sanctum;
+use Youandme\Auth\Models\User;
 
 /**
  * Set up a user with an active session of $count questions, acting authenticated.

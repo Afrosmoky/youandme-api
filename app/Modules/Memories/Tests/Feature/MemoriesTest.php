@@ -1,8 +1,7 @@
 <?php
 
-use App\Modules\Memories\Models\Memory;
 use App\Modules\Catalog\Models\Question;
-use Youandme\Auth\Models\User;
+use App\Modules\Memories\Models\Memory;
 use Laravel\Sanctum\Sanctum;
 
 test('index returns only the couple memories in order', function (): void {

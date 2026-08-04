@@ -1,7 +1,6 @@
 <?php
 
 use App\Modules\Game\Models\GameSession;
-use Youandme\Auth\Models\User;
 use Laravel\Sanctum\Sanctum;
 
 test('returns the active session when one exists', function (): void {

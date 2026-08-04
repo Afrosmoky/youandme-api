@@ -2,9 +2,9 @@
 
 namespace Database\Factories;
 
-use App\Modules\Memories\Models\Memory;
 use App\Modules\Catalog\Models\Question;
 use App\Modules\Game\Models\Couple;
+use App\Modules\Memories\Models\Memory;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Youandme\Auth\Models\User;
 

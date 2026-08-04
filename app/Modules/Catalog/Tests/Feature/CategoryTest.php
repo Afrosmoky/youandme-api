@@ -1,8 +1,8 @@
 <?php
 
 use App\Modules\Catalog\Models\Category;
-use Youandme\Auth\Models\User;
 use Laravel\Sanctum\Sanctum;
+use Youandme\Auth\Models\User;
 
 test('authenticated user can list categories sorted by ordering', function (): void {
     Category::factory()->create(['slug' => 'randka', 'name' => 'Randka', 'ordering' => 3]);

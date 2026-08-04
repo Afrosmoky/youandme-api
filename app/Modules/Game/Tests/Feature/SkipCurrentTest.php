@@ -1,10 +1,10 @@
 <?php
 
-use App\Modules\Game\Models\GameSession;
 use App\Modules\Catalog\Models\Question;
-use Youandme\Auth\Models\User;
+use App\Modules\Game\Models\GameSession;
 use Illuminate\Support\Collection;
 use Laravel\Sanctum\Sanctum;
+use Youandme\Auth\Models\User;
 
 /**
  * @return array{0: User, 1: GameSession, 2: Collection<int, Question>}

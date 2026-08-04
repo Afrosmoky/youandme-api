@@ -1,7 +1,5 @@
 <?php
 
-use Youandme\Auth\Models\User;
-
 test('login response carries the current couple with partner name', function (): void {
     $user = createUserWithCouple([
         'email' => 'ola@example.com',

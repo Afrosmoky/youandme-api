@@ -1,8 +1,8 @@
 <?php
 
-use Youandme\Auth\Models\User;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Testing\TestResponse;
+use Youandme\Auth\Models\User;
 
 function registerWithNickname(string $nickname): TestResponse
 {

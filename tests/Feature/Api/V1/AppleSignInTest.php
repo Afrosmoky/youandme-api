@@ -1,9 +1,9 @@
 <?php
 
+use Illuminate\Support\Facades\Event;
 use Youandme\Auth\Events\UserRegistered;
 use Youandme\Auth\Models\User;
 use Youandme\Auth\Support\AppleTokenVerifierInterface;
-use Illuminate\Support\Facades\Event;
 
 test('apple sign-in creates a user with the relay email and returns 201', function (): void {
     Event::fake([UserRegistered::class]);

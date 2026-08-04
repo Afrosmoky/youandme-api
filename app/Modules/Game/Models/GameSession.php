@@ -2,8 +2,8 @@
 
 namespace App\Modules\Game\Models;
 
-use App\Modules\Memories\Models\Memory;
 use App\Modules\Catalog\Models\Category;
+use App\Modules\Memories\Models\Memory;
 use Database\Factories\GameSessionFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;

@@ -1,8 +1,8 @@
 <?php
 
-use Youandme\Auth\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\Sanctum;
+use Youandme\Auth\Models\User;
 
 test('authenticated user can change password', function (): void {
     $user = User::factory()->create(['password' => 'stare-haslo-123']);
