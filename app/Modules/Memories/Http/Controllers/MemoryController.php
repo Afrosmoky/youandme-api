@@ -52,6 +52,25 @@ final class MemoryController
         ]);
     }
 
+    /**
+     * One memory by ulid — what the card screen opens on, whether the client
+     * reached it from the list or from an anniversary push. A deep link points at
+     * a memory a month or a year old, which is nowhere near the first cursor page,
+     * so the client cannot be expected to hold it already.
+     *
+     * Resolved by route-model binding rather than through GetMemoryByUlidQuery:
+     * the Query answers with MemoryData, which deliberately carries no couple id,
+     * so it cannot authorize — and the response has to be the same MemoryResource
+     * the list serializes. The Query stays what it always was, the read Public API
+     * for other modules.
+     */
+    public function show(Request $request, Memory $memory): JsonResponse
+    {
+        $this->authorizeCouple($request, $memory);
+
+        return response()->json(['memory' => new MemoryResource($memory->load('question.category'))]);
+    }
+
     public function update(UpdateMemoryRequest $request, Memory $memory): JsonResponse
     {
         $this->authorizeCouple($request, $memory);

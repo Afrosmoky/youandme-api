@@ -14,6 +14,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->middleware('auth:sanctum')->group(function (): void {
     Route::get('memories', [MemoryController::class, 'index']);
+    // Detail read: the card screen, reached from the list or from an anniversary
+    // deep link (where the memory is far past the first cursor page).
+    Route::get('memories/{memory:ulid}', [MemoryController::class, 'show']);
     Route::patch('memories/{memory:ulid}', [MemoryController::class, 'update']);
     Route::delete('memories/{memory:ulid}', [MemoryController::class, 'destroy']);
 
