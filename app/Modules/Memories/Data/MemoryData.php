@@ -22,6 +22,7 @@ final class MemoryData extends Data
         public readonly ?string $answerB,
         public readonly ?string $playerAName,
         public readonly ?string $playerBName,
+        public readonly bool $isFavorite,
         public readonly string $answeredAt,
         public readonly string $createdAt,
     ) {}
@@ -36,6 +37,7 @@ final class MemoryData extends Data
             answerB: $memory->answer_b,
             playerAName: $memory->player_a_name,
             playerBName: $memory->player_b_name,
+            isFavorite: $memory->is_favorite,
             answeredAt: $memory->answered_at->toIso8601ZuluString(),
             createdAt: $memory->created_at->toIso8601ZuluString(),
         );

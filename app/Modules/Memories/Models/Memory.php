@@ -16,6 +16,16 @@ class Memory extends Model
     /** @use HasFactory<MemoryFactory> */
     use HasFactory, HasUlids, SoftDeletes;
 
+    /**
+     * DB defaults are not loaded into the model on create(), so is_favorite is
+     * declared here too — the P1 pattern (see CLAUDE.md). Change one, change both.
+     *
+     * @var array<string, bool>
+     */
+    protected $attributes = [
+        'is_favorite' => false,
+    ];
+
     /** @var list<string> */
     protected $fillable = [
         'couple_id',
@@ -27,6 +37,7 @@ class Memory extends Model
         'answer_b',
         'player_a_name',
         'player_b_name',
+        'is_favorite',
         'answered_at',
     ];
 
@@ -41,6 +52,7 @@ class Memory extends Model
     /** @var array<string, string> */
     protected $casts = [
         'answered_at' => 'datetime',
+        'is_favorite' => 'boolean',
     ];
 
     protected static function newFactory(): MemoryFactory

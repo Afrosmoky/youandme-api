@@ -13,17 +13,26 @@ use Lorisleiva\Actions\Concerns\AsAction;
  * plain int identifier passed by the caller — Memories filters its own
  * memories.couple_id, no Game import needed). Read Public API returning MemoryPage;
  * the HTTP index serializes via MemoryResource (byte-identical) instead.
+ *
+ * favoritesOnly narrows the same list (same order, same cursor) rather than being
+ * a separate query — it mirrors ?favorites=1 on the endpoint, and the two must
+ * keep answering identically.
+ *
+ * Soft-deleted memories are out, here and on the endpoint: deleting means "stop
+ * showing it to us". The lifetime counter is the one reader that says withTrashed
+ * (CountMemoriesForCoupleQuery) — two intentions on the same table, deliberately.
  */
 final class ListMemoriesForCoupleQuery
 {
     use AsAction;
 
-    public function handle(int $coupleId, ?string $cursor, int $perPage): MemoryPage
+    public function handle(int $coupleId, ?string $cursor, int $perPage, bool $favoritesOnly = false): MemoryPage
     {
         // id is the cursor tiebreaker so memories sharing an answered_at don't
         // get skipped across pages.
         $paginator = Memory::query()
             ->where('couple_id', $coupleId)
+            ->when($favoritesOnly, fn ($query) => $query->where('is_favorite', true))
             ->with('question.category')
             ->orderByDesc('answered_at')
             ->orderByDesc('id')

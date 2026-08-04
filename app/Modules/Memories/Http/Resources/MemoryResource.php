@@ -36,6 +36,7 @@ class MemoryResource extends JsonResource
             'answer_b' => $this->answer_b,
             'player_a_name' => $this->player_a_name,
             'player_b_name' => $this->player_b_name,
+            'is_favorite' => $this->is_favorite,
             'answered_at' => $this->answered_at->toIso8601ZuluString(),
             'created_at' => $this->created_at->toIso8601ZuluString(),
         ];
