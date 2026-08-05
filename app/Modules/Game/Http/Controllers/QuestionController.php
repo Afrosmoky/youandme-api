@@ -119,7 +119,7 @@ final class QuestionController
         $poolIds = GetSessionQuestionPoolQuery::run(
             $seenIds,
             $unlockedIds,
-            $request->string('category')->toString() ?: null,
+            $request->string('category_slug')->toString() ?: null,
             $limit,
         );
 

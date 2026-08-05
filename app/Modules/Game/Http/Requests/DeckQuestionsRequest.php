@@ -16,16 +16,20 @@ class DeckQuestionsRequest extends FormRequest
      */
     public function rules(): array
     {
-        // No category = mix mode, the same convention as POST /sessions/start.
-        // An unknown slug is a 422 rather than an empty deck, also as there: a
-        // client asking for a category that does not exist has a bug, and an
-        // empty list would hide it behind something that looks like "we ran out".
+        // category_slug, spelled as POST /sessions/start spells it — the two
+        // endpoints deal from the same pool and a client should not have to
+        // remember which name goes where.
+        //
+        // Absent = mix mode, same convention. An unknown slug is a 422 rather
+        // than an empty deck, also as there: a client asking for a category that
+        // does not exist has a bug, and an empty list would hide it behind
+        // something that looks like "we ran out".
         //
         // limit is clamped rather than rejected (see the controller) — a number
         // out of range is a preference we can satisfy approximately, not a
         // mistake about what exists.
         return [
-            'category' => ['nullable', 'string', 'exists:categories,slug'],
+            'category_slug' => ['nullable', 'string', 'exists:categories,slug'],
             'limit' => ['nullable', 'integer'],
         ];
     }
@@ -36,7 +40,7 @@ class DeckQuestionsRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'category.exists' => 'Wskazana kategoria nie istnieje.',
+            'category_slug.exists' => 'Wskazana kategoria nie istnieje.',
             'limit.integer' => 'Liczba kart ma nieprawidłowy format.',
         ];
     }

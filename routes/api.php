@@ -44,6 +44,11 @@ Route::prefix('v1')->group(function (): void {
         // (a pure list) is registered by the Memories module.
         Route::post('memories', [MemoryController::class, 'store']);
 
+        // Local-game answer save (P10): no server session to check it against, so
+        // the card is authorised by the deck rule instead. Spans Memories (the
+        // memory) and Game (the played card), which is why it composes here.
+        Route::post('memories/local', [MemoryController::class, 'storeLocal']);
+
         // Daily-card answer (peer-combines memory + couple/streak). GET /daily-card
         // (a Game aggregate) is registered by the Game module.
         Route::post('daily-card/answer', [DailyCardController::class, 'answer']);

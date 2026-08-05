@@ -106,7 +106,7 @@ test('a category narrows the deck', function (): void {
     Question::factory()->count(2)->create(['category_id' => $other->id]);
     Sanctum::actingAs(createUserWithCouple());
 
-    $ulids = $this->getJson('/api/v1/questions/deck?category=randka')->assertOk()->json('questions.*.ulid');
+    $ulids = $this->getJson('/api/v1/questions/deck?category_slug=randka')->assertOk()->json('questions.*.ulid');
 
     expect($ulids)->toBe([$wanted->ulid]);
 });
@@ -125,9 +125,9 @@ test('an unknown category is a 422, not an empty deck', function (): void {
     Question::factory()->create();
     Sanctum::actingAs(createUserWithCouple());
 
-    $this->getJson('/api/v1/questions/deck?category=nie-ma-takiej')
+    $this->getJson('/api/v1/questions/deck?category_slug=nie-ma-takiej')
         ->assertStatus(422)
-        ->assertJsonValidationErrors('category');
+        ->assertJsonValidationErrors('category_slug');
 });
 
 test('daily cards are not part of the deck', function (): void {
