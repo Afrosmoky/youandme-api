@@ -80,11 +80,10 @@ final class SaveMemoryFromAnswerAction
                 answeredAt: $answeredAt,
             ));
 
-            // Mark seen forever (idempotent on the composite PK) and advance the
-            // session: re-assign the whole state array so Eloquent tracks it.
-            $couple->seenQuestions()->syncWithoutDetaching([
-                $question->id => ['seen_at' => now()],
-            ]);
+            // Mark the card played (P10: the single write path, which also makes
+            // it count towards the progress map) and advance the session:
+            // re-assign the whole state array so Eloquent tracks it.
+            MarkQuestionsPlayedAction::run($couple, [$question->id]);
 
             $state['current_index'] = $currentIndex + 1;
             $session->state = $state;

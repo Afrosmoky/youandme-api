@@ -2,6 +2,7 @@
 
 use App\Modules\Game\Http\Controllers\DailyCardController;
 use App\Modules\Game\Http\Controllers\DeckController;
+use App\Modules\Game\Http\Controllers\LocalGameController;
 use App\Modules\Game\Http\Controllers\QuestionController;
 use App\Modules\Game\Http\Controllers\QuestionLikeController;
 use App\Modules\Game\Http\Controllers\SessionController;
@@ -39,4 +40,11 @@ Route::prefix('v1')->middleware('auth:sanctum')->group(function (): void {
     // Weekly ritual read (aggregate: current ritual + "day X of 7"). Assignment is
     // the Sunday cron; a fresh couple is assigned lazily on first read.
     Route::get('weekly-ritual', [WeeklyRitualController::class, 'show']);
+
+    // Local game (P10): the phone plays the session and reports the cards it
+    // dealt afterwards, in one batch. Throttled — a report happens once per
+    // session, and this is the one endpoint through which a client could inflate
+    // its own progress.
+    Route::post('game/local/report', [LocalGameController::class, 'report'])
+        ->middleware('throttle:20,1');
 });

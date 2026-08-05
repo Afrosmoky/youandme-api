@@ -106,9 +106,16 @@ class Couple extends Model
     }
 
     /**
-     * Questions this couple has already been shown — the persistent anti-repeat
-     * set (couple_question_seen pivot, no Eloquent model). Cross-module relation
+     * The cards this couple has played — the persistent set behind two things at
+     * once (couple_question_seen pivot, no Eloquent model). Cross-module relation
      * to Catalog's Question.
+     *
+     * P3 built it as the session anti-repeat log: a question, once shown, never
+     * returns. P10 gave the same rows a second meaning — the progress map counts
+     * them — without changing the schema. Nothing writes here directly any more;
+     * MarkQuestionsPlayedAction is the single door, and the daily card is
+     * deliberately outside it (the map counts the question game, the daily card
+     * has the streak).
      *
      * @return BelongsToMany<Question, $this>
      */

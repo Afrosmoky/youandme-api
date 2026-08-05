@@ -7,8 +7,8 @@ use Illuminate\Support\Facades\DB;
 use Lorisleiva\Actions\Concerns\AsAction;
 
 /**
- * Skip the current card: mark the question seen forever (no recycling) and
- * advance current_index. Caller guards against an ended/exhausted session.
+ * Skip the current card: mark the question played (seen forever, no recycling)
+ * and advance current_index. Caller guards against an ended/exhausted session.
  */
 final class SkipCurrentQuestionInSessionAction
 {
@@ -23,10 +23,10 @@ final class SkipCurrentQuestionInSessionAction
         $questionId = $remainingIds[$currentIndex];
 
         DB::transaction(function () use ($session, $state, $currentIndex, $questionId): void {
-            // syncWithoutDetaching keeps it idempotent on the composite PK.
-            $session->couple->seenQuestions()->syncWithoutDetaching([
-                $questionId => ['seen_at' => now()],
-            ]);
+            // Single write path (P10) — idempotent on the composite PK. A skipped
+            // card still counts as played: the couple saw it and moved on, which
+            // is exactly the definition the progress map uses.
+            MarkQuestionsPlayedAction::run($session->couple, [$questionId]);
 
             $state['current_index'] = $currentIndex + 1;
             $session->state = $state;

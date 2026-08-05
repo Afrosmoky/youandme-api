@@ -12,6 +12,12 @@ return new class extends Migration
      *
      * Per-couple anti-repeat log: a question, once seen, never returns. Plain
      * pivot/log table — composite PK, no id, no timestamps.
+     *
+     * P10 note (no schema change, meaning added): these rows are also the register
+     * of PLAYED CARDS that the progress map counts. Sessions and the local game
+     * write here through Game\Actions\MarkQuestionsPlayedAction — the single write
+     * path — while the daily card stays out of it on purpose: the map counts the
+     * question game, the daily card has its own system (the streak).
      */
     public function up(): void
     {
