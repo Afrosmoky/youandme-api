@@ -249,3 +249,14 @@ test('a future answered_at is refused, a backdated one is not', function (): voi
         'answered_at' => now()->toIso8601ZuluString(),
     ]))->assertCreated();
 });
+
+test('a phone whose clock runs a little fast is still allowed to save', function (): void {
+    $question = Question::factory()->create();
+    Sanctum::actingAs(createUserWithCouple());
+
+    // Inside the drift tolerance — the offline case is exactly where a device
+    // clock is least likely to have been corrected recently.
+    $this->postJson('/api/v1/memories/local', localSavePayload($question, [
+        'answered_at' => now()->addMinutes(2)->toIso8601ZuluString(),
+    ]))->assertCreated();
+});

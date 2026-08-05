@@ -185,3 +185,15 @@ test('a future answered_at is refused, a backdated one is not', function (): voi
         'answered_at' => now()->subWeek()->toIso8601ZuluString(),
     ])->assertCreated();
 });
+
+test('a phone whose clock runs a little fast is still allowed to save', function (): void {
+    [, , $questions] = memorySession();
+
+    // Inside the drift tolerance: a couple must not lose an answer because their
+    // device is two minutes ahead of us.
+    $this->postJson('/api/v1/memories', [
+        'question_ulid' => $questions->first()->ulid,
+        'answer_a' => 'Nasza odpowiedź',
+        'answered_at' => now()->addMinutes(2)->toIso8601ZuluString(),
+    ])->assertCreated();
+});

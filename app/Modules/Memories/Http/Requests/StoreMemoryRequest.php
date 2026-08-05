@@ -16,15 +16,20 @@ class StoreMemoryRequest extends FormRequest
      */
     public function rules(): array
     {
-        // answered_at may be backdated but never post-dated. Backdating is normal
-        // — a client that played offline syncs later — while a future date is
-        // either a broken clock or an attempt to plant an anniversary (P9 scans
-        // answered_at), and neither is worth honouring.
+        // answered_at may be backdated but never meaningfully post-dated.
+        // Backdating is normal — a client that played offline syncs later — while
+        // a future date is either a broken clock or an attempt to plant an
+        // anniversary (P9 scans answered_at).
+        //
+        // The ceiling is five minutes ahead, not "now": phone clocks drift, and a
+        // couple must not lose an answer because their device runs a few seconds
+        // fast. The window is far too small to move an anniversary and far too
+        // large to be tripped by drift.
         return [
             'question_ulid' => ['required', 'string', 'exists:questions,ulid'],
             'answer_a' => ['required', 'string', 'max:5000'],
             'answer_b' => ['nullable', 'string', 'max:5000'],
-            'answered_at' => ['required', 'date', 'before_or_equal:now'],
+            'answered_at' => ['required', 'date', 'before_or_equal:+5 minutes'],
         ];
     }
 

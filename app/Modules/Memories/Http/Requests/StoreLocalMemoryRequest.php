@@ -27,11 +27,12 @@ class StoreLocalMemoryRequest extends FormRequest
             'answer_a' => ['required', 'string', 'max:5000'],
             'answer_b' => ['nullable', 'string', 'max:5000'],
             'player_b_name' => ['required', 'string', 'max:60'],
-            // Backdated yes, post-dated no — the same rule as the session save.
-            // Local play is exactly the case that needs backdating (the phone may
-            // sync hours later), which is why the ceiling is "now" and not "the
-            // request must be live".
-            'answered_at' => ['required', 'date', 'before_or_equal:now'],
+            // Backdated yes, post-dated no — the same rule and the same five
+            // minutes of clock-drift tolerance as the session save. Local play is
+            // exactly the case that needs backdating (the phone may sync hours
+            // later), which is why the ceiling sits just ahead of now rather than
+            // demanding a live request.
+            'answered_at' => ['required', 'date', 'before_or_equal:+5 minutes'],
         ];
     }
 
