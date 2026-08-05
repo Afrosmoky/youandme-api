@@ -1,33 +1,29 @@
 <?php
 
 use App\Modules\Catalog\Models\Question;
-use App\Modules\Memories\Actions\SaveMemoryAction;
-use App\Modules\Memories\Data\SaveMemoryInput;
+use App\Modules\Game\Actions\MarkQuestionsPlayedAction;
+use App\Modules\Game\Models\Couple;
 use App\Modules\Progress\Models\ProgressMilestone;
 use Laravel\Sanctum\Sanctum;
 use Youandme\Auth\Models\User;
 
 /*
- | GET /progress — the app layer joining a count from Memories with the map from
+ | GET /progress — the app layer joining a count from Game with the map from
  | Progress. Neither module knows the other; this endpoint is the seam.
+ |
+ | Cards are played through the Game action rather than by saving memories: since
+ | P10 the counter is the couple's played set, and the endpoint must report the
+ | same number the milestone listener checks thresholds against.
  */
 
 function playCards(User $user, int $coupleId, int $count): void
 {
-    foreach (range(1, $count) as $ignored) {
-        SaveMemoryAction::run(new SaveMemoryInput(
-            coupleId: $coupleId,
-            questionUlid: Question::factory()->create()->ulid,
-            userId: $user->id,
-            playerAName: $user->nickname,
-            playerBName: 'Partner',
-            answerA: 'odpowiedź',
-            answerB: null,
-            gameSessionId: null,
-            origin: 'session',
-            answeredAt: now(),
-        ));
-    }
+    $couple = Couple::findOrFail($coupleId);
+
+    MarkQuestionsPlayedAction::run(
+        $couple,
+        Question::factory()->count($count)->create()->pluck('id')->all(),
+    );
 }
 
 test('a couple that has played nothing sees the whole map ahead of them', function (): void {

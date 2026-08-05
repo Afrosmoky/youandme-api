@@ -19,8 +19,9 @@ use Lorisleiva\Actions\Concerns\AsAction;
  * keep answering identically.
  *
  * Soft-deleted memories are out, here and on the endpoint: deleting means "stop
- * showing it to us". The lifetime counter is the one reader that says withTrashed
- * (CountMemoriesForCoupleQuery) — two intentions on the same table, deliberately.
+ * showing it to us". The history rebuild is the one reader that says withTrashed
+ * (ListPlayedCardHistoryForCoupleQuery) — two intentions on the same table,
+ * deliberately.
  */
 final class ListMemoriesForCoupleQuery
 {

@@ -17,11 +17,11 @@ use Lorisleiva\Actions\Concerns\AsAction;
  * stays in the caller — the same discipline as the daily card, where the Action
  * receives a date and never a timezone.
  *
- * THIRD intention on `memories`, and it reads like the list, not like the counter:
- * soft-deleted rows are out. A couple that removed a memory has said "stop showing
- * it to us", and resurfacing it in a push would be the loudest possible way to
- * ignore that. Only CountMemoriesForCoupleQuery says withTrashed, because a
- * lifetime count must not fall.
+ * THIRD intention on `memories`, and it reads like the list, not like the history
+ * rebuild: soft-deleted rows are out. A couple that removed a memory has said
+ * "stop showing it to us", and resurfacing it in a push would be the loudest
+ * possible way to ignore that. Only ListPlayedCardHistoryForCoupleQuery says
+ * withTrashed, because a card once played stays played.
  */
 final class FindLatestMemoryAnsweredWithinQuery
 {

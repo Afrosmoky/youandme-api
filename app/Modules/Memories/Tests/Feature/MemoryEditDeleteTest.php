@@ -2,7 +2,6 @@
 
 use App\Modules\Catalog\Models\Question;
 use App\Modules\Memories\Models\Memory;
-use App\Modules\Memories\Queries\CountMemoriesForCoupleQuery;
 use Laravel\Sanctum\Sanctum;
 
 /*
@@ -73,18 +72,17 @@ test('editing another couple memory is forbidden', function (): void {
     expect($theirs->fresh()->answer_a)->toBe('Ich odpowiedź');
 });
 
-test('a deleted memory leaves the list but still counts as a played card', function (): void {
+test('a deleted memory leaves the list but its row survives', function (): void {
     $user = createUserWithCouple();
-    $coupleId = activeCoupleOf($user)->id;
     $memory = Memory::factory()->for($user)->for(Question::factory()->create())->create();
     Sanctum::actingAs($user);
 
     $this->deleteJson("/api/v1/memories/{$memory->ulid}")->assertNoContent();
 
-    // Soft, not hard: the row survives for the lifetime counter that feeds the
-    // progress map, so deleting a memory cannot take a milestone away (P8).
+    // Soft, not hard: the couple may ask for it back, and the P10 history rebuild
+    // reads deleted rows too (a deleted memory does not un-play its card).
     expect($memory->fresh()->deleted_at)->not->toBeNull();
-    expect(CountMemoriesForCoupleQuery::run($coupleId))->toBe(1);
+    expect(Memory::withTrashed()->count())->toBe(1);
 
     $this->getJson('/api/v1/memories')->assertOk()->assertJsonCount(0, 'data');
 });

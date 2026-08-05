@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Modules\Memories\Queries\CountMemoriesForCoupleQuery;
+use App\Modules\Game\Queries\CountPlayedCardsForCoupleQuery;
 use App\Modules\Progress\Http\Resources\ProgressResource;
 use App\Modules\Progress\Queries\GetProgressForCoupleQuery;
 use Illuminate\Http\JsonResponse;
@@ -14,8 +14,12 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  * stages they have reached, and what they are playing towards.
  *
  * App composition root, for the same reason the milestone listener lives here:
- * the counter belongs to Memories and the map to Progress, and neither may know
- * the other. The app asks one for a number and hands it to the other.
+ * the counter belongs to Game and the map to Progress, and neither may know the
+ * other. The app asks one for a number and hands it to the other.
+ *
+ * The number is the couple's played set (P10), the same one the listener checks
+ * thresholds against — the read and the write must never disagree about what
+ * "played" means, so they ask the identical Query.
  *
  * The couple comes from the token, never from the input (IDOR).
  */
@@ -29,7 +33,7 @@ final class ProgressController
             throw new NotFoundHttpException;
         }
 
-        $totalPlayed = CountMemoriesForCoupleQuery::run($coupleId);
+        $totalPlayed = CountPlayedCardsForCoupleQuery::run($coupleId);
 
         return response()->json(
             new ProgressResource(GetProgressForCoupleQuery::run($coupleId, $totalPlayed))
