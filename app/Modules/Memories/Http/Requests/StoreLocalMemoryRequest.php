@@ -27,7 +27,11 @@ class StoreLocalMemoryRequest extends FormRequest
             'answer_a' => ['required', 'string', 'max:5000'],
             'answer_b' => ['nullable', 'string', 'max:5000'],
             'player_b_name' => ['required', 'string', 'max:60'],
-            'answered_at' => ['required', 'date'],
+            // Backdated yes, post-dated no — the same rule as the session save.
+            // Local play is exactly the case that needs backdating (the phone may
+            // sync hours later), which is why the ceiling is "now" and not "the
+            // request must be live".
+            'answered_at' => ['required', 'date', 'before_or_equal:now'],
         ];
     }
 
@@ -46,6 +50,7 @@ class StoreLocalMemoryRequest extends FormRequest
             'player_b_name.max' => 'Imię drugiego gracza jest za długie.',
             'answered_at.required' => 'Data odpowiedzi jest wymagana.',
             'answered_at.date' => 'Data odpowiedzi ma nieprawidłowy format.',
+            'answered_at.before_or_equal' => 'Data odpowiedzi nie może być z przyszłości.',
         ];
     }
 }

@@ -16,11 +16,15 @@ class StoreMemoryRequest extends FormRequest
      */
     public function rules(): array
     {
+        // answered_at may be backdated but never post-dated. Backdating is normal
+        // — a client that played offline syncs later — while a future date is
+        // either a broken clock or an attempt to plant an anniversary (P9 scans
+        // answered_at), and neither is worth honouring.
         return [
             'question_ulid' => ['required', 'string', 'exists:questions,ulid'],
             'answer_a' => ['required', 'string', 'max:5000'],
             'answer_b' => ['nullable', 'string', 'max:5000'],
-            'answered_at' => ['required', 'date'],
+            'answered_at' => ['required', 'date', 'before_or_equal:now'],
         ];
     }
 
@@ -36,6 +40,7 @@ class StoreMemoryRequest extends FormRequest
             'answer_a.max' => 'Odpowiedź jest za długa.',
             'answered_at.required' => 'Data odpowiedzi jest wymagana.',
             'answered_at.date' => 'Data odpowiedzi ma nieprawidłowy format.',
+            'answered_at.before_or_equal' => 'Data odpowiedzi nie może być z przyszłości.',
         ];
     }
 }

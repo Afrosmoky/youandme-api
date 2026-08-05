@@ -227,3 +227,25 @@ test('a user without a couple cannot save', function (): void {
 
     $this->postJson('/api/v1/memories/local', localSavePayload($question))->assertNotFound();
 });
+
+test('a future answered_at is refused, a backdated one is not', function (): void {
+    $question = Question::factory()->create();
+    $older = Question::factory()->create();
+    Sanctum::actingAs(createUserWithCouple());
+
+    $this->postJson('/api/v1/memories/local', localSavePayload($question, [
+        'answered_at' => now()->addDay()->toIso8601ZuluString(),
+    ]))
+        ->assertStatus(422)
+        ->assertJsonValidationErrors('answered_at');
+
+    // Backdating stays legal — a phone that played offline syncs later, and that
+    // is the whole reason the client sends a date at all.
+    $this->postJson('/api/v1/memories/local', localSavePayload($older, [
+        'answered_at' => now()->subDays(2)->toIso8601ZuluString(),
+    ]))->assertCreated();
+
+    $this->postJson('/api/v1/memories/local', localSavePayload($question, [
+        'answered_at' => now()->toIso8601ZuluString(),
+    ]))->assertCreated();
+});

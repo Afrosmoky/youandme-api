@@ -164,3 +164,24 @@ test('storing a memory requires authentication', function (): void {
 
     $this->postJson('/api/v1/memories', memoryPayload($question))->assertUnauthorized();
 });
+
+test('a future answered_at is refused, a backdated one is not', function (): void {
+    [, , $questions] = memorySession();
+
+    $this->postJson('/api/v1/memories', [
+        'question_ulid' => $questions->first()->ulid,
+        'answer_a' => 'Nasza odpowiedź',
+        'answered_at' => now()->addDay()->toIso8601ZuluString(),
+    ])
+        ->assertStatus(422)
+        ->assertJsonValidationErrors('answered_at');
+
+    // A post-dated card would plant an anniversary the couple never had (P9
+    // scans answered_at). Backdating stays legal — it is how an offline save
+    // reaches us honestly.
+    $this->postJson('/api/v1/memories', [
+        'question_ulid' => $questions->first()->ulid,
+        'answer_a' => 'Nasza odpowiedź',
+        'answered_at' => now()->subWeek()->toIso8601ZuluString(),
+    ])->assertCreated();
+});
