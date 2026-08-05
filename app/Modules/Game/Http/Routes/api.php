@@ -23,6 +23,11 @@ Route::prefix('v1')->middleware('auth:sanctum')->group(function (): void {
 
     Route::get('questions/next', [QuestionController::class, 'next']);
 
+    // A whole playable deck at once, for the local game (P10): the phone
+    // sequences it offline, so it cannot ask card by card. Filtered exactly like
+    // a session pool — this is where the server says what may be played.
+    Route::get('questions/deck', [QuestionController::class, 'deck']);
+
     // Question likes (toggle via two REST verbs). Question addressed by ulid as a
     // plain string param — resolved via Catalog Query in the Action, not by
     // route-model binding, so Game never Eloquent-loads Question.
