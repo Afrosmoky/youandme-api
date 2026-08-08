@@ -33,7 +33,10 @@ test('GET /daily-card returns a daily-type question', function (): void {
     // The closed deck is a session-deck concept. The daily card keeps its P4
     // shape — no badge, nothing to unlock — and the daily pool filters
     // is_locked=false anyway.
-    expect($response->json('question'))->not->toHaveKey('is_locked');
+    expect($response->json('question'))->not->toHaveKey('is_locked')
+        // Same reasoning for the choice cards (S2): they live in the session deck,
+        // the daily pool is seeded from its own file and has none.
+        ->and($response->json('question'))->not->toHaveKey('options');
 });
 
 test('GET /daily-card is deterministic — the same card twice on the same day', function (): void {

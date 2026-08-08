@@ -37,9 +37,13 @@ final class DailyCardController
     }
 
     /**
-     * Reproduce the Catalog QuestionResource shape from QuestionData — the same
-     * payload as GET /questions/next (category trimmed to slug + name; null for
-     * daily questions).
+     * Reproduce the Catalog QuestionResource shape from QuestionData (category
+     * trimmed to slug + name; null for daily questions).
+     *
+     * Deliberately NARROWER than GET /questions/next, and staying that way: no
+     * is_locked, because the daily deck is free (P7), and no options, because the
+     * daily pool is its own seed file with no choice cards in it (S2). Both are
+     * guarded by tests — add a key here only when the daily card really grows one.
      *
      * @return array<string, mixed>
      */

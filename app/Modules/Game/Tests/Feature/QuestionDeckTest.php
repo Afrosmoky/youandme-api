@@ -30,12 +30,31 @@ test('a deck card carries the same shape as a session card, minus liked', functi
 
     $card = $this->getJson('/api/v1/questions/deck')->assertOk()->json('questions.0');
 
-    expect(array_keys($card))->toBe(['ulid', 'body', 'type', 'category', 'tags', 'is_locked'])
+    expect(array_keys($card))->toBe(['ulid', 'body', 'type', 'category', 'tags', 'is_locked', 'options'])
         ->and($card['body'])->toBe('O czym marzycie?')
         ->and($card['type'])->toBe('session')
         ->and($card['category'])->toBe(['slug' => 'randka', 'name' => 'Randka'])
         ->and($card['tags'])->toBe(['bliskosc'])
-        ->and($card['is_locked'])->toBeFalse();
+        ->and($card['is_locked'])->toBeFalse()
+        // An open card says so with null, not by leaving the key out: the client
+        // reads one field to decide how to answer, on every card.
+        ->and($card['options'])->toBeNull();
+});
+
+test('a choice card carries its options envelope as stored', function (): void {
+    Question::factory()->create([
+        'body' => 'Które z poniższych wybierasz?',
+        'options' => ['items' => ['Pierwsza', 'Druga', 'Trzecia'], 'multiple' => true],
+    ]);
+    Sanctum::actingAs(createUserWithCouple());
+
+    $card = $this->getJson('/api/v1/questions/deck')->assertOk()->json('questions.0');
+
+    // Served exactly as stored — no flattening into two fields, no renaming.
+    expect($card['options'])->toBe([
+        'items' => ['Pierwsza', 'Druga', 'Trzecia'],
+        'multiple' => true,
+    ]);
 });
 
 test('a session card still carries liked — the deck did not change /questions/next', function (): void {
@@ -46,7 +65,7 @@ test('a session card still carries liked — the deck did not change /questions/
 
     $card = $this->getJson('/api/v1/questions/next')->assertOk()->json('question');
 
-    expect(array_keys($card))->toBe(['ulid', 'body', 'type', 'category', 'tags', 'liked', 'is_locked'])
+    expect(array_keys($card))->toBe(['ulid', 'body', 'type', 'category', 'tags', 'liked', 'is_locked', 'options'])
         ->and($card['ulid'])->toBe($question->ulid);
 });
 

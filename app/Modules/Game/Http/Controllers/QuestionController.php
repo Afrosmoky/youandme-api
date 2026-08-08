@@ -182,6 +182,13 @@ final class QuestionController
         // Last, so /questions/next keeps the exact key order it has had since P3.
         $payload['is_locked'] = $question->isLocked;
 
+        // Appended after is_locked for the same reason: every key that was there
+        // in P3 stays where it was. null for an open card, {items, multiple} for
+        // one answered by picking — passed through exactly as stored, so the
+        // client reads options?.items and options?.multiple and nothing here has
+        // to know how a picker looks.
+        $payload['options'] = $question->options;
+
         return $payload;
     }
 }

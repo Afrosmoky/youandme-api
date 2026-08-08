@@ -92,10 +92,28 @@ test('next includes session metadata', function (): void {
     $this->getJson('/api/v1/questions/next')
         ->assertOk()
         ->assertJsonStructure([
-            'question' => ['ulid', 'body', 'type', 'category', 'tags', 'liked', 'is_locked'],
+            'question' => ['ulid', 'body', 'type', 'category', 'tags', 'liked', 'is_locked', 'options'],
             'session' => ['ulid', 'current_index', 'remaining_count', 'cards_drawn_count', 'cards_saved_count'],
         ])
         ->assertJsonPath('session.remaining_count', 4);
+});
+
+test('next serves the options envelope for a choice card', function (): void {
+    $user = createUserWithCouple();
+    $question = Question::factory()->create([
+        'options' => ['items' => ['Wysłuchanie', 'Rada', 'Przytulenie'], 'multiple' => false],
+    ]);
+    GameSession::factory()->for(activeCoupleOf($user))->create([
+        'state' => ['remaining_ids' => [$question->id], 'current_index' => 0, 'draft_answer' => ''],
+    ]);
+    Sanctum::actingAs($user);
+
+    // Both endpoints go through the same payload builder, so this is the session
+    // half of the same contract the deck test pins down.
+    $this->getJson('/api/v1/questions/next')
+        ->assertOk()
+        ->assertJsonPath('question.options.items', ['Wysłuchanie', 'Rada', 'Przytulenie'])
+        ->assertJsonPath('question.options.multiple', false);
 });
 
 test('next requires authentication', function (): void {
