@@ -31,12 +31,23 @@ class Question extends Model
         'category_id',
         'tags',
         'is_locked',
+        'options',
     ];
 
-    /** @var array<string, string> */
+    /**
+     * options is NOT in $attributes: its default is NULL (an open question), not
+     * a DB DEFAULT, so there is nothing for create() to fail to load — the
+     * two-places pattern from P1 does not apply here.
+     *
+     * Shape when present: {items: string[], multiple: bool}. See the S2 migration
+     * for why the flag rides inside the envelope.
+     *
+     * @var array<string, string>
+     */
     protected $casts = [
         'tags' => 'array',
         'is_locked' => 'boolean',
+        'options' => 'array',
     ];
 
     /**

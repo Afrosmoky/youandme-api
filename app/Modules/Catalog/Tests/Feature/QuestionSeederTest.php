@@ -48,3 +48,58 @@ test('the daily deck stays free', function (): void {
 
     expect(Question::where('type', 'daily')->where('is_locked', true)->count())->toBe(0);
 });
+
+test('seeder attaches answer options to exactly 14 cards', function (): void {
+    $this->seed();
+
+    // 14, not 15: the fifteenth multiple-choice card spells its options out inside
+    // its own body, and rewriting a body is a content change (and a re-key of the
+    // seed) that belongs to its own slice.
+    expect(Question::whereNotNull('options')->count())->toBe(14)
+        ->and(Question::where('type', 'daily')->whereNotNull('options')->count())->toBe(0);
+});
+
+test('every options entry finds a question with that exact body', function (): void {
+    $deckPath = base_path('app/Modules/Catalog/Database/Seeders/data/questions_with_categories_pl.json');
+    $optionsPath = base_path('app/Modules/Catalog/Database/Seeders/data/question_options_pl.json');
+
+    /** @var list<array{body: string}> $deck */
+    $deck = json_decode((string) file_get_contents($deckPath), true, flags: JSON_THROW_ON_ERROR);
+    /** @var list<array{body: string}> $options */
+    $options = json_decode((string) file_get_contents($optionsPath), true, flags: JSON_THROW_ON_ERROR);
+
+    $bodies = array_map(fn (array $entry): string => trim($entry['body']), $deck);
+
+    // The two files are joined on the whole question body — the one string a
+    // re-export of Wiktoria's docx is most likely to change. Without this the
+    // options would just stop being attached, and 14 cards would quietly go back
+    // to looking like open questions.
+    $orphans = array_values(array_filter(
+        array_map(fn (array $entry): string => trim($entry['body']), $options),
+        fn (string $body): bool => ! in_array($body, $bodies, true),
+    ));
+
+    expect($orphans)->toBe([])
+        ->and($options)->toHaveCount(14);
+});
+
+test('the multi-select card is the only one flagged multiple', function (): void {
+    $this->seed();
+
+    $cards = Question::whereNotNull('options')->get();
+    $multi = $cards->filter(fn (Question $question): bool => $question->options['multiple'] === true);
+
+    expect($multi)->toHaveCount(1)
+        ->and($multi->first()?->body)->toStartWith('Co stanowi dla Ciebie najlepsze wsparcie')
+        ->and($multi->first()?->options['items'])->toHaveCount(4);
+});
+
+test('options are stored as an items plus multiple envelope', function (): void {
+    $this->seed();
+
+    $card = Question::whereNotNull('options')->firstOrFail();
+
+    expect(array_keys($card->options))->toBe(['items', 'multiple'])
+        ->and($card->options['items'])->toBeArray()->not->toBeEmpty()
+        ->and($card->options['multiple'])->toBeBool();
+});
