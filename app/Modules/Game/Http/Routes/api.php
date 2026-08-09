@@ -16,6 +16,9 @@ use Illuminate\Support\Facades\Route;
  */
 
 Route::prefix('v1')->middleware('auth:sanctum')->group(function (): void {
+    // Server-side session (start/skip/end + next card). RESERVED FOR SOLO (etap
+    // III) — mobile stops calling these in P11 S3a, they are kept on purpose as
+    // the foundation of the solo game. See the SessionController docblock.
     Route::post('sessions/start', [SessionController::class, 'start']);
     Route::get('sessions/active', [SessionController::class, 'active']);
     Route::post('sessions/{session:ulid}/end', [SessionController::class, 'end']);

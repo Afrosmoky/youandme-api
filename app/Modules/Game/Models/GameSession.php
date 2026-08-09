@@ -12,6 +12,17 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
+/**
+ * One server-sequenced run through a pool of questions (state = remaining ids +
+ * where the couple is in them).
+ *
+ * RESERVED FOR SOLO (etap III) — kept deliberately, not dead code. Since P10 the
+ * couple game runs on the phone and reports afterwards, and P11 S3a stops mobile
+ * calling the session endpoints altogether, so no client creates rows here any
+ * more. The table and the model stay because the solo game needs precisely this:
+ * server-held order and position for a player the client cannot be trusted to
+ * sequence. See SessionController for the same note.
+ */
 class GameSession extends Model
 {
     /** @use HasFactory<GameSessionFactory> */

@@ -2,6 +2,7 @@
 
 use App\Modules\Catalog\Models\Category;
 use App\Modules\Catalog\Models\Question;
+use Illuminate\Support\Facades\DB;
 use Laravel\Sanctum\Sanctum;
 
 /*
@@ -19,7 +20,7 @@ test('the deck hands out the couple playable cards', function (): void {
         ->and($response->json('questions.*.ulid'))->toEqualCanonicalizing($questions->pluck('ulid')->all());
 });
 
-test('a deck card carries the same shape as a session card, minus liked', function (): void {
+test('a deck card carries the same shape as a session card', function (): void {
     $category = Category::factory()->create(['slug' => 'randka', 'name' => 'Randka']);
     Question::factory()->create([
         'category_id' => $category->id,
@@ -30,7 +31,10 @@ test('a deck card carries the same shape as a session card, minus liked', functi
 
     $card = $this->getJson('/api/v1/questions/deck')->assertOk()->json('questions.0');
 
-    expect(array_keys($card))->toBe(['ulid', 'body', 'type', 'category', 'tags', 'is_locked', 'options'])
+    // S3a: liked included, in the same place it sits on a session card. The
+    // merged screen hearts cards dealt from here, so one shape, not two.
+    expect(array_keys($card))->toBe(['ulid', 'body', 'type', 'category', 'tags', 'liked', 'is_locked', 'options'])
+        ->and($card['liked'])->toBeFalse()
         ->and($card['body'])->toBe('O czym marzycie?')
         ->and($card['type'])->toBe('session')
         ->and($card['category'])->toBe(['slug' => 'randka', 'name' => 'Randka'])
@@ -57,7 +61,7 @@ test('a choice card carries its options envelope as stored', function (): void {
     ]);
 });
 
-test('a session card still carries liked — the deck did not change /questions/next', function (): void {
+test('a session card is unchanged — the deck gaining liked did not touch /questions/next', function (): void {
     $question = Question::factory()->create();
     Sanctum::actingAs(createUserWithCouple());
 
@@ -67,6 +71,54 @@ test('a session card still carries liked — the deck did not change /questions/
 
     expect(array_keys($card))->toBe(['ulid', 'body', 'type', 'category', 'tags', 'liked', 'is_locked', 'options'])
         ->and($card['ulid'])->toBe($question->ulid);
+});
+
+test('a card the couple hearted is dealt with liked:true, the rest with false', function (): void {
+    $liked = Question::factory()->create();
+    $plain = Question::factory()->create();
+    $user = createUserWithCouple();
+    activeCoupleOf($user)->likedQuestions()->attach($liked->id, ['liked_at' => now()]);
+    Sanctum::actingAs($user);
+
+    $cards = collect($this->getJson('/api/v1/questions/deck')->assertOk()->json('questions'))
+        ->keyBy('ulid');
+
+    expect($cards[$liked->ulid]['liked'])->toBeTrue()
+        ->and($cards[$plain->ulid]['liked'])->toBeFalse();
+});
+
+test('one couple hearts do not travel to another couple deck', function (): void {
+    $question = Question::factory()->create();
+    $fan = createUserWithCouple();
+    activeCoupleOf($fan)->likedQuestions()->attach($question->id, ['liked_at' => now()]);
+
+    Sanctum::actingAs(createUserWithCouple());
+
+    $card = $this->getJson('/api/v1/questions/deck')->assertOk()->json('questions.0');
+
+    // Same sense as on /questions/next: did THIS couple heart THIS card.
+    expect($card['liked'])->toBeFalse();
+});
+
+test('the deck reads hearts once, not once per card', function (): void {
+    $questions = Question::factory()->count(20)->create();
+    $user = createUserWithCouple();
+    activeCoupleOf($user)->likedQuestions()->attach($questions[0]->id, ['liked_at' => now()]);
+    Sanctum::actingAs($user);
+
+    DB::enableQueryLog();
+    $this->getJson('/api/v1/questions/deck')->assertOk();
+    $queries = DB::getQueryLog();
+    DB::disableQueryLog();
+
+    // The N+1 line the batch resolver already holds for questions and categories:
+    // a deck of any size costs one lookup for the like state, not one per card.
+    $likeQueries = array_filter(
+        $queries,
+        fn (array $query): bool => str_contains((string) $query['query'], 'couple_question_likes'),
+    );
+
+    expect($likeQueries)->toHaveCount(1);
 });
 
 test('cards the couple has already played stay out of the deck', function (): void {

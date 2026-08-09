@@ -10,6 +10,7 @@ use App\Modules\Game\Http\Resources\SessionResource;
 use App\Modules\Game\Models\Couple;
 use App\Modules\Game\Queries\GetNextQuestionInSessionQuery;
 use App\Modules\Game\Queries\IsQuestionLikedByCoupleQuery;
+use App\Modules\Game\Queries\ListLikedQuestionUlidsForCoupleQuery;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -27,6 +28,16 @@ final class QuestionController
      */
     private const MAX_DECK_SIZE = 100;
 
+    /**
+     * GET /questions/next — one card from the couple's active server session.
+     *
+     * RESERVED FOR SOLO (etap III) — kept deliberately, not dead code. From P11
+     * S3a the merged screen runs the local game and gets its cards from
+     * /questions/deck, so mobile stops calling this. It stays because the solo
+     * game is planned on exactly this machinery: one card at a time, sequenced by
+     * the server, with no second phone to trust. Live and tested — do not remove
+     * it as "unused" together with the session lifecycle it reads from.
+     */
     public function next(Request $request): JsonResponse
     {
         $couple = Couple::findOrFail($request->user()->active_couple_id);
@@ -137,23 +148,39 @@ final class QuestionController
             ]);
         }
 
+        // Hearts for the whole deck in one lookup (S3a). The merged screen shows a
+        // heart on every card, so the deck has to carry the state the session card
+        // always carried; asking IsQuestionLikedByCoupleQuery per card would be a
+        // hundred existence checks. Flipped into a set for O(1) marking.
+        $liked = array_flip(ListLikedQuestionUlidsForCoupleQuery::run(
+            $couple,
+            array_map(fn (QuestionData $question): string => $question->ulid, $questions),
+        ));
+
         // An exhausted deck is an empty list, not an error: a couple that has
         // played everything in a category has succeeded at the game, and the
         // client shows them that rather than a failure.
         return response()->json([
-            'questions' => array_map(fn (QuestionData $question): array => $this->questionPayload($question), $questions),
+            'questions' => array_map(
+                fn (QuestionData $question): array => $this->questionPayload(
+                    $question,
+                    isset($liked[$question->ulid]),
+                ),
+                $questions,
+            ),
         ]);
     }
 
     /**
      * Reproduce the Catalog QuestionResource shape from QuestionData (byte-1:1
-     * with P3) — category trimmed to slug + name — plus, inside a session, the
-     * couple's like state (added additively; liked is a Game concern, not part of
-     * QuestionData).
+     * with P3) — category trimmed to slug + name — plus the couple's like state
+     * (added additively; liked is a Game concern, not part of QuestionData).
      *
-     * One builder for both endpoints so the card cannot drift into two shapes.
-     * The deck omits `liked` and nothing else: hearts are per couple and the
-     * client fetches them separately, while the deck is a content listing.
+     * One builder for both endpoints, and since S3a one shape: the deck carries
+     * `liked` too. P10 left it out on the grounds that a deck is a content
+     * listing and hearts are per couple — that reversed when the merged screen
+     * (P11 S3, §3.8) put a heart on every card of the local game, which is dealt
+     * from the deck and nowhere else.
      *
      * is_locked rides along for the client's "unlocked" badge. In both places it
      * reads as "this couple paid for this card": the pool only ever contains free
@@ -162,7 +189,7 @@ final class QuestionController
      *
      * @return array<string, mixed>
      */
-    private function questionPayload(QuestionData $question, ?bool $liked = null): array
+    private function questionPayload(QuestionData $question, bool $liked): array
     {
         $payload = [
             'ulid' => $question->ulid,
@@ -173,11 +200,8 @@ final class QuestionController
                 'name' => $question->category->name,
             ] : null,
             'tags' => $question->tags,
+            'liked' => $liked,
         ];
-
-        if ($liked !== null) {
-            $payload['liked'] = $liked;
-        }
 
         // Last, so /questions/next keeps the exact key order it has had since P3.
         $payload['is_locked'] = $question->isLocked;

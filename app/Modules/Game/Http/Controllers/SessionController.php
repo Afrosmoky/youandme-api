@@ -13,6 +13,17 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
+/**
+ * Server-side session lifecycle: start / active / skip-current / end.
+ *
+ * RESERVED FOR SOLO (etap III) — kept deliberately, not dead code. P11 S3 merged
+ * the couple session into the local game, so from S3a mobile stops calling these
+ * endpoints: the phone deals a deck from /questions/deck and sequences it itself.
+ * The server session survives because the solo game is planned on exactly this
+ * machinery — one card at a time, order decided server-side, state that outlives
+ * the app being closed. Nothing here is unreachable: routes, tests and the
+ * /questions/next reader stay live. Do not sweep it up as "unused".
+ */
 final class SessionController
 {
     public function start(StartSessionRequest $request): JsonResponse
