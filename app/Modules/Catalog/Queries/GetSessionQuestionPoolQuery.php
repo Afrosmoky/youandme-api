@@ -2,7 +2,7 @@
 
 namespace App\Modules\Catalog\Queries;
 
-use App\Modules\Catalog\Models\Question;
+use App\Modules\Catalog\Support\SessionQuestionPool;
 use Lorisleiva\Actions\Concerns\AsAction;
 
 /**
@@ -21,6 +21,9 @@ use Lorisleiva\Actions\Concerns\AsAction;
  * pure read and filtering there would either be dead code or yank a card out of a
  * running session. Accepted consequence: a card unlocked mid-session joins the
  * NEXT session (canon §1 row 4).
+ *
+ * The eligibility filter itself moved to SessionQuestionPool in S4a — unchanged,
+ * but now shared with the exhaustion counts, which have to agree with it.
  */
 final class GetSessionQuestionPoolQuery
 {
@@ -37,21 +40,7 @@ final class GetSessionQuestionPoolQuery
         ?string $categorySlug = null,
         ?int $limit = null,
     ): array {
-        $query = Question::query()
-            ->where('type', 'session')
-            ->where('locale', 'pl');
-
-        $query->where(function ($q) use ($unlockedQuestionIds): void {
-            $q->where('is_locked', false);
-
-            if ($unlockedQuestionIds !== []) {
-                $q->orWhereIn('id', $unlockedQuestionIds);
-            }
-        });
-
-        if ($seenQuestionIds !== []) {
-            $query->whereNotIn('id', $seenQuestionIds);
-        }
+        $query = SessionQuestionPool::playable($seenQuestionIds, $unlockedQuestionIds);
 
         if ($categorySlug !== null) {
             $query->whereHas('category', fn ($q) => $q->where('slug', $categorySlug));

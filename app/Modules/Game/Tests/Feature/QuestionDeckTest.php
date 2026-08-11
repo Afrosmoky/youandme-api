@@ -219,15 +219,245 @@ test('an exhausted deck is an empty list, not an error', function (): void {
     );
     Sanctum::actingAs($user);
 
+    // S4a: still an empty list and still a 200 — the reason rides alongside it.
     $this->getJson('/api/v1/questions/deck')
         ->assertOk()
-        ->assertExactJson(['questions' => []]);
+        ->assertExactJson([
+            'questions' => [],
+            'exhaustion' => ['reason' => 'complete', 'locked_remaining' => 0],
+        ]);
 });
 
 test('a couple with no cards at all gets an empty deck', function (): void {
     Sanctum::actingAs(createUserWithCouple());
 
-    $this->getJson('/api/v1/questions/deck')->assertOk()->assertExactJson(['questions' => []]);
+    $this->getJson('/api/v1/questions/deck')->assertOk()->assertExactJson([
+        'questions' => [],
+        'exhaustion' => ['reason' => 'complete', 'locked_remaining' => 0],
+    ]);
+});
+
+/*
+ | S4a — why the deck is empty. The client shows a different screen per reason,
+ | and the one it used to show ("pick another category") was wrong for exactly the
+ | couple that has played the most.
+ */
+
+test('a full deck carries no exhaustion key at all', function (): void {
+    Question::factory()->create();
+    Sanctum::actingAs(createUserWithCouple());
+
+    $response = $this->getJson('/api/v1/questions/deck')->assertOk();
+
+    // Additive: the contract only grows where there was nothing to say.
+    expect($response->json('questions'))->toHaveCount(1)
+        ->and($response->json())->not->toHaveKey('exhaustion');
+});
+
+test('an empty category with free cards elsewhere says other_categories', function (): void {
+    $empty = Category::factory()->create(['slug' => 'randka']);
+    $other = Category::factory()->create(['slug' => 'intymnosc']);
+    $played = Question::factory()->create(['category_id' => $empty->id]);
+    Question::factory()->count(2)->create(['category_id' => $other->id]);
+
+    $user = createUserWithCouple();
+    activeCoupleOf($user)->seenQuestions()->attach($played->id, ['seen_at' => now()]);
+    Sanctum::actingAs($user);
+
+    $this->getJson('/api/v1/questions/deck?category_slug=randka')
+        ->assertOk()
+        ->assertJsonPath('questions', [])
+        ->assertJsonPath('exhaustion.reason', 'other_categories');
+});
+
+test('other_categories wins over the unlock funnel — free cards first', function (): void {
+    $empty = Category::factory()->create(['slug' => 'randka']);
+    $other = Category::factory()->create(['slug' => 'intymnosc']);
+    Question::factory()->create(['category_id' => $other->id]);
+    Question::factory()->locked()->create(['category_id' => $empty->id]);
+
+    Sanctum::actingAs(createUserWithCouple());
+
+    // The locked card in the asked-for category is not playable, and there is a
+    // free one elsewhere: sell nothing, send them to what they own.
+    $this->getJson('/api/v1/questions/deck?category_slug=randka')
+        ->assertOk()
+        ->assertJsonPath('exhaustion.reason', 'other_categories')
+        ->assertJsonPath('exhaustion.locked_remaining', 1);
+});
+
+test('a card with no category counts as playable elsewhere', function (): void {
+    $asked = Category::factory()->create(['slug' => 'randka']);
+    $played = Question::factory()->create(['category_id' => $asked->id]);
+    Question::factory()->create(['category_id' => null]);
+
+    $user = createUserWithCouple();
+    activeCoupleOf($user)->seenQuestions()->attach($played->id, ['seen_at' => now()]);
+    Sanctum::actingAs($user);
+
+    // questions.category_id is nullable and `category_id <> ?` would drop this
+    // row, sending the couple to the unlock funnel with a free card still unplayed.
+    $this->getJson('/api/v1/questions/deck?category_slug=randka')
+        ->assertOk()
+        ->assertJsonPath('exhaustion.reason', 'other_categories');
+});
+
+test('everything playable seen, locked cards left says locked_available', function (): void {
+    $free = Question::factory()->create();
+    $bought = Question::factory()->locked()->create();
+    Question::factory()->locked()->count(3)->create();
+
+    $user = createUserWithCouple();
+    $couple = activeCoupleOf($user);
+    $couple->unlockedQuestions()->attach($bought->id, ['unlocked_at' => now(), 'source' => 'credits']);
+    $couple->seenQuestions()->attach([
+        $free->id => ['seen_at' => now()],
+        $bought->id => ['seen_at' => now()],
+    ]);
+    Sanctum::actingAs($user);
+
+    // Both the free card and the one they bought are played; three stay behind
+    // the lock. This is the funnel, not "the deck is finished".
+    $this->getJson('/api/v1/questions/deck')
+        ->assertOk()
+        ->assertJsonPath('questions', [])
+        ->assertJsonPath('exhaustion.reason', 'locked_available')
+        ->assertJsonPath('exhaustion.locked_remaining', 3);
+});
+
+test('a locked card the couple already unlocked is not counted as remaining', function (): void {
+    $free = Question::factory()->create();
+    $bought = Question::factory()->locked()->create();
+
+    $user = createUserWithCouple();
+    $couple = activeCoupleOf($user);
+    $couple->unlockedQuestions()->attach($bought->id, ['unlocked_at' => now(), 'source' => 'credits']);
+    $couple->seenQuestions()->attach([
+        $free->id => ['seen_at' => now()],
+        $bought->id => ['seen_at' => now()],
+    ]);
+    Sanctum::actingAs($user);
+
+    // Nothing to sell them: the only locked card in the deck is already theirs.
+    $this->getJson('/api/v1/questions/deck')
+        ->assertOk()
+        ->assertJsonPath('exhaustion.reason', 'complete')
+        ->assertJsonPath('exhaustion.locked_remaining', 0);
+});
+
+test('the whole deck played says complete with nothing left to unlock', function (): void {
+    $questions = Question::factory()->count(4)->create();
+
+    $user = createUserWithCouple();
+    activeCoupleOf($user)->seenQuestions()->attach(
+        $questions->mapWithKeys(fn ($q): array => [$q->id => ['seen_at' => now()]])->all()
+    );
+    Sanctum::actingAs($user);
+
+    $this->getJson('/api/v1/questions/deck')
+        ->assertOk()
+        ->assertJsonPath('exhaustion.reason', 'complete')
+        ->assertJsonPath('exhaustion.locked_remaining', 0);
+});
+
+test('an exhausted mix never says other_categories', function (): void {
+    $date = Category::factory()->create(['slug' => 'randka']);
+    $other = Category::factory()->create(['slug' => 'intymnosc']);
+    $questions = collect([
+        Question::factory()->create(['category_id' => $date->id]),
+        Question::factory()->create(['category_id' => $other->id]),
+    ]);
+
+    $user = createUserWithCouple();
+    activeCoupleOf($user)->seenQuestions()->attach(
+        $questions->mapWithKeys(fn ($q): array => [$q->id => ['seen_at' => now()]])->all()
+    );
+    Sanctum::actingAs($user);
+
+    // Mix already spans every category — "try another one" is unanswerable here,
+    // and the endpoint does not even ask the question (see GetDeckExhaustionQuery).
+    $this->getJson('/api/v1/questions/deck')
+        ->assertOk()
+        ->assertJsonPath('exhaustion.reason', 'complete');
+});
+
+test('daily cards are not counted into the exhaustion reason', function (): void {
+    $session = Question::factory()->create();
+    Question::factory()->count(2)->create(['type' => 'daily']);
+    Question::factory()->locked()->create(['type' => 'daily']);
+
+    $user = createUserWithCouple();
+    activeCoupleOf($user)->seenQuestions()->attach($session->id, ['seen_at' => now()]);
+    Sanctum::actingAs($user);
+
+    // Same pool rule as the deal: the daily loop is disjoint (P4), so it neither
+    // props up "there is more elsewhere" nor inflates the unlock funnel.
+    $this->getJson('/api/v1/questions/deck')
+        ->assertOk()
+        ->assertJsonPath('exhaustion.reason', 'complete')
+        ->assertJsonPath('exhaustion.locked_remaining', 0);
+});
+
+test('another couple progress does not change our exhaustion reason', function (): void {
+    $free = Question::factory()->create();
+    Question::factory()->locked()->create();
+
+    $busy = createUserWithCouple();
+    activeCoupleOf($busy)->seenQuestions()->attach($free->id, ['seen_at' => now()]);
+
+    $user = createUserWithCouple();
+    activeCoupleOf($user)->seenQuestions()->attach($free->id, ['seen_at' => now()]);
+    Sanctum::actingAs($user);
+
+    $this->getJson('/api/v1/questions/deck')
+        ->assertOk()
+        ->assertJsonPath('exhaustion.reason', 'locked_available')
+        ->assertJsonPath('exhaustion.locked_remaining', 1);
+});
+
+test('the exhaustion reason costs two aggregates, not a query per card', function (): void {
+    $asked = Category::factory()->create(['slug' => 'randka']);
+    Question::factory()->locked()->count(30)->create();
+    $seen = Question::factory()->count(30)->create(['category_id' => $asked->id]);
+
+    $user = createUserWithCouple();
+    activeCoupleOf($user)->seenQuestions()->attach(
+        $seen->mapWithKeys(fn ($q): array => [$q->id => ['seen_at' => now()]])->all()
+    );
+    Sanctum::actingAs($user);
+
+    DB::enableQueryLog();
+    $this->getJson('/api/v1/questions/deck?category_slug=randka&limit=100')->assertOk();
+    $queries = DB::getQueryLog();
+    DB::disableQueryLog();
+
+    $counts = array_filter(
+        $queries,
+        fn (array $query): bool => str_contains((string) $query['query'], 'count(*)')
+            && str_contains((string) $query['query'], '"questions"'),
+    );
+
+    // Two, whatever the deck size: one "elsewhere", one "behind the lock".
+    expect($counts)->toHaveCount(2);
+});
+
+test('a deck that dealt cards asks no exhaustion question at all', function (): void {
+    Question::factory()->count(3)->create();
+    Sanctum::actingAs(createUserWithCouple());
+
+    DB::enableQueryLog();
+    $this->getJson('/api/v1/questions/deck')->assertOk();
+    $queries = DB::getQueryLog();
+    DB::disableQueryLog();
+
+    $counts = array_filter(
+        $queries,
+        fn (array $query): bool => str_contains((string) $query['query'], 'count(*)')
+            && str_contains((string) $query['query'], '"questions"'),
+    );
+
+    // The normal path pays nothing for S4a.
+    expect($counts)->toBeEmpty();
 });
 
 test('the deck honours a requested limit', function (): void {

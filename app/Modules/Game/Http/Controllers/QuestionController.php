@@ -8,6 +8,7 @@ use App\Modules\Catalog\Queries\ListQuestionsByIdsQuery;
 use App\Modules\Game\Http\Requests\DeckQuestionsRequest;
 use App\Modules\Game\Http\Resources\SessionResource;
 use App\Modules\Game\Models\Couple;
+use App\Modules\Game\Queries\GetDeckExhaustionQuery;
 use App\Modules\Game\Queries\GetNextQuestionInSessionQuery;
 use App\Modules\Game\Queries\IsQuestionLikedByCoupleQuery;
 use App\Modules\Game\Queries\ListLikedQuestionUlidsForCoupleQuery;
@@ -127,10 +128,14 @@ final class QuestionController
         $limit = (int) $request->integer('limit', self::DEFAULT_DECK_SIZE);
         $limit = max(1, min($limit, self::MAX_DECK_SIZE));
 
+        // Held in a variable rather than inlined: the exhaustion reason below is
+        // answered for the same request the pool was built for, mix included.
+        $categorySlug = $request->string('category_slug')->toString() ?: null;
+
         $poolIds = GetSessionQuestionPoolQuery::run(
             $seenIds,
             $unlockedIds,
-            $request->string('category_slug')->toString() ?: null,
+            $categorySlug,
             $limit,
         );
 
@@ -160,7 +165,7 @@ final class QuestionController
         // An exhausted deck is an empty list, not an error: a couple that has
         // played everything in a category has succeeded at the game, and the
         // client shows them that rather than a failure.
-        return response()->json([
+        $payload = [
             'questions' => array_map(
                 fn (QuestionData $question): array => $this->questionPayload(
                     $question,
@@ -168,7 +173,27 @@ final class QuestionController
                 ),
                 $questions,
             ),
-        ]);
+        ];
+
+        // ...but WHICH success it is decides the screen (S4a). "Pick another
+        // category" is a lie to a couple that has played every free card, which
+        // is exactly the couple most likely to see it. Additive and only here: a
+        // deck that dealt cards answers byte-for-byte as before, and a client that
+        // does not read the key sees an empty list, same as it always did.
+        if ($questions === []) {
+            $exhaustion = GetDeckExhaustionQuery::run(
+                $seenIds,
+                $unlockedIds,
+                $categorySlug,
+            );
+
+            $payload['exhaustion'] = [
+                'reason' => $exhaustion->reason->value,
+                'locked_remaining' => $exhaustion->lockedRemaining,
+            ];
+        }
+
+        return response()->json($payload);
     }
 
     /**
