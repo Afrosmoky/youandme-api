@@ -31,6 +31,11 @@ class AuthServiceProvider extends ServiceProvider
         // we don't force a map on any other (future) morph relations.
         Relation::morphMap(['user' => User::class]);
 
+        // The two mail links (verify, reset) land on a browser page owned by this
+        // package rather than on JSON, so it loads its own views. See
+        // Resources/Views/handoff for why the mails cannot point at jaity://.
+        $this->loadViewsFrom(__DIR__.'/Resources/Views', 'auth');
+
         // Wrap in the `api` prefix + middleware group so the package routes land
         // at /api/v1/... exactly like the central routes/api.php (loaded via
         // bootstrap withRouting).

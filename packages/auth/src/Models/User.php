@@ -102,12 +102,15 @@ class User extends Authenticatable implements MustVerifyEmail
     public function sendPasswordResetNotification($token): void
     {
         $email = $this->getEmailForPasswordReset();
-        $query = 'reset-password?token='.$token.'&email='.urlencode($email);
 
-        $scheme = config('app.mobile_deep_link_scheme');
-        $url = $scheme
-            ? $scheme.'://'.$query
-            : config('app.url').'/'.$query;
+        // https, not jaity://. A custom scheme in a mail body is not reliably
+        // clickable - Gmail and Outlook render it as plain text - so the link
+        // goes to a page this backend serves, which then hands the token to the
+        // app. Same shape as the verification link, for the same reason.
+        $url = URL::route('password.reset.open', [
+            'token' => $token,
+            'email' => $email,
+        ]);
 
         PasswordResetRequested::dispatch($email, $url);
     }

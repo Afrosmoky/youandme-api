@@ -44,9 +44,12 @@ test('a valid signed link verifies the email', function (): void {
         'hash' => sha1($user->getEmailForVerification()),
     ]);
 
-    $this->getJson($url)
+    // Answers with a page, not JSON: this link is opened by a person in a
+    // browser. The button on it is what carries them into the app.
+    $this->get($url)
         ->assertOk()
-        ->assertJsonPath('verified', true);
+        ->assertSee('Konto zweryfikowane')
+        ->assertSee('jaity://email-verified');
 
     expect($user->fresh()->hasVerifiedEmail())->toBeTrue();
 });

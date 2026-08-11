@@ -61,32 +61,27 @@ test('reset with an invalid token returns 422', function (): void {
     ])->assertStatus(422);
 });
 
-test('reset request uses custom scheme deep link when configured', function (): void {
-    config(['app.mobile_deep_link_scheme' => 'jaity']);
+test('the reset mail links to the handoff page, not to the custom scheme', function (): void {
     Event::fake([PasswordResetRequested::class]);
 
     $user = User::factory()->create();
     $this->postJson('/api/v1/auth/password/forgot', ['email' => $user->email])
         ->assertOk();
 
+    // https, because a jaity:// link in a mail body is not reliably clickable.
+    // The page behind this URL is what hands the token to the app.
     Event::assertDispatched(
         PasswordResetRequested::class,
-        fn (PasswordResetRequested $e): bool => str_starts_with($e->resetUrl, 'jaity://reset-password?token=')
+        fn (PasswordResetRequested $e): bool => str_starts_with($e->resetUrl, config('app.url').'/api/v1/auth/password/reset?')
+            && str_contains($e->resetUrl, 'token=')
             && str_contains($e->resetUrl, 'email='.urlencode($user->email)),
     );
 });
 
-test('reset request falls back to web URL when scheme is empty', function (): void {
-    config(['app.mobile_deep_link_scheme' => null]);
-    Event::fake([PasswordResetRequested::class]);
-
-    $user = User::factory()->create();
-    $this->postJson('/api/v1/auth/password/forgot', ['email' => $user->email])
-        ->assertOk();
-
-    Event::assertDispatched(
-        PasswordResetRequested::class,
-        fn (PasswordResetRequested $e): bool => str_starts_with($e->resetUrl, config('app.url').'/reset-password?token=')
-            && str_contains($e->resetUrl, 'email='.urlencode($user->email)),
-    );
+test('the handoff page carries the token into the app', function (): void {
+    $this->get('/api/v1/auth/password/reset?token=abc123&email=ola%40example.com')
+        ->assertOk()
+        // escape: false - assertSee escapes what it is given, and the href in the
+        // page is already HTML-escaped by Blade.
+        ->assertSee('jaity://reset-password?token=abc123&amp;email=ola%40example.com', false);
 });

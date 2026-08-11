@@ -21,6 +21,13 @@ Route::prefix('v1')->group(function (): void {
         ->middleware('throttle:3,1');
     Route::post('auth/password/reset', [PasswordResetController::class, 'reset']);
 
+    // Where the reset mail points. Same path as the POST above, different verb:
+    // this one renders the page that hands the token to the app, the POST is the
+    // reset itself. The mail cannot link jaity:// directly - see the handoff
+    // view - so the token travels through here.
+    Route::get('auth/password/reset', [PasswordResetController::class, 'open'])
+        ->name('password.reset.open');
+
     // Clicked from the verification email; protected by the URL signature
     // (no bearer token available at this point), not by auth:sanctum.
     Route::get('auth/email/verify/{id}/{hash}', [EmailVerificationController::class, 'verify'])
