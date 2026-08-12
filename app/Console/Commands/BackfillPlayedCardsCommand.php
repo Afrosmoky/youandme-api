@@ -34,7 +34,16 @@ use Illuminate\Database\Eloquent\Collection;
  *
  * Idempotent twice over — the played set has a composite primary key and the
  * milestone register has one too, so both writes are ON CONFLICT DO NOTHING. Not
- * scheduled: this is a migration step, run by hand once.
+ * scheduled: it is run by hand, when something outside the live path has moved.
+ *
+ * Two occasions so far. The P10 migration above is the first. The second is a
+ * change to the milestone thresholds: lowering one earns couples stages they
+ * already have the cards for, and nothing hands those out on its own — the
+ * listener only fires on a played card and GET /progress is a pure read that
+ * records nothing (CQS). Until their next card those couples would see a map
+ * behind the dictionary. Phase two settles them; phase one finds nothing new and
+ * costs a query per couple, which is why this stays one command rather than two
+ * that would drift.
  */
 class BackfillPlayedCardsCommand extends Command
 {
