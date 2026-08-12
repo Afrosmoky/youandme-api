@@ -37,17 +37,30 @@ test('another user devices are left alone', function (): void {
     SendPushAction::run(PUSH_USER, pushMessage());
 });
 
-test('the platform filter keeps iOS devices out while APNs is missing', function (): void {
+test('both platforms are addressed when no filter is asked for', function (): void {
     RegisterDeviceTokenAction::run(PUSH_USER, 'android-phone', 'android');
     RegisterDeviceTokenAction::run(PUSH_USER, 'iphone', 'ios');
 
     $this->mock(PushSenderInterface::class, function (MockInterface $mock): void {
         $mock->shouldReceive('send')->once()->with('android-phone', Mockery::any())->andReturnTrue();
+        $mock->shouldReceive('send')->once()->with('iphone', Mockery::any())->andReturnTrue();
     });
 
-    // The iOS token is stored (it will work the day APNs is configured) but is
-    // not sent to today.
-    expect(SendPushAction::run(PUSH_USER, pushMessage(), platform: 'android'))->toBe(1);
+    // The default since T11 (#24), and the one every caller uses: having
+    // registered a token is the whole condition, the platform column decides
+    // nothing.
+    expect(SendPushAction::run(PUSH_USER, pushMessage()))->toBe(2);
+});
+
+test('the optional platform filter still narrows the fan-out when a caller asks', function (): void {
+    RegisterDeviceTokenAction::run(PUSH_USER, 'android-phone', 'android');
+    RegisterDeviceTokenAction::run(PUSH_USER, 'iphone', 'ios');
+
+    $this->mock(PushSenderInterface::class, function (MockInterface $mock): void {
+        $mock->shouldReceive('send')->once()->with('iphone', Mockery::any())->andReturnTrue();
+    });
+
+    expect(SendPushAction::run(PUSH_USER, pushMessage(), platform: 'ios'))->toBe(1);
 });
 
 test('a user with no device is silence, not an error', function (): void {

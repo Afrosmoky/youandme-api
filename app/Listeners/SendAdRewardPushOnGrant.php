@@ -17,15 +17,14 @@ use Youandme\Notifications\Data\PushMessageData;
  * holding plain ids, and resolving one to an addressable identity is cross-module
  * work that belongs here.
  *
- * Android only in P7: iOS push needs an APNs key from an Apple developer account
- * (T11). The filter sits here rather than in the package because it is a project
- * schedule decision, not a property of the channel. iOS users still see the
- * credit — the client refetches the balance on focus.
+ * Both platforms since T11 (#24). P7 pushed to Android only because iOS needed an
+ * APNs key from an Apple developer account; the key is in Firebase now, so the
+ * filter is dropped and every device the user registered hears it. iOS users saw
+ * the credit even then — the client refetches the balance on focus — which is why
+ * this was a delay and never a hole.
  */
 final class SendAdRewardPushOnGrant
 {
-    private const ANDROID = 'android';
-
     public function handle(AdRewardGranted $event): void
     {
         // The payload carries an internal id; turning it into an addressable ulid
@@ -46,7 +45,6 @@ final class SendAdRewardPushOnGrant
                     'amount' => (string) $event->data->amount,
                 ],
             ),
-            platform: self::ANDROID,
         );
     }
 }

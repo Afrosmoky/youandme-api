@@ -230,12 +230,15 @@ test('a couple without a registered device is silence, not a failure', function 
     $this->artisan('memories:notify-anniversaries')->assertSuccessful();
 });
 
-test('an iOS-only couple hears nothing until APNs exists', function (): void {
+test('an iOS couple is told as well', function (): void {
     $user = coupleWithPhone('Europe/Warsaw', 'iphone-token', 'ios');
     memoryAnsweredAt($user, '2026-05-20 12:00', 'Europe/Warsaw');
     atLocalTime('2027-05-20 18:15', 'Europe/Warsaw');
 
-    expectSilence();
+    // Since T11 (#24) the run no longer filters to Android; a registered token is
+    // the whole condition.
+    expectPush(fn (string $token, PushMessageData $message): bool => $token === 'iphone-token'
+        && $message->data['type'] === 'memory_anniversary');
 
     $this->artisan('memories:notify-anniversaries')->assertSuccessful();
 });

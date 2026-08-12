@@ -98,14 +98,17 @@ test('a user without a registered device still gets the credit', function (): vo
     expect(creditsOfCouple($coupleId))->toBe(1);
 });
 
-test('an iOS-only user gets the credit and no push', function (): void {
+test('an iOS user is pushed too, and every device of a mixed pair hears it', function (): void {
     $user = createUserWithCouple();
     $coupleId = activeCoupleOf($user)->id;
     RegisterDeviceTokenAction::run($user->ulid, 'iphone-token', 'ios');
+    RegisterDeviceTokenAction::run($user->ulid, 'android-token', 'android');
 
     $this->mock(PushSenderInterface::class, function (MockInterface $mock): void {
-        // Android-first: APNs is not configured, so iOS hears nothing until T11.
-        $mock->shouldNotReceive('send');
+        // T11 (#24): APNs is configured, so the Android-only filter is gone and a
+        // phone hears about its credit whichever platform it runs.
+        $mock->shouldReceive('send')->once()->with('iphone-token', Mockery::any())->andReturnTrue();
+        $mock->shouldReceive('send')->once()->with('android-token', Mockery::any())->andReturnTrue();
     });
 
     $this->get(ssvCallbackFor(IssueAdRewardNonceAction::run($coupleId, $user->id)))->assertOk();

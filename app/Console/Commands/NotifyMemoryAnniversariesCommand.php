@@ -48,13 +48,6 @@ class NotifyMemoryAnniversariesCommand extends Command
     private const LOCAL_HOUR = 18;
 
     /**
-     * Android only, exactly as in P7: iOS push waits for an APNs key (T11). The
-     * filter is a project-schedule decision, so it lives with the caller and not
-     * inside the Notifications package.
-     */
-    private const ANDROID = 'android';
-
-    /**
      * Long enough to outlive the local day it guards (a day can stretch to 25 hours
      * when the clocks go back), short enough to disappear on its own.
      */
@@ -128,9 +121,10 @@ class NotifyMemoryAnniversariesCommand extends Command
     }
 
     /**
-     * Fan-out: one couple, up to two members, every device each of them registered.
-     * Notifications never learns any of this — it is handed a user ulid and a
-     * message, as values.
+     * Fan-out: one couple, up to two members, every device each of them registered
+     * — on either platform since T11 (#24), when the APNs key landed and the
+     * Android-only filter this command used to pass was dropped. Notifications
+     * never learns any of this: it is handed a user ulid and a message, as values.
      */
     private function push(Couple $couple, PushMessageData $message): void
     {
@@ -139,7 +133,7 @@ class NotifyMemoryAnniversariesCommand extends Command
                 continue;
             }
 
-            SendPushAction::run($member->ulid, $message, platform: self::ANDROID);
+            SendPushAction::run($member->ulid, $message);
         }
     }
 

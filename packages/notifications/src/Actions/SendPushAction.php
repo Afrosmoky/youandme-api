@@ -13,10 +13,15 @@ use Youandme\Notifications\Support\PushSenderInterface;
  * A user with no registered device is silence, not an error — most users never
  * grant the permission, and the in-app refetch covers them anyway.
  *
- * The optional platform filter exists so a CALLER can express "Android only"
- * without that policy leaking into the package: iOS push is gated on an APNs key
- * (Apple account, T11), so P7 sends to Android and the app layer is where that
- * decision is written down.
+ * Every registered device, on any platform, since T11 (#24): the APNs key is in
+ * Firebase and the app carries the Push capability, so the Android-only gate the
+ * callers used to pass is gone. Recipients are the rows in device_tokens, which
+ * is the same as saying "devices that registered a token" — registration is what
+ * decides, not the platform column.
+ *
+ * The optional platform filter stays as an affordance for a CALLER that has to
+ * address one platform (a channel outage, copy only one client can render). No
+ * caller passes it today, and no policy about platforms lives in this package.
  */
 final class SendPushAction
 {
