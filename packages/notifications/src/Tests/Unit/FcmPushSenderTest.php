@@ -79,11 +79,54 @@ test('a push is exchanged for a token and delivered as a data message', function
             // The project comes out of the key file, not from a second setting.
             && str_contains($request->url(), 'projects/ja-i-ty-mobile/messages:send')
             && $message['token'] === 'device-token'
-            // Data-only: notifee renders it, so no notification block is sent.
+            // No top-level notification block: it would make the Android SDK
+            // render, on top of what notifee already draws from the data.
             && ! isset($message['notification'])
             && $message['data']['title'] === 'Kredyt'
             && $message['data']['type'] === 'ad_reward_granted'
             && $message['android']['priority'] === 'HIGH';
+    });
+});
+
+test('iOS gets an APNs alert with the same copy, and the data payload travels with it', function (): void {
+    configureFcm();
+    fakeGoogle();
+
+    $message = new PushMessageData(
+        title: 'Rok temu',
+        body: 'Wspomnienie sprzed roku czeka.',
+        data: ['type' => 'memory_anniversary', 'memory_ulid' => '01JQZZZZZZZZZZZZZZZZZZZZZA', 'years' => '1'],
+    );
+
+    expect((new FcmPushSender)->send('iphone-token', $message))->toBeTrue();
+
+    Http::assertSent(function ($request): bool {
+        if (! str_contains($request->url(), 'fcm.googleapis.com')) {
+            return false;
+        }
+
+        $sent = $request['message'];
+
+        // The alert iOS draws itself, built from the same title and body notifee
+        // renders on Android.
+        $alertIsTheSameCopy = $sent['apns']['payload']['aps']['alert']['title'] === 'Rok temu'
+            && $sent['apns']['payload']['aps']['alert']['body'] === 'Wspomnienie sprzed roku czeka.'
+            && $sent['apns']['headers']['apns-push-type'] === 'alert'
+            && $sent['apns']['headers']['apns-priority'] === '10';
+
+        // Still sent as data as well: this is what the tap routes on, and losing
+        // it would leave iOS with a notification that opens nothing in particular.
+        $payloadRidesAlong = $sent['data']['type'] === 'memory_anniversary'
+            && $sent['data']['memory_ulid'] === '01JQZZZZZZZZZZZZZZZZZZZZZA'
+            && $sent['data']['years'] === '1'
+            && $sent['data']['title'] === 'Rok temu';
+
+        // Android is untouched by any of it: data-only, high priority, and no
+        // notification block that would double up with notifee.
+        $androidIsUnchanged = $sent['android'] === ['priority' => 'HIGH']
+            && ! isset($sent['notification']);
+
+        return $alertIsTheSameCopy && $payloadRidesAlong && $androidIsUnchanged;
     });
 });
 

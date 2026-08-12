@@ -21,9 +21,20 @@ use Youandme\Notifications\Data\PushMessageData;
  * services.fcm.credentials), not from three env values: a PEM private key does
  * not belong in .env, and the file is gitignored under storage/.
  *
- * Data-only messages, deliberately: the client renders the notification itself
- * with notifee, which keeps one code path for local and remote notifications and
- * lets the app decide what to do while it is in the foreground.
+ * One message, two renderers. Android stays data-only and notifee draws the
+ * notification on the device, which keeps one code path for local and remote
+ * notifications and lets the app decide what to do in the foreground. iOS cannot
+ * have that: a data-only message does not wake the app there, so an APNs alert
+ * carries the same title and body and the system draws it. Both blocks are built
+ * from the same PushMessageData — the copy has one source, whoever renders it.
+ *
+ * There is deliberately no top-level notification block. FCM would hand it to the
+ * Android SDK to display, and notifee would display it again from the data — the
+ * platform-specific apns block is precisely how iOS gets an alert without that.
+ *
+ * The data payload rides along on both platforms: Android reads it to render,
+ * iOS ignores it while drawing but gets it back on the tap, which is what the
+ * client routes on (memory ulid, type).
  *
  * Nothing here throws. Missing configuration, an expired key, a dead network —
  * all logged and reported as "not delivered", because the caller is usually a
@@ -60,16 +71,7 @@ final class FcmPushSender implements PushSenderInterface
             $response = Http::withToken($accessToken)
                 ->timeout(10)
                 ->post("https://fcm.googleapis.com/v1/projects/{$credentials['project_id']}/messages:send", [
-                    'message' => [
-                        'token' => $deviceToken,
-                        // Title and body travel as data too — notifee builds the
-                        // notification from them on the device.
-                        'data' => [
-                            'title' => $message->title,
-                            'body' => $message->body,
-                        ] + $message->data,
-                        'android' => ['priority' => 'HIGH'],
-                    ],
+                    'message' => $this->messageFor($deviceToken, $message),
                 ]);
         } catch (Throwable $exception) {
             Log::warning('FCM push failed', ['error' => $exception->getMessage()]);
@@ -87,6 +89,42 @@ final class FcmPushSender implements PushSenderInterface
         }
 
         return true;
+    }
+
+    /**
+     * The FCM v1 message: one copy, addressed to both renderers.
+     *
+     * @return array<string, mixed>
+     */
+    private function messageFor(string $deviceToken, PushMessageData $message): array
+    {
+        return [
+            'token' => $deviceToken,
+            // Title and body travel as data too — notifee builds the notification
+            // from them on Android, and the tap payload needs the rest anyway.
+            'data' => [
+                'title' => $message->title,
+                'body' => $message->body,
+            ] + $message->data,
+            'android' => ['priority' => 'HIGH'],
+            'apns' => [
+                // alert, not background: a background push is throttled by iOS and
+                // never arrives at all with the app force-quit, and these messages
+                // (an anniversary, a credit earned) have to be seen.
+                'headers' => [
+                    'apns-push-type' => 'alert',
+                    'apns-priority' => '10',
+                ],
+                'payload' => [
+                    'aps' => [
+                        'alert' => [
+                            'title' => $message->title,
+                            'body' => $message->body,
+                        ],
+                    ],
+                ],
+            ],
+        ];
     }
 
     /**
