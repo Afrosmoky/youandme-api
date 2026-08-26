@@ -130,7 +130,7 @@
 </header>
 
 <!-- ===== CZYM JEST ===== -->
-<section id="czym-jest" class="py-24 sm:py-32 px-6">
+<section id="czym-jest" class="py-12 sm:py-16 px-6">
     <div class="max-w-5xl mx-auto">
         <h2 class="reveal font-headline text-gold text-3xl sm:text-[40px] text-center mb-4">Mały rytuał. Codziennie.</h2>
         <p class="reveal reveal-d1 text-center text-sand max-w-2xl mx-auto mb-16 text-lg">
@@ -166,7 +166,7 @@
 </section>
 
 <!-- ===== CO DOSTAJĄ TESTERZY ===== -->
-<section class="py-24 sm:py-32 px-6 bg-gradient-to-b from-ink via-wineDeep to-ink">
+<section class="py-12 sm:py-16 px-6 bg-gradient-to-b from-ink via-wineDeep to-ink">
     <div class="max-w-4xl mx-auto">
         <div class="reveal flex items-center justify-center gap-4 mb-4">
             <span class="h-px w-12 bg-wine"></span>
@@ -205,8 +205,28 @@
     </div>
 </section>
 
+<!-- ===== GRUPA IG ===== -->
+<section class="py-12 sm:py-16 px-6 border-t border-gold/10">
+    <div class="max-w-4xl mx-auto grid sm:grid-cols-2 gap-12 items-center">
+        <div class="reveal text-center sm:text-left order-2 sm:order-1">
+            <h2 class="font-headline text-gold text-3xl sm:text-[40px] mb-5">Dołączcie do grupy testerów</h2>
+            <p class="text-sand text-lg leading-relaxed mb-4">
+                Prowadzimy grupę testerów na Instagramie — wrzucamy tam nowości, pomagamy przy instalacji
+                i pokazujemy kulisy bety. Zeskanujcie kod telefonem, żeby dołączyć do czatu.
+            </p>
+            <p class="text-sand/70 text-sm">Zeskanuj aparatem albo w aplikacji Instagram.</p>
+        </div>
+        <div class="reveal reveal-d1 flex justify-center order-1 sm:order-2">
+            <img src="/storage/qr-testerzy.png"
+                 alt="Kod QR — grupa testerów Ja i Ty na Instagramie"
+                 width="387" height="621" loading="lazy"
+                 class="w-[240px] sm:w-[260px] max-w-full rounded-xl border border-gold/20 shadow-[0_0_40px_rgba(212,175,55,0.15)]">
+        </div>
+    </div>
+</section>
+
 <!-- ===== FORMULARZ ===== -->
-<section id="zapisy" class="py-24 sm:py-32 px-6">
+<section id="zapisy" class="py-12 sm:py-16 px-6">
     <div class="max-w-xl mx-auto">
         <h2 class="reveal font-headline text-gold text-3xl sm:text-[40px] text-center mb-4">Zostańcie testerami</h2>
         <p class="reveal reveal-d1 text-center text-sand mb-12 text-lg">
@@ -230,6 +250,18 @@
                         focus:outline-none focus:border-gold transition-colors"
                        placeholder="adres@email.pl">
                 <p id="email-error" class="hidden text-wine text-sm mt-2 brightness-[2.2]">Podaj poprawny adres e-mail.</p>
+            </div>
+
+            <div>
+                <label for="f-device" class="block text-sm tracking-wider uppercase text-sand mb-2">Jakiego telefonu używacie? <span class="text-gold">*</span></label>
+                <select id="f-device" name="device" required
+                        class="w-full bg-inkSoft border border-gold/25 rounded-sm px-4 py-3 text-cream
+                         focus:outline-none focus:border-gold transition-colors">
+                    <option value="">— wybierz —</option>
+                    <option>Android</option>
+                    <option>iPhone (iOS)</option>
+                </select>
+                <p id="device-error" class="hidden text-wine text-sm mt-2 brightness-[2.2]">Wybierz system telefonu.</p>
             </div>
 
             <div>
@@ -266,21 +298,47 @@
                 <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
             <h3 class="font-headline text-gold text-3xl mb-4">Jesteście na liście.</h3>
-            <p class="text-cream/85 text-lg leading-relaxed max-w-md mx-auto">
-                Dziękujemy! Wysłaliśmy wam maila z potwierdzeniem.
-                Odezwiemy się przed startem zamkniętej bety —
-                a tymczasem pochwalcie się drugiej połówce.
-            </p>
-            <p class="text-sand text-sm mt-5 max-w-md mx-auto">
-                Nie widzisz maila? Zajrzyj do folderu spam i&nbsp;przeciągnij wiadomość
-                do odebranych — kolejne na pewno do was trafią.
-            </p>
+            <!-- domyślny / Android: mail w ciągu 24h -->
+            <div id="success-default">
+                <p class="text-cream/85 text-lg leading-relaxed max-w-md mx-auto">
+                    Dziękujemy! W&nbsp;ciągu 24&nbsp;godzin wyślemy na Wasz adres e-mail
+                    zaproszenie do&nbsp;testów wraz z&nbsp;instrukcją krok po&nbsp;kroku —
+                    jak pobrać i&nbsp;uruchomić aplikację.
+                </p>
+                <p class="text-sand text-sm mt-5 max-w-md mx-auto">
+                    Nie widzicie wiadomości? Zajrzyjcie do&nbsp;folderu spam i&nbsp;przeciągnijcie ją
+                    do&nbsp;odebranych — dzięki temu kolejne na&nbsp;pewno do&nbsp;Was trafią.
+                </p>
+            </div>
+
+            <!-- iPhone: od razu instalacja przez TestFlight -->
+            <div id="success-ios" class="hidden max-w-md mx-auto text-left">
+                <p class="text-cream/85 text-lg leading-relaxed text-center mb-6">
+                    Macie iPhone? Nie musicie czekać na maila — zainstalujcie od&nbsp;razu przez TestFlight.
+                </p>
+                <div class="text-sand text-[15px] leading-relaxed space-y-3 mb-7">
+                    <p><span class="text-gold font-bold">1.</span> Kliknijcie przycisk poniżej <b class="text-cream">na iPhonie</b>.</p>
+                    <p><span class="text-gold font-bold">2.</span> Jeśli nie macie aplikacji <b class="text-cream">TestFlight</b>, App&nbsp;Store zaproponuje jej instalację — zainstalujcie.</p>
+                    <p><span class="text-gold font-bold">3.</span> W&nbsp;TestFlight przy „Ja i Ty" kliknijcie <b class="text-cream">„Zainstaluj"</b>.</p>
+                    <p><span class="text-gold font-bold">4.</span> Otwórzcie aplikację i&nbsp;załóżcie konto.</p>
+                </div>
+                <div class="text-center">
+                    <a href="https://testflight.apple.com/join/4TBdgSgj" target="_blank" rel="noopener"
+                       class="inline-block bg-gold text-ink font-bold text-lg px-10 py-4 rounded-sm tracking-wide
+                          transition-all duration-300 hover:bg-goldLight hover:shadow-[0_0_30px_rgba(212,175,55,0.35)]">
+                        Zainstaluj przez TestFlight
+                    </a>
+                </div>
+                <p class="text-sand/70 text-sm text-center mt-4">
+                    Coś nie działa? Napiszcie na <a href="mailto:kontakt@jaity.app" class="text-gold">kontakt@jaity.app</a>.
+                </p>
+            </div>
         </div>
     </div>
 </section>
 
 <!-- ===== TIMELINE ===== -->
-<section class="py-24 px-6 border-t border-gold/10">
+<section class="py-12 px-6 border-t border-gold/10">
     <div class="max-w-4xl mx-auto">
         <h2 class="reveal font-headline text-gold text-3xl sm:text-[40px] text-center mb-16">Co dalej?</h2>
 
@@ -309,7 +367,7 @@
 </section>
 
 <!-- ===== STOPKA ===== -->
-<footer class="py-14 px-6 border-t border-gold/10 bg-gradient-to-b from-ink to-wineDeep">
+<footer class="py-7 px-6 border-t border-gold/10 bg-gradient-to-b from-ink to-wineDeep">
     <div class="max-w-4xl mx-auto flex flex-col items-center gap-6 text-center">
         <span class="font-headline text-2xl text-gold">Ja&nbsp;i&nbsp;Ty</span>
 
@@ -319,7 +377,7 @@
             <span class="w-1 h-1 rounded-full bg-wine"></span>
             <a href="#" class="text-sand hover:text-goldLight transition-colors text-sm tracking-wider uppercase">TikTok</a>
             <span class="w-1 h-1 rounded-full bg-wine"></span>
-            <a href="mailto:hello@jaity.app" class="text-sand hover:text-goldLight transition-colors text-sm tracking-wider uppercase">hello@jaity.app</a>
+            <a href="mailto:kontakt@jaity.app" class="text-sand hover:text-goldLight transition-colors text-sm tracking-wider uppercase">kontakt@jaity.app</a>
         </div>
 
         <p class="text-sand/60 text-sm">Startup w budowie — tworzony przez dwoje ludzi: programistę i&nbsp;studentkę psychologii.</p>
@@ -331,9 +389,11 @@
     /* ============================================================
        KONFIGURACJA FORMULARZA — Google Forms (ukryty POST)
        ------------------------------------------------------------
-       1. Wiktoria tworzy Google Form z 3 pytaniami typu
-          "krótka odpowiedź" (NIE włączać "Zbieraj adresy e-mail",
-          NIE wymagać logowania, NIE limitować do 1 odpowiedzi).
+       1. Google Form z 4 pytaniami: imię, e-mail, długość związku
+          (krótka odpowiedź) + "Jakiego telefonu używacie?"
+          (jednokrotny wybór: Android / iPhone (iOS)).
+          NIE włączać "Zbieraj adresy e-mail", NIE wymagać logowania,
+          NIE limitować do 1 odpowiedzi.
        2. Otwórz formularz → ⋮ → "Pobierz wstępnie wypełniony link"
           → wypełnij wszystkie pola → skopiuj link.
        3. Z linku wyciągnij: adres (zamień /viewform na /formResponse)
@@ -345,7 +405,8 @@
         fields: {
             name: 'entry.390699125',
             email: 'entry.865627962',
-            duration: 'entry.615215330'
+            duration: 'entry.615215330',
+            device: 'entry.858243804'
         }
     };
 
@@ -365,6 +426,8 @@
     const successBox = document.getElementById('form-success');
     const emailInput = document.getElementById('f-email');
     const emailError = document.getElementById('email-error');
+    const deviceInput = document.getElementById('f-device');
+    const deviceError = document.getElementById('device-error');
     const submitBtn = document.getElementById('f-submit');
 
     form.addEventListener('submit', async (e) => {
@@ -382,6 +445,14 @@
         }
         emailError.classList.add('hidden');
 
+        // telefon wymagany — steruje instrukcją, którą dostaną w mailu
+        if (!deviceInput.value) {
+            deviceError.classList.remove('hidden');
+            deviceInput.focus();
+            return;
+        }
+        deviceError.classList.add('hidden');
+
         submitBtn.disabled = true;
         submitBtn.textContent = 'Zapisujemy…';
 
@@ -392,12 +463,19 @@
             data.append(FORM_CONFIG.fields.name, document.getElementById('f-name').value.trim());
             data.append(FORM_CONFIG.fields.email, email);
             data.append(FORM_CONFIG.fields.duration, document.getElementById('f-duration').value);
+            data.append(FORM_CONFIG.fields.device, deviceInput.value);
             try {
                 await fetch(FORM_CONFIG.action, { method: 'POST', mode: 'no-cors', body: data });
             } catch (err) {
                 // no-cors i tak nie daje odczytu odpowiedzi; błędy sieci ignorujemy świadomie
                 console.error('Błąd wysyłki:', err);
             }
+        }
+
+        // iPhone → pokaż od razu instalację przez TestFlight; reszta → mail w 24h
+        if (deviceInput.value === 'iPhone (iOS)') {
+            document.getElementById('success-default').classList.add('hidden');
+            document.getElementById('success-ios').classList.remove('hidden');
         }
 
         form.classList.add('hidden');
@@ -409,4 +487,3 @@
 </script>
 </body>
 </html>
-
