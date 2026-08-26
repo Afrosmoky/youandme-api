@@ -25,6 +25,9 @@ class Question extends Model
 
     /** @var list<string> */
     protected $fillable = [
+        // Identity in the seed file (q001/d001…). Fillable so the seeders can key
+        // on it; null for anything not born of a seed file.
+        'seed_key',
         'body',
         'type',
         'locale',

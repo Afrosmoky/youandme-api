@@ -2,6 +2,7 @@
 
 namespace App\Modules\Catalog;
 
+use App\Modules\Catalog\Console\Commands\AssignSeedKeysCommand;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 
@@ -9,7 +10,9 @@ class CatalogServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
-        //
+        $this->commands([
+            AssignSeedKeysCommand::class,
+        ]);
     }
 
     public function boot(): void

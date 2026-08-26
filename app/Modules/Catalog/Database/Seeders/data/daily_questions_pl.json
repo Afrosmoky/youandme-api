@@ -1,302 +1,402 @@
 [
-  {
-    "body": "Co sprawiło, że na waszych twarzach pojawił się dziś uśmiech?"
-  },
-  {
-    "body": "Jaka pozytywna myśl mogłaby być mottem dzisiejszego dnia?"
-  },
-  {
-    "body": "Czego dziś potrzebujecie najbardziej: odpoczynku, rozmowy czy przytulenia?"
-  },
-  {
-    "body": "Jaka rzecz związana z partnerem potrafi cię rozbawić?"
-  },
-  {
-    "body": "Co z tego, co zrobił dziś partner, wymagało wysiłku godnego pochwały?"
-  },
-  {
-    "body": "Jaka wiadomość od partnera mogłaby sprawić, że twój dzień stałby się lepszy?"
-  },
-  {
-    "body": "Co dziś w twoim partnerze wydaje się szczególnie atrakcyjne?"
-  },
-  {
-    "body": "Którą porę dnia można byłoby nazwać „waszym czasem”?"
-  },
-  {
-    "body": "Czy mały gest, np. komplement ze strony partnera, jest w stanie poprawić twój nastrój?"
-  },
-  {
-    "body": "W jakie dowolne miejsce chciałbyś/chciałabyś przenieść się z partnerem w trudnych momentach? (Wyobraźcie sobie wspólnie to miejsce)."
-  },
-  {
-    "body": "Jaka wspólna aktywność sprawia, że wasz dzień staje się lepszy?"
-  },
-  {
-    "body": "Czego dawno nie mówiłeś/mówiłaś partnerowi, a czym chciałbyś/chciałabyś podzielić się dzisiaj?"
-  },
-  {
-    "body": "Co dzisiaj mogłoby sprawić, że poczułbyś/poczułabyś większą bliskość?"
-  },
-  {
-    "body": "Jaką rzecz można uznać za wasz wspólny, mały sukces?"
-  },
-  {
-    "body": "Dokończcie zdanie: „Zależy mi na tobie, dlatego trudno mi, gdy…”"
-  },
-  {
-    "body": "Dokończcie zdanie: „Myśl o tobie sprawia, że…”"
-  },
-  {
-    "body": "Które wspólne wspomnienie mogłoby zostać sceną z filmu?"
-  },
-  {
-    "body": "Za co najbardziej cenisz dziś partnera?"
-  },
-  {
-    "body": "Jaka wasza wspólna przyjemność jest lub mogłaby stać się rytuałem w waszym związku?"
-  },
-  {
-    "body": "Jakie zdanie partnera bywa motywacją do działania?"
-  },
-  {
-    "body": "Do jakiego momentu z dzisiejszego dnia moglibyście wrócić?"
-  },
-  {
-    "body": "Jaka jest wasza „supermoc”, dzięki której możecie radzić sobie z wyzwaniami?"
-  },
-  {
-    "body": "Jaka mała rzecz związana z partnerem najbardziej poprawia twój poranek?"
-  },
-  {
-    "body": "Jaka cecha partnera byłaby tak samo atrakcyjna za 20 lat?"
-  },
-  {
-    "body": "Co dziś sprawiło, że jesteście jeszcze bliżej niż wczoraj?"
-  },
-  {
-    "body": "Jaka sytuacja z waszego związku może stanowić zabawną anegdotę?"
-  },
-  {
-    "body": "W jaki sposób starasz się wspierać partnera po ciężkim dniu?"
-  },
-  {
-    "body": "Dokończcie zdanie: „Gdy źle się czujesz, chcę…”"
-  },
-  {
-    "body": "Jaka niepisana zasada w waszym związku jest pomocna w codzienności?"
-  },
-  {
-    "body": "Jakie hasło lub zdanie wypowiedziane przez partnera pomaga ci się uspokoić i odetchnąć?"
-  },
-  {
-    "body": "Jakie zachowanie partnera pozytywnie cię zaskoczyło?"
-  },
-  {
-    "body": "Jakie zachowanie partnera sprawia, że czujesz się bezpiecznie?"
-  },
-  {
-    "body": "Za co możesz dziś podziękować partnerowi?"
-  },
-  {
-    "body": "Po czym poznałbyś/poznałabyś partnera, słysząc, a nie widząc go?"
-  },
-  {
-    "body": "Co jest waszym komfortowym sposobem na odpoczynek, do którego lubisz wracać?"
-  },
-  {
-    "body": "W jaki sposób najbardziej lubisz okazywać czułość partnerowi?"
-  },
-  {
-    "body": "W czym jesteście wyjątkowo zgodni?"
-  },
-  {
-    "body": "Jakie jedzenie lub napój może poprawić wam nastrój?"
-  },
-  {
-    "body": "Jaka muzyka wprawia was w pozytywne emocje?"
-  },
-  {
-    "body": "Co sprawia, że masz większą ochotę na czas spędzony z partnerem?"
-  },
-  {
-    "body": "Dokończcie zdanie: „Rzeczą, którą uwielbiałem/uwielbiałam w tobie na początku i uwielbiam dziś, jest…”"
-  },
-  {
-    "body": "Dokończcie zdanie: „Nikt nie może z tobą konkurować, bo…”"
-  },
-  {
-    "body": "Dokończcie zdanie: „Nawet gdy się z tobą nie zgadzam, doceniam, że…”"
-  },
-  {
-    "body": "Co dziś zrobilibyście wspólnie, gdyby jutra miało nie być?"
-  },
-  {
-    "body": "Jaką rolę partnera doceniasz w związku? (np. odpowiedzialność za określone obowiązki, przejmowanie inicjatywy)."
-  },
-  {
-    "body": "Jakie zachowanie partnera sprawia, że czujesz się kochany/kochana?"
-  },
-  {
-    "body": "Czego nauczył cię wasz związek?"
-  },
-  {
-    "body": "Co dzisiaj nie jest już przeszkodą?"
-  },
-  {
-    "body": "Gdybyś nie miał/miała dziś żadnych ograniczeń, jak spędziłbyś/spędziłabyś resztę dnia z partnerem?"
-  },
-  {
-    "body": "Po czym można poznać wspólnie spędzony dzień za udany?"
-  },
-  {
-    "body": "Dokończcie zdanie: „Jesteś dla mnie ważny/ważna, dlatego chcę…”"
-  },
-  {
-    "body": "Jakie zachowanie partnera sprawia, że trudne rzeczy wydają się łatwiejsze?"
-  },
-  {
-    "body": "Jak wyglądałby idealny wspólny wieczór?"
-  },
-  {
-    "body": "Co dzisiaj mogłoby sprawić, że poczujesz większą więź z partnerem?"
-  },
-  {
-    "body": "Dokończcie zdanie: „Moim wyrazem miłości do ciebie jest…”"
-  },
-  {
-    "body": "Dokończcie zdanie: „Nawet gdy mam dużo na głowie, jesteś dla mnie priorytetem, bo…”"
-  },
-  {
-    "body": "Dokończcie zdanie: „Bez ciebie świat byłby nudny, bo…”"
-  },
-  {
-    "body": "Co sprawia, że czujesz się atrakcyjny/atrakcyjna w oczach partnera?"
-  },
-  {
-    "body": "Jakie pozytywne słowa partnera najbardziej zapadły ci w pamięć?"
-  },
-  {
-    "body": "Bez czego pozytywnego wasz związek nie byłby taki sam?"
-  },
-  {
-    "body": "Dokończcie zdanie: „Nie zawsze ci to mówię, ale chcę, byś wiedział/wiedziała, że…”"
-  },
-  {
-    "body": "W jaki sposób moglibyście dziś wzmocnić wasz związek?"
-  },
-  {
-    "body": "Jakie gesty lub drobne rzeczy ze strony partnera były dziś miłym akcentem dnia?"
-  },
-  {
-    "body": "Co w waszej rutynie jest elementem, którego nie mogłoby zabraknąć?"
-  },
-  {
-    "body": "Dokończcie zdanie: „Czasami o tym zapominam, ale wiedz, że doceniam…”"
-  },
-  {
-    "body": "Dokończcie zdanie: „Może nie zdajesz sobie z tego sprawy, ale poczułem się/poczułam się dziś kochany/kochana, gdy…”"
-  },
-  {
-    "body": "Jaki mały gest był dziś dla ciebie oznaką miłości ze strony partnera?"
-  },
-  {
-    "body": "Jaka część ciała partnera wydaje ci się dziś jeszcze bardziej atrakcyjna?"
-  },
-  {
-    "body": "Jaka rzecz ze strony partnera mogłaby sprawić, że czułbyś się/czułabyś się dzisiaj wyjątkowo?"
-  },
-  {
-    "body": "Jaka rzecz sprawia, że czas spędzony z partnerem staje się niezwykły?"
-  },
-  {
-    "body": "Co sprawia, że masz ochotę podejmować więcej inicjatywy w związku?"
-  },
-  {
-    "body": "Jaka zaleta partnera jest dla ciebie źródłem podziwu?"
-  },
-  {
-    "body": "Jakie działanie partnera miało dzisiaj duże i pozytywne znaczenie?"
-  },
-  {
-    "body": "Czego nie potrafiłbyś/nie potrafiłabyś odmówić partnerowi, nawet mając dużo na głowie?"
-  },
-  {
-    "body": "Jak wyobrażasz sobie idealną randkę?"
-  },
-  {
-    "body": "Która piosenka przychodzi ci na myśl, gdy myślisz o waszym związku?"
-  },
-  {
-    "body": "Które z was jest większą duszą towarzystwa i dlaczego?"
-  },
-  {
-    "body": "Co znalazłoby się w waszym idealnym, stworzonym razem miejscu?"
-  },
-  {
-    "body": "Jaka jedna rzecz jest uniwersalnym sposobem na uszczęśliwienie twojego partnera?"
-  },
-  {
-    "body": "Na jaki temat moglibyście rozmawiać z zainteresowaniem godzinami?"
-  },
-  {
-    "body": "Czego w waszym związku mogliby pozazdrościć inni?"
-  },
-  {
-    "body": "Jaki sposób mógłby rozwiązać lub szybko poprawić większość napięć między wami?"
-  },
-  {
-    "body": "Jaka rzecz sprawia, że masz większe zaufanie do partnera?"
-  },
-  {
-    "body": "Dokończcie zdanie: „Jesteś dla mnie spokojem, gdy…”"
-  },
-  {
-    "body": "Co zaimponowało ci w twoim partnerze?"
-  },
-  {
-    "body": "Co bez twojego partnera byłoby trudniejsze i dlaczego?"
-  },
-  {
-    "body": "Jaki wspólny sygnał, żart lub zdanie rozumiecie tylko wy?"
-  },
-  {
-    "body": "Dokończcie zdanie: „Wydajesz mi się niesamowitą osobą, gdy…”"
-  },
-  {
-    "body": "Co sprawia, że masz ochotę przytulić się do partnera?"
-  },
-  {
-    "body": "Co najbardziej wpływa na dobrą atmosferę między wami?"
-  },
-  {
-    "body": "Jaka rzecz mogłaby sprawić, że z dumą powiedziałbyś/powiedziałabyś: „To mój partner!”?"
-  },
-  {
-    "body": "Co zrobiliście w ostatnim czasie, co mogłoby powtarzać się częściej?"
-  },
-  {
-    "body": "Gdybyście trafili na bezludną wyspę, jak podzielilibyście między sobą obowiązki?"
-  },
-  {
-    "body": "Które słowa najlepiej was opisują?\n• „znajdzie rozwiązanie na wszystko”\n• „chodząca intuicja”\n• „mistrz planowania”\n• „ma precyzję chirurga”"
-  },
-  {
-    "body": "Gdyby twój partner pracował w FBI, jaka byłaby jego rola?"
-  },
-  {
-    "body": "Co byłoby dla ciebie najtrudniejsze, gdybyś zamienił się/zamieniła się w partnera na jeden dzień?"
-  },
-  {
-    "body": "Jak zaplanowałbyś/zaplanowałabyś czas z partnerem, wiedząc, że nie będziecie się widzieć po tym dniu przez długi czas?"
-  },
-  {
-    "body": "W jakiej sytuacji partner najczęściej ma rację, nawet jeśli trudno ci się z tym zgodzić?"
-  },
-  {
-    "body": "Dokończcie zdanie: „Rzecz, która sprawia, że jesteś dobrym partnerem/dobrą partnerką, to…”"
-  },
-  {
-    "body": "Jaki wspólny cel chciałbyś/chciałabyś zrealizować w najbliższym czasie?"
-  }
+    {
+        "seed_key": "d001",
+        "body": "Co sprawiło, że na waszych twarzach pojawił się dziś uśmiech?"
+    },
+    {
+        "seed_key": "d002",
+        "body": "Jaka pozytywna myśl mogłaby być mottem dzisiejszego dnia?"
+    },
+    {
+        "seed_key": "d003",
+        "body": "Czego dziś potrzebujecie najbardziej: odpoczynku, rozmowy czy przytulenia?"
+    },
+    {
+        "seed_key": "d004",
+        "body": "Jaka rzecz związana z partnerem potrafi cię rozbawić?"
+    },
+    {
+        "seed_key": "d005",
+        "body": "Co z tego, co zrobił dziś partner, wymagało wysiłku godnego pochwały?"
+    },
+    {
+        "seed_key": "d006",
+        "body": "Jaka wiadomość od partnera mogłaby sprawić, że twój dzień stałby się lepszy?"
+    },
+    {
+        "seed_key": "d007",
+        "body": "Co dziś w twoim partnerze wydaje się szczególnie atrakcyjne?"
+    },
+    {
+        "seed_key": "d008",
+        "body": "Którą porę dnia można byłoby nazwać „waszym czasem”?"
+    },
+    {
+        "seed_key": "d009",
+        "body": "Czy mały gest, np. komplement ze strony partnera, jest w stanie poprawić twój nastrój?"
+    },
+    {
+        "seed_key": "d010",
+        "body": "W jakie dowolne miejsce chciałbyś/chciałabyś przenieść się z partnerem w trudnych momentach? (Wyobraźcie sobie wspólnie to miejsce)."
+    },
+    {
+        "seed_key": "d011",
+        "body": "Jaka wspólna aktywność sprawia, że wasz dzień staje się lepszy?"
+    },
+    {
+        "seed_key": "d012",
+        "body": "Czego dawno nie mówiłeś/mówiłaś partnerowi, a czym chciałbyś/chciałabyś podzielić się dzisiaj?"
+    },
+    {
+        "seed_key": "d013",
+        "body": "Co dzisiaj mogłoby sprawić, że poczułbyś/poczułabyś większą bliskość?"
+    },
+    {
+        "seed_key": "d014",
+        "body": "Jaką rzecz można uznać za wasz wspólny, mały sukces?"
+    },
+    {
+        "seed_key": "d015",
+        "body": "Dokończcie zdanie: „Zależy mi na tobie, dlatego trudno mi, gdy…”"
+    },
+    {
+        "seed_key": "d016",
+        "body": "Dokończcie zdanie: „Myśl o tobie sprawia, że…”"
+    },
+    {
+        "seed_key": "d017",
+        "body": "Które wspólne wspomnienie mogłoby zostać sceną z filmu?"
+    },
+    {
+        "seed_key": "d018",
+        "body": "Za co najbardziej cenisz dziś partnera?"
+    },
+    {
+        "seed_key": "d019",
+        "body": "Jaka wasza wspólna przyjemność jest lub mogłaby stać się rytuałem w waszym związku?"
+    },
+    {
+        "seed_key": "d020",
+        "body": "Jakie zdanie partnera bywa motywacją do działania?"
+    },
+    {
+        "seed_key": "d021",
+        "body": "Do jakiego momentu z dzisiejszego dnia moglibyście wrócić?"
+    },
+    {
+        "seed_key": "d022",
+        "body": "Jaka jest wasza „supermoc”, dzięki której możecie radzić sobie z wyzwaniami?"
+    },
+    {
+        "seed_key": "d023",
+        "body": "Jaka mała rzecz związana z partnerem najbardziej poprawia twój poranek?"
+    },
+    {
+        "seed_key": "d024",
+        "body": "Jaka cecha partnera byłaby tak samo atrakcyjna za 20 lat?"
+    },
+    {
+        "seed_key": "d025",
+        "body": "Co dziś sprawiło, że jesteście jeszcze bliżej niż wczoraj?"
+    },
+    {
+        "seed_key": "d026",
+        "body": "Jaka sytuacja z waszego związku może stanowić zabawną anegdotę?"
+    },
+    {
+        "seed_key": "d027",
+        "body": "W jaki sposób starasz się wspierać partnera po ciężkim dniu?"
+    },
+    {
+        "seed_key": "d028",
+        "body": "Dokończcie zdanie: „Gdy źle się czujesz, chcę…”"
+    },
+    {
+        "seed_key": "d029",
+        "body": "Jaka niepisana zasada w waszym związku jest pomocna w codzienności?"
+    },
+    {
+        "seed_key": "d030",
+        "body": "Jakie hasło lub zdanie wypowiedziane przez partnera pomaga ci się uspokoić i odetchnąć?"
+    },
+    {
+        "seed_key": "d031",
+        "body": "Jakie zachowanie partnera pozytywnie cię zaskoczyło?"
+    },
+    {
+        "seed_key": "d032",
+        "body": "Jakie zachowanie partnera sprawia, że czujesz się bezpiecznie?"
+    },
+    {
+        "seed_key": "d033",
+        "body": "Za co możesz dziś podziękować partnerowi?"
+    },
+    {
+        "seed_key": "d034",
+        "body": "Po czym poznałbyś/poznałabyś partnera, słysząc, a nie widząc go?"
+    },
+    {
+        "seed_key": "d035",
+        "body": "Co jest waszym komfortowym sposobem na odpoczynek, do którego lubisz wracać?"
+    },
+    {
+        "seed_key": "d036",
+        "body": "W jaki sposób najbardziej lubisz okazywać czułość partnerowi?"
+    },
+    {
+        "seed_key": "d037",
+        "body": "W czym jesteście wyjątkowo zgodni?"
+    },
+    {
+        "seed_key": "d038",
+        "body": "Jakie jedzenie lub napój może poprawić wam nastrój?"
+    },
+    {
+        "seed_key": "d039",
+        "body": "Jaka muzyka wprawia was w pozytywne emocje?"
+    },
+    {
+        "seed_key": "d040",
+        "body": "Co sprawia, że masz większą ochotę na czas spędzony z partnerem?"
+    },
+    {
+        "seed_key": "d041",
+        "body": "Dokończcie zdanie: „Rzeczą, którą uwielbiałem/uwielbiałam w tobie na początku i uwielbiam dziś, jest…”"
+    },
+    {
+        "seed_key": "d042",
+        "body": "Dokończcie zdanie: „Nikt nie może z tobą konkurować, bo…”"
+    },
+    {
+        "seed_key": "d043",
+        "body": "Dokończcie zdanie: „Nawet gdy się z tobą nie zgadzam, doceniam, że…”"
+    },
+    {
+        "seed_key": "d044",
+        "body": "Co dziś zrobilibyście wspólnie, gdyby jutra miało nie być?"
+    },
+    {
+        "seed_key": "d045",
+        "body": "Jaką rolę partnera doceniasz w związku? (np. odpowiedzialność za określone obowiązki, przejmowanie inicjatywy)."
+    },
+    {
+        "seed_key": "d046",
+        "body": "Jakie zachowanie partnera sprawia, że czujesz się kochany/kochana?"
+    },
+    {
+        "seed_key": "d047",
+        "body": "Czego nauczył cię wasz związek?"
+    },
+    {
+        "seed_key": "d048",
+        "body": "Co dzisiaj nie jest już przeszkodą?"
+    },
+    {
+        "seed_key": "d049",
+        "body": "Gdybyś nie miał/miała dziś żadnych ograniczeń, jak spędziłbyś/spędziłabyś resztę dnia z partnerem?"
+    },
+    {
+        "seed_key": "d050",
+        "body": "Po czym można poznać wspólnie spędzony dzień za udany?"
+    },
+    {
+        "seed_key": "d051",
+        "body": "Dokończcie zdanie: „Jesteś dla mnie ważny/ważna, dlatego chcę…”"
+    },
+    {
+        "seed_key": "d052",
+        "body": "Jakie zachowanie partnera sprawia, że trudne rzeczy wydają się łatwiejsze?"
+    },
+    {
+        "seed_key": "d053",
+        "body": "Jak wyglądałby idealny wspólny wieczór?"
+    },
+    {
+        "seed_key": "d054",
+        "body": "Co dzisiaj mogłoby sprawić, że poczujesz większą więź z partnerem?"
+    },
+    {
+        "seed_key": "d055",
+        "body": "Dokończcie zdanie: „Moim wyrazem miłości do ciebie jest…”"
+    },
+    {
+        "seed_key": "d056",
+        "body": "Dokończcie zdanie: „Nawet gdy mam dużo na głowie, jesteś dla mnie priorytetem, bo…”"
+    },
+    {
+        "seed_key": "d057",
+        "body": "Dokończcie zdanie: „Bez ciebie świat byłby nudny, bo…”"
+    },
+    {
+        "seed_key": "d058",
+        "body": "Co sprawia, że czujesz się atrakcyjny/atrakcyjna w oczach partnera?"
+    },
+    {
+        "seed_key": "d059",
+        "body": "Jakie pozytywne słowa partnera najbardziej zapadły ci w pamięć?"
+    },
+    {
+        "seed_key": "d060",
+        "body": "Bez czego pozytywnego wasz związek nie byłby taki sam?"
+    },
+    {
+        "seed_key": "d061",
+        "body": "Dokończcie zdanie: „Nie zawsze ci to mówię, ale chcę, byś wiedział/wiedziała, że…”"
+    },
+    {
+        "seed_key": "d062",
+        "body": "W jaki sposób moglibyście dziś wzmocnić wasz związek?"
+    },
+    {
+        "seed_key": "d063",
+        "body": "Jakie gesty lub drobne rzeczy ze strony partnera były dziś miłym akcentem dnia?"
+    },
+    {
+        "seed_key": "d064",
+        "body": "Co w waszej rutynie jest elementem, którego nie mogłoby zabraknąć?"
+    },
+    {
+        "seed_key": "d065",
+        "body": "Dokończcie zdanie: „Czasami o tym zapominam, ale wiedz, że doceniam…”"
+    },
+    {
+        "seed_key": "d066",
+        "body": "Dokończcie zdanie: „Może nie zdajesz sobie z tego sprawy, ale poczułem się/poczułam się dziś kochany/kochana, gdy…”"
+    },
+    {
+        "seed_key": "d067",
+        "body": "Jaki mały gest był dziś dla ciebie oznaką miłości ze strony partnera?"
+    },
+    {
+        "seed_key": "d068",
+        "body": "Jaka część ciała partnera wydaje ci się dziś jeszcze bardziej atrakcyjna?"
+    },
+    {
+        "seed_key": "d069",
+        "body": "Jaka rzecz ze strony partnera mogłaby sprawić, że czułbyś się/czułabyś się dzisiaj wyjątkowo?"
+    },
+    {
+        "seed_key": "d070",
+        "body": "Jaka rzecz sprawia, że czas spędzony z partnerem staje się niezwykły?"
+    },
+    {
+        "seed_key": "d071",
+        "body": "Co sprawia, że masz ochotę podejmować więcej inicjatywy w związku?"
+    },
+    {
+        "seed_key": "d072",
+        "body": "Jaka zaleta partnera jest dla ciebie źródłem podziwu?"
+    },
+    {
+        "seed_key": "d073",
+        "body": "Jakie działanie partnera miało dzisiaj duże i pozytywne znaczenie?"
+    },
+    {
+        "seed_key": "d074",
+        "body": "Czego nie potrafiłbyś/nie potrafiłabyś odmówić partnerowi, nawet mając dużo na głowie?"
+    },
+    {
+        "seed_key": "d075",
+        "body": "Jak wyobrażasz sobie idealną randkę?"
+    },
+    {
+        "seed_key": "d076",
+        "body": "Która piosenka przychodzi ci na myśl, gdy myślisz o waszym związku?"
+    },
+    {
+        "seed_key": "d077",
+        "body": "Które z was jest większą duszą towarzystwa i dlaczego?"
+    },
+    {
+        "seed_key": "d078",
+        "body": "Co znalazłoby się w waszym idealnym, stworzonym razem miejscu?"
+    },
+    {
+        "seed_key": "d079",
+        "body": "Jaka jedna rzecz jest uniwersalnym sposobem na uszczęśliwienie twojego partnera?"
+    },
+    {
+        "seed_key": "d080",
+        "body": "Na jaki temat moglibyście rozmawiać z zainteresowaniem godzinami?"
+    },
+    {
+        "seed_key": "d081",
+        "body": "Czego w waszym związku mogliby pozazdrościć inni?"
+    },
+    {
+        "seed_key": "d082",
+        "body": "Jaki sposób mógłby rozwiązać lub szybko poprawić większość napięć między wami?"
+    },
+    {
+        "seed_key": "d083",
+        "body": "Jaka rzecz sprawia, że masz większe zaufanie do partnera?"
+    },
+    {
+        "seed_key": "d084",
+        "body": "Dokończcie zdanie: „Jesteś dla mnie spokojem, gdy…”"
+    },
+    {
+        "seed_key": "d085",
+        "body": "Co zaimponowało ci w twoim partnerze?"
+    },
+    {
+        "seed_key": "d086",
+        "body": "Co bez twojego partnera byłoby trudniejsze i dlaczego?"
+    },
+    {
+        "seed_key": "d087",
+        "body": "Jaki wspólny sygnał, żart lub zdanie rozumiecie tylko wy?"
+    },
+    {
+        "seed_key": "d088",
+        "body": "Dokończcie zdanie: „Wydajesz mi się niesamowitą osobą, gdy…”"
+    },
+    {
+        "seed_key": "d089",
+        "body": "Co sprawia, że masz ochotę przytulić się do partnera?"
+    },
+    {
+        "seed_key": "d090",
+        "body": "Co najbardziej wpływa na dobrą atmosferę między wami?"
+    },
+    {
+        "seed_key": "d091",
+        "body": "Jaka rzecz mogłaby sprawić, że z dumą powiedziałbyś/powiedziałabyś: „To mój partner!”?"
+    },
+    {
+        "seed_key": "d092",
+        "body": "Co zrobiliście w ostatnim czasie, co mogłoby powtarzać się częściej?"
+    },
+    {
+        "seed_key": "d093",
+        "body": "Gdybyście trafili na bezludną wyspę, jak podzielilibyście między sobą obowiązki?"
+    },
+    {
+        "seed_key": "d094",
+        "body": "Które słowa najlepiej was opisują?\n• „znajdzie rozwiązanie na wszystko”\n• „chodząca intuicja”\n• „mistrz planowania”\n• „ma precyzję chirurga”"
+    },
+    {
+        "seed_key": "d095",
+        "body": "Gdyby twój partner pracował w FBI, jaka byłaby jego rola?"
+    },
+    {
+        "seed_key": "d096",
+        "body": "Co byłoby dla ciebie najtrudniejsze, gdybyś zamienił się/zamieniła się w partnera na jeden dzień?"
+    },
+    {
+        "seed_key": "d097",
+        "body": "Jak zaplanowałbyś/zaplanowałabyś czas z partnerem, wiedząc, że nie będziecie się widzieć po tym dniu przez długi czas?"
+    },
+    {
+        "seed_key": "d098",
+        "body": "W jakiej sytuacji partner najczęściej ma rację, nawet jeśli trudno ci się z tym zgodzić?"
+    },
+    {
+        "seed_key": "d099",
+        "body": "Dokończcie zdanie: „Rzecz, która sprawia, że jesteś dobrym partnerem/dobrą partnerką, to…”"
+    },
+    {
+        "seed_key": "d100",
+        "body": "Jaki wspólny cel chciałbyś/chciałabyś zrealizować w najbliższym czasie?"
+    }
 ]

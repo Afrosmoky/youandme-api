@@ -1,702 +1,902 @@
 [
-  {
-    "body": "Wybierz niespodziankę, która uszczęśliwiłaby Cię najbardziej i taką, która zadowoliłaby Cię najmniej. Wyjaśnij dlaczego.",
-    "category_slug": "randka",
-    "tags": [
-      "niespodzianki"
-    ]
-  },
-  {
-    "body": "Które z zachowań partnera/ki wprawia Cię w lepszy nastrój i sprawia, że czujesz się bezpiecznie? Kiedy ostatnio tak się poczułeś/aś i w jakiej sytuacji?",
-    "category_slug": "na_poznanie",
-    "tags": [
-      "poczucie_bezpieczeństwa"
-    ]
-  },
-  {
-    "body": "Jakie różnice między wami sprawiają, że wasz związek staje się ciekawszy? W jakich sytuacjach wasza odmienność jest przydatna?",
-    "category_slug": "na_poznanie",
-    "tags": [
-      "różnice_charakterów"
-    ]
-  },
-  {
-    "body": "Co przyciągnęło Cię do partnera/ki z początków waszej znajomości?",
-    "category_slug": "na_poznanie",
-    "tags": [
-      "początki_relacji"
-    ]
-  },
-  {
-    "body": "Co na przestrzeni czasu wypracowaliście w waszym związku? Czego się nauczyłeś/aś przez ten czas o sobie?",
-    "category_slug": "na_poznanie",
-    "tags": [
-      "rozwój_relacji"
-    ]
-  },
-  {
-    "body": "Gdyby ktoś spytał, jaka jest twoja druga połówka, jak byś ją opisał/a, zaczynając od charakteru, a kończąc na wyglądzie?",
-    "category_slug": "na_poznanie",
-    "tags": [
-      "opis_partnera"
-    ]
-  },
-  {
-    "body": "W której części dnia masz najwięcej energii do działania? O jakiej porze najlepiej Ci się odpoczywa?",
-    "category_slug": "na_poznanie",
-    "tags": [
-      "biorytm"
-    ]
-  },
-  {
-    "body": "Czy twój partner/ka wpływa na twoją pewność siebie? Jakie zachowanie partnera/ki Cię buduje i sprawia, że czujesz się wartościową osobą?",
-    "category_slug": "na_poznanie",
-    "tags": [
-      "pewność_siebie"
-    ]
-  },
-  {
-    "body": "Kelner w restauracji przynosi Ci zamówienie bez składnika, który domawiałeś/aś. Jaka będzie twoja pierwsza reakcja?",
-    "category_slug": "na_poznanie",
-    "tags": [
-      "reakcja_na_stres"
-    ]
-  },
-  {
-    "body": "Jak zachowanie partnera/ki i atmosfera w ciągu dnia wpływa u Ciebie na sferę seksualną?",
-    "category_slug": "intymnosc",
-    "tags": [
-      "libido"
-    ]
-  },
-  {
-    "body": "Które z poniższych rozwiązań mogłoby uczynić seks najbardziej satysfakcjonującym?",
-    "category_slug": "intymnosc",
-    "tags": [
-      "satysfakcja_z_seksu"
-    ]
-  },
-  {
-    "body": "Wymień minimum 5 rzeczy, za które podziwiasz swojego partnera/kę. Które z czynności przychodzą Ci z trudem, które jemu/jej idą świetnie?",
-    "category_slug": "na_poznanie",
-    "tags": [
-      "podziw_i_talenty"
-    ]
-  },
-  {
-    "body": "Jaką czynność partner/ka może wykonywać z zamkniętymi oczami? W jakich sytuacjach jest to przydatne?",
-    "category_slug": "na_poznanie",
-    "tags": [
-      "umiejętności"
-    ]
-  },
-  {
-    "body": "W jakim wydaniu twój partner/ka jest najatrakcyjniejszy/a? Możesz wziąć pod uwagę np. ubiór, fryzurę, makijaż, ale też zachowanie.",
-    "category_slug": "intymnosc",
-    "tags": [
-      "atrakcyjność_fizyczna"
-    ]
-  },
-  {
-    "body": "Co wpływa na jakościowo dobrze spędzony czas we dwoje? Które ze wspólnych chwil wspominasz najlepiej i dlaczego?",
-    "category_slug": "randka",
-    "tags": [
-      "wspólne_chwile"
-    ]
-  },
-  {
-    "body": "Jakie pasje, cele, marzenia bądź poglądy podzielacie? Wymień wszystkie wspólne punkty, które przychodzą Ci do głowy.",
-    "category_slug": "na_poznanie",
-    "tags": [
-      "wspólne_cele"
-    ]
-  },
-  {
-    "body": "Co pozwala Ci się zrelaksować po ciężkim dniu? Co może zrobić dla Ciebie partner/ka, a czego może unikać, gdy jesteś zmęczony/a lub zestresowany/a?",
-    "category_slug": "na_poznanie",
-    "tags": [
-      "odpoczynek"
-    ]
-  },
-  {
-    "body": "Kto Cię inspiruje? Co wyróżnia tę osobę i w czym chciałbyś/chciałabyś ją naśladować? Może to być zarówno ktoś bliski, jak i nieznany Ci osobiście.",
-    "category_slug": "na_poznanie",
-    "tags": [
-      "autorytety"
-    ]
-  },
-  {
-    "body": "Wymień rzeczy, których chciałbyś/chciałabyś dokonać przez najbliższe 5 lat.",
-    "category_slug": "na_poznanie",
-    "tags": [
-      "plany_na_przyszłość"
-    ]
-  },
-  {
-    "body": "Dokończ zdania i je uzasadnij: Mój dzień staje się lepszy, kiedy… Mój ulubiony moment w ciągu dnia to… Czuję się przez Ciebie doceniony/a, gdy… Czuję, że mnie kochasz, gdy… Stresuję się, gdy… Czuję się ważny/a, gdy…",
-    "category_slug": "intymnosc",
-    "tags": [
-      "potrzeby_emocjonalne"
-    ]
-  },
-  {
-    "body": "Jak postrzegasz siebie w związku? Przez co jesteś dobrym partnerem, a nad czym powinieneś jeszcze popracować?",
-    "category_slug": "na_poznanie",
-    "tags": [
-      "autorefleksja"
-    ]
-  },
-  {
-    "body": "Weź kartkę i długopis, poza oczami partnerom wypisz jego ulubione trzy tematy do rozmów. Niech druga osoba je wymieni. Jeśli zgadłeś minimum dwa twój partner w ciągu tygodnia zaplanuje i zorganizuje randkę, jeśli nie zgadłeś, zaplanuj ją.",
-    "category_slug": "randka",
-    "tags": [
-      "gra_towarzyska"
-    ]
-  },
-  {
-    "body": "Czy jest rzecz, którą chciałbyś wprowadzić do łóżka, ale nie robisz jej w obawie przed reakcją drugiej strony? Jeśli tak, to jaką?",
-    "category_slug": "intymnosc",
-    "tags": [
-      "fantazje_erotyczne"
-    ]
-  },
-  {
-    "body": "Jak dużą rolę pełni dla Ciebie wygląd w twoim pożądaniu? Jakie są aspekty fizyczne, które je podsycają?",
-    "category_slug": "intymnosc",
-    "tags": [
-      "pożądanie"
-    ]
-  },
-  {
-    "body": "Co sprawia lub mogłoby sprawić, że podczas wstępnej i seksu czułbyś się komfortowo i swobodnie? Co mógłby zrobić dla Ciebie twój partner?",
-    "category_slug": "intymnosc",
-    "tags": [
-      "komfort_w_łóżku"
-    ]
-  },
-  {
-    "body": "Jakie znaczenie ma dla Ciebie zdanie otoczenia o twoim związku? Czy są jakieś rady związkowe innych, do których próbowałeś się stosować?",
-    "category_slug": "na_poznanie",
-    "tags": [
-      "opinia_innych"
-    ]
-  },
-  {
-    "body": "Jakie cechy sprawiają, że postrzegasz osobę za wartościową? Które z tych cech posiada twój partner?",
-    "category_slug": "na_poznanie",
-    "tags": [
-      "wartości_i_cechy"
-    ]
-  },
-  {
-    "body": "Co sprawia, że czujesz się zmotywowany? W jaki sposób twój partner wpływa na twoją motywację?",
-    "category_slug": "na_poznanie",
-    "tags": [
-      "motywacja"
-    ]
-  },
-  {
-    "body": "Co według Ciebie potrafi uszczęśliwić twojego partnera? Jaki jest przepis na jego satysfakcję?",
-    "category_slug": "na_poznanie",
-    "tags": [
-      "szczęście_partnera"
-    ]
-  },
-  {
-    "body": "Co myślisz o białym kłamstwie? Czy według Ciebie kłamstwo z intencją zadowolenia drugiej osoby jest dopuszczalne, czy stawiasz na prawdę, nawet jeśli jest gorzka?",
-    "category_slug": "na_poznanie",
-    "tags": [
-      "szczerość"
-    ]
-  },
-  {
-    "body": "Bywają rzeczy ważne i ważniejsze. Co jest najbardziej istotne z wymienionych czynników: jakość gry wstępnej, stosunku, czy orgazm?",
-    "category_slug": "intymnosc",
-    "tags": [
-      "priorytety_seksualne"
-    ]
-  },
-  {
-    "body": "Gdybyś miał podać komuś receptę na udany i długi związek, co byś w niej zawarł?",
-    "category_slug": "na_poznanie",
-    "tags": [
-      "recepta_na_związek"
-    ]
-  },
-  {
-    "body": "Czy są zachowania, których nie byłbyś w stanie zaakceptować w związku? Mogą to być też poglądy lub podejścia, z którymi się nie utożsamiasz.",
-    "category_slug": "na_poznanie",
-    "tags": [
-      "granice"
-    ]
-  },
-  {
-    "body": "Które z podejść twoich rodziców jest godne naśladowania, a których nie chciałbyś powtarzać w związku?",
-    "category_slug": "na_poznanie",
-    "tags": [
-      "wzorce_z_domu"
-    ]
-  },
-  {
-    "body": "Jakie są zalety bycia w związku? Co daje Ci relacja, w której jesteś?",
-    "category_slug": "na_poznanie",
-    "tags": [
-      "wartość_relacji"
-    ]
-  },
-  {
-    "body": "Jakich przydatnych umiejętności nauczył Cię partner?",
-    "category_slug": "na_poznanie",
-    "tags": [
-      "nauka_od_partnera"
-    ]
-  },
-  {
-    "body": "Opisz definicję udanego seksu. Możesz uwzględnić grę wstępną i czas bezpośrednio po nim. Wymieńcie wspólne wnioski i różnice, które widzicie w waszych definicjach.",
-    "category_slug": "intymnosc",
-    "tags": [
-      "definicja_seksu"
-    ]
-  },
-  {
-    "body": "W jaki sposób udany seks wpływa na twoje samopoczucie? Co daje Ci zbliżenie, pomijając przyjemność podczas stosunku?",
-    "category_slug": "intymnosc",
-    "tags": [
-      "emocje_po_seksie"
-    ]
-  },
-  {
-    "body": "Co wyróżnia twojego partnera na tle innych osób? Jakie są jego pozytywne, niepowtarzalne cechy?",
-    "category_slug": "na_poznanie",
-    "tags": [
-      "wyjątkowość_partnera"
-    ]
-  },
-  {
-    "body": "Co pozwala Ci uspokoić się po kłótni? Chwila dla siebie, rozmowa czy coś innego? Opisz, czego potrzebujesz, by poczuć się lepiej.",
-    "category_slug": "na_poznanie",
-    "tags": [
-      "rozwiązywanie_konfliktów"
-    ]
-  },
-  {
-    "body": "Masz już plany lub zobowiązania, a twój partner prosi Cię o pomoc w sprawie wymagającej poświęcenia sporej ilości czasu. Co robisz?",
-    "category_slug": "na_poznanie",
-    "tags": [
-      "priorytety_i_kompromisy"
-    ]
-  },
-  {
-    "body": "W jaki sposób najłatwiej podjąć Ci ważną decyzję? Potrzebujesz czasu, aby przeanalizować wszystkie za i przeciw, czy wolisz spontanicznie zadecydować?",
-    "category_slug": "na_poznanie",
-    "tags": [
-      "podejmowanie_decyzji"
-    ]
-  },
-  {
-    "body": "W jaki sposób rozplanowujesz czas? Wypełniasz jak najwięcej zadań, żeby mieć więcej czasu na odpoczynek, czy wolisz wykonywać je wolniej przy mniejszym nakładzie pracy?",
-    "category_slug": "na_poznanie",
-    "tags": [
-      "zarządzanie_czasem"
-    ]
-  },
-  {
-    "body": "Co bardziej dodaje Ci energii: pełny wrażeń wieczór ze znajomymi, czy samotny relaks np. przy filmie lub książce?",
-    "category_slug": "na_poznanie",
-    "tags": [
-      "introwersja_ekstrawersja"
-    ]
-  },
-  {
-    "body": "Przytocz scenę z filmu lub książki, która mogłaby stanowić dla Ciebie erotyczną inspirację. Które elementy chciałbyś wykorzystać?",
-    "category_slug": "intymnosc",
-    "tags": [
-      "inspiracje_erotyczne"
-    ]
-  },
-  {
-    "body": "W której czynności seksualnej Twój partner pozostanie mistrzem? Jeśli pytanie was nie dotyczy, wymień cechy uroku osobistego partnera, które Cię uwiodły.",
-    "category_slug": "intymnosc",
-    "tags": [
-      "pochwała_partnera"
-    ]
-  },
-  {
-    "body": "Co wywołałoby u Ciebie większy entuzjazm: partner czekający na Ciebie w skąpym stroju z obietnicą pikantnego wieczoru, czy przygotowana kąpiel, masaż i subtelna, czuła noc?",
-    "category_slug": "intymnosc",
-    "tags": [
-      "preferencje_wieczorne"
-    ]
-  },
-  {
-    "body": "Opisz dokładnie, gdzie i w jaki sposób chciałbyś być dotykany, całowany w ramach gry wstępnej.",
-    "category_slug": "intymnosc",
-    "tags": [
-      "mapa_dotyku"
-    ]
-  },
-  {
-    "body": "Co sądzisz o otwartych związkach? Czy relacja wykraczająca poza dwie osoby może być udana?",
-    "category_slug": "na_poznanie",
-    "tags": [
-      "model_związku"
-    ]
-  },
-  {
-    "body": "Jakie są silne strony waszego związku? Co sprawia, że można określić waszą relację jako niepowtarzalną?",
-    "category_slug": "na_poznanie",
-    "tags": [
-      "atuty_związku"
-    ]
-  },
-  {
-    "body": "Wybierz zdanie opisujące najbardziej twoje odczucia w związku. Możesz je zmodyfikować lub rozwinąć.",
-    "category_slug": "na_poznanie",
-    "tags": [
-      "stan_emocjonalny"
-    ]
-  },
-  {
-    "body": "Na jakie odstępstwa decyduje się Twój partner, by sprawić Ci radość? W jaki sposób ty dostosowujesz się do partnera?",
-    "category_slug": "na_poznanie",
-    "tags": [
-      "elastyczność_kompromis"
-    ]
-  },
-  {
-    "body": "W który sposób najczęściej okazujesz uczucie swojemu partnerowi?",
-    "category_slug": "na_poznanie",
-    "tags": [
-      "języki_miłości"
-    ]
-  },
-  {
-    "body": "Jaki jest Twój stosunek do seksu oralnego? Czy jest to dla Ciebie ważna część życia seksualnego, czy może zupełnie niepotrzebna?",
-    "category_slug": "intymnosc",
-    "tags": [
-      "seks_oralny"
-    ]
-  },
-  {
-    "body": "Jakbyś zareagował na kilkudniowy wyjazd partnera w pojedynkę w ramach relaksu?",
-    "category_slug": "na_poznanie",
-    "tags": [
-      "zaufanie_przestrzeń"
-    ]
-  },
-  {
-    "body": "Gdybyś cofnął się w czasie o 5 lat, jakie porady związkowe dałbyś młodszej wersji siebie?",
-    "category_slug": "na_poznanie",
-    "tags": [
-      "mądrość_życiowa"
-    ]
-  },
-  {
-    "body": "Jakbyś zareagował, gdyby twój najlepszy przyjaciel, rodzeństwo lub dziecko przedstawiło Ci swojego partnera, który byłby twoim lustrzanym odbiciem?",
-    "category_slug": "na_poznanie",
-    "tags": [
-      "samoocena"
-    ]
-  },
-  {
-    "body": "Jakie zachowania partnera są dla Ciebie oznaką głębokiego zaangażowania?",
-    "category_slug": "na_poznanie",
-    "tags": [
-      "zaangażowanie"
-    ]
-  },
-  {
-    "body": "Jaki wpływ według Ciebie mają social media na dzisiejsze relacje? Jest on raczej pozytywny, czy negatywny?",
-    "category_slug": "na_poznanie",
-    "tags": [
-      "technologia"
-    ]
-  },
-  {
-    "body": "Co sądzisz o oglądaniu filmów pornograficznych w relacji? Czy mogą stanowić formę inspiracji lub przydatnego narzędzia?",
-    "category_slug": "intymnosc",
-    "tags": [
-      "pornografia"
-    ]
-  },
-  {
-    "body": "Jak reagujesz, gdy widzisz, że twój partner wzbudził zainteresowanie u innej osoby? Wprawia Cię to w podenerwowanie, czy raczej ogarnia Cię duma?",
-    "category_slug": "na_poznanie",
-    "tags": [
-      "zazdrość"
-    ]
-  },
-  {
-    "body": "Jak często i z jakich powodów zdarza Ci się pochwalić swojego partnera?",
-    "category_slug": "na_poznanie",
-    "tags": [
-      "docenianie"
-    ]
-  },
-  {
-    "body": "Na co w pierwszej kolejności przeznaczyłbyś wspólnie pozyskany milion złotych?",
-    "category_slug": "randka",
-    "tags": [
-      "finanse"
-    ]
-  },
-  {
-    "body": "Gdybyś nie miał ograniczeń finansowych, jakie wakacje i w które miejsce chciałbyś się wybrać?",
-    "category_slug": "randka",
-    "tags": [
-      "podróże_marzeń"
-    ]
-  },
-  {
-    "body": "Jaki zawód chciałbyś wykonywać, gdybyś wiedział, że pozostaniesz w nim całe życie?",
-    "category_slug": "na_poznanie",
-    "tags": [
-      "kariera_zawodowa"
-    ]
-  },
-  {
-    "body": "Jakbyś wykorzystał swoje trzy życzenia? (Nieskończona liczba życzeń nie wchodzi w grę)",
-    "category_slug": "randka",
-    "tags": [
-      "marzenia"
-    ]
-  },
-  {
-    "body": "Które z wymienionych miejsc jest najbliższe twoim marzeniom? Czego jeszcze nie mogłoby zabraknąć w twoim wymarzonym domu?",
-    "category_slug": "randka",
-    "tags": [
-      "dom_marzeń"
-    ]
-  },
-  {
-    "body": "Gdyby wasze życie zostało obsadzone w filmie, jaki byłby jego gatunek i jaki nadałbyś mu tytuł?",
-    "category_slug": "randka",
-    "tags": [
-      "kreatywność_humor"
-    ]
-  },
-  {
-    "body": "Co stanowi dla Ciebie najlepsze wsparcie, kiedy borykasz się problemem? Jaką formę ty dajesz najczęściej partnerowi?",
-    "category_slug": "na_poznanie",
-    "tags": [
-      "wsparcie_w_kryzysie"
-    ]
-  },
-  {
-    "body": "Które z poniższych rzeczy stanowi dla Ciebie największe i najbardziej stresujące wyzwanie?",
-    "category_slug": "na_poznanie",
-    "tags": [
-      "lęki_i_stres"
-    ]
-  },
-  {
-    "body": "Co wychodzi najlepiej, gdy łączycie siły z partnerem?",
-    "category_slug": "na_poznanie",
-    "tags": [
-      "praca_zespołowa"
-    ]
-  },
-  {
-    "body": "Co myśliw o przyjaźni z płcią, która jest w kręgu naszych zainteresowań? Czy zaakceptowałbyś przyjaźń swojego partnera?",
-    "category_slug": "na_poznanie",
-    "tags": [
-      "zaufanie_przyjaźń"
-    ]
-  },
-  {
-    "body": "Które zachowanie, podejście u ludzi zawsze będzie Cię razić i jest w Twoich oczach niewybaczalne?",
-    "category_slug": "na_poznanie",
-    "tags": [
-      "zasady_moralne"
-    ]
-  },
-  {
-    "body": "Jakimi złotymi zasadami kierujesz się w życiu? Które wartości są dla Ciebie najważniejsze?",
-    "category_slug": "na_poznanie",
-    "tags": [
-      "życiowe_wartości"
-    ]
-  },
-  {
-    "body": "Jaka czynność podczas dnia jest dla Ciebie nieodłączną częścią rutyny, z której nie byłbyś w stanie zrezygnować?",
-    "category_slug": "na_poznanie",
-    "tags": [
-      "codzienna_rutyna"
-    ]
-  },
-  {
-    "body": "Co jest największą oznaką dojrzałości w związku?",
-    "category_slug": "na_poznanie",
-    "tags": [
-      "dojrzałość"
-    ]
-  },
-  {
-    "body": "Czy istnieje lub istniała rzecz, której wstydziłbyś się zrobić przy swoim partnerze? Jeśli tak, jaka?",
-    "category_slug": "intymnosc",
-    "tags": [
-      "wstyd_i_bariery"
-    ]
-  },
-  {
-    "body": "Jaka pora dnia i okoliczności są największym sprzymierzeńcem seksu?",
-    "category_slug": "intymnosc",
-    "tags": [
-      "czas_na_seks"
-    ]
-  },
-  {
-    "body": "Czy możesz otwarcie porozmawiać z partnerem o trudnych emocjach? Czy są między wami tematy tabu?",
-    "category_slug": "intymnosc",
-    "tags": [
-      "komunikacja_tabu"
-    ]
-  },
-  {
-    "body": "Która reakcja byłaby Ci najbliższa, gdyby partner chciał podzielić się z Tobą czymś, co przeszkadza mu w waszej relacji?",
-    "category_slug": "na_poznanie",
-    "tags": [
-      "przyjmowanie_krytyki"
-    ]
-  },
-  {
-    "body": "Co najczęściej robisz, gdy nie odpowiada Ci zachowanie partnera?",
-    "category_slug": "na_poznanie",
-    "tags": [
-      "wyrażanie_niezadowolenia"
-    ]
-  },
-  {
-    "body": "Partner opowiada Ci o swoim marzeniu, które chciałby spełnić, jednak jest ono trudne w realizacji. Jak zareagujesz?",
-    "category_slug": "na_poznanie",
-    "tags": [
-      "wspieranie_marzeń"
-    ]
-  },
-  {
-    "body": "Na jaką czynność wiecznie brakuje Ci czasu?",
-    "category_slug": "na_poznanie",
-    "tags": [
-      "brak_czasu"
-    ]
-  },
-  {
-    "body": "Jaką rolę gra dla Ciebie przeszłość partnera? Czy wpływa to na Twoje postrzeganie go w chwili obecnej?",
-    "category_slug": "na_poznanie",
-    "tags": [
-      "przeszłość"
-    ]
-  },
-  {
-    "body": "Miłość, przyjaźń, czy namiętność – co dominuje w waszym związku? Który z tych składników uważasz za najważniejszy?",
-    "category_slug": "na_poznanie",
-    "tags": [
-      "filary_związku"
-    ]
-  },
-  {
-    "body": "Jaka potrawa działa na Ciebie jak afrodyzjak?",
-    "category_slug": "intymnosc",
-    "tags": [
-      "kulinaria_afrodyzjaki"
-    ]
-  },
-  {
-    "body": "Z której swojej części ciała jesteś najbardziej dumny? Która część ciała partnera jest idealna?",
-    "category_slug": "intymnosc",
-    "tags": [
-      "akceptacja_ciała"
-    ]
-  },
-  {
-    "body": "Czy gesty, jak pocałunek w rękę czy otworzenie drzwi są dla Ciebie oznaką kultury i szacunku?",
-    "category_slug": "randka",
-    "tags": [
-      "szarmanckość_maniery"
-    ]
-  },
-  {
-    "body": "Kto powinien płacić na randce? Czy uważasz, że płacenie pół na pół jest sprawiedliwe?",
-    "category_slug": "randka",
-    "tags": [
-      "płatności"
-    ]
-  },
-  {
-    "body": "Do jakich obowiązków najciężej Ci się zebrać? Jaka czynność wymaga od Ciebie największych pokładów energii?",
-    "category_slug": "na_poznanie",
-    "tags": [
-      "obowiązki_domowe"
-    ]
-  },
-  {
-    "body": "Widzisz bardzo atrakcyjną osobę przechodzącą koło Ciebie i partnera. Co robisz?",
-    "category_slug": "na_poznanie",
-    "tags": [
-      "reakcja_na_atrakcyjność"
-    ]
-  },
-  {
-    "body": "Czy byłbyś zadowolony, gdyby twój partner traktował Cię dokładnie tak, jak ty traktujesz jego?",
-    "category_slug": "na_poznanie",
-    "tags": [
-      "wzajemność"
-    ]
-  },
-  {
-    "body": "Jak często zdarza wam się spędzać czas przeznaczony tylko dla waszej dwójki bez smartfona, telewizji i komputera?",
-    "category_slug": "randka",
-    "tags": [
-      "czas_bez_ekranów"
-    ]
-  },
-  {
-    "body": "Na jakie sposoby wykazujesz inicjatywę w związku? Jak wyraża ją Twój partner?",
-    "category_slug": "na_poznanie",
-    "tags": [
-      "inicjatywa"
-    ]
-  },
-  {
-    "body": "Jak postrzegasz intercyzę? Czy świadczy ona o rozsądku, czy jest raczej oznaką braku zaufania?",
-    "category_slug": "na_poznanie",
-    "tags": [
-      "formalności_i_finanse"
-    ]
-  },
-  {
-    "body": "Co myślisz o związkach na odległość? Byłbyś w stanie trwać w takim związku?",
-    "category_slug": "na_poznanie",
-    "tags": [
-      "związek_na_odległość"
-    ]
-  },
-  {
-    "body": "Czy powinno się dzielić wszystkim z partnerem? Czy w związku powinno być miejsce na małe sekrety?",
-    "category_slug": "na_poznanie",
-    "tags": [
-      "prywatność"
-    ]
-  },
-  {
-    "body": "Czy założenie rodziny w młodym wieku jest korzystne w dzisiejszym świecie?",
-    "category_slug": "na_poznanie",
-    "tags": [
-      "zakładanie_rodziny"
-    ]
-  },
-  {
-    "body": "Jaka jest Twoja największa obawa dotycząca związku?",
-    "category_slug": "na_poznanie",
-    "tags": [
-      "lęki_relacyjne"
-    ]
-  },
-  {
-    "body": "Które z poniższych rzeczy chciałbyś wprowadzić do związku? (Przestrzeń, bliskość emocjonalna, czas, bliskość fizyczna).",
-    "category_slug": "intymnosc",
-    "tags": [
-      "potrzeby_w_związku"
-    ]
-  }
+    {
+        "seed_key": "q001",
+        "body": "Wybierz niespodziankę, która uszczęśliwiłaby Cię najbardziej i taką, która zadowoliłaby Cię najmniej. Wyjaśnij dlaczego.",
+        "category_slug": "randka",
+        "tags": [
+            "niespodzianki"
+        ],
+        "is_locked": false
+    },
+    {
+        "seed_key": "q002",
+        "body": "Które z zachowań partnera/ki wprawia Cię w lepszy nastrój i sprawia, że czujesz się bezpiecznie? Kiedy ostatnio tak się poczułeś/aś i w jakiej sytuacji?",
+        "category_slug": "na_poznanie",
+        "tags": [
+            "poczucie_bezpieczeństwa"
+        ],
+        "is_locked": false
+    },
+    {
+        "seed_key": "q003",
+        "body": "Jakie różnice między wami sprawiają, że wasz związek staje się ciekawszy? W jakich sytuacjach wasza odmienność jest przydatna?",
+        "category_slug": "na_poznanie",
+        "tags": [
+            "różnice_charakterów"
+        ],
+        "is_locked": false
+    },
+    {
+        "seed_key": "q004",
+        "body": "Co przyciągnęło Cię do partnera/ki z początków waszej znajomości?",
+        "category_slug": "na_poznanie",
+        "tags": [
+            "początki_relacji"
+        ],
+        "is_locked": false
+    },
+    {
+        "seed_key": "q005",
+        "body": "Co na przestrzeni czasu wypracowaliście w waszym związku? Czego się nauczyłeś/aś przez ten czas o sobie?",
+        "category_slug": "na_poznanie",
+        "tags": [
+            "rozwój_relacji"
+        ],
+        "is_locked": false
+    },
+    {
+        "seed_key": "q006",
+        "body": "Gdyby ktoś spytał, jaka jest twoja druga połówka, jak byś ją opisał/a, zaczynając od charakteru, a kończąc na wyglądzie?",
+        "category_slug": "na_poznanie",
+        "tags": [
+            "opis_partnera"
+        ],
+        "is_locked": false
+    },
+    {
+        "seed_key": "q007",
+        "body": "W której części dnia masz najwięcej energii do działania? O jakiej porze najlepiej Ci się odpoczywa?",
+        "category_slug": "na_poznanie",
+        "tags": [
+            "biorytm"
+        ],
+        "is_locked": false
+    },
+    {
+        "seed_key": "q008",
+        "body": "Czy twój partner/ka wpływa na twoją pewność siebie? Jakie zachowanie partnera/ki Cię buduje i sprawia, że czujesz się wartościową osobą?",
+        "category_slug": "na_poznanie",
+        "tags": [
+            "pewność_siebie"
+        ],
+        "is_locked": false
+    },
+    {
+        "seed_key": "q009",
+        "body": "Kelner w restauracji przynosi Ci zamówienie bez składnika, który domawiałeś/aś. Jaka będzie twoja pierwsza reakcja?",
+        "category_slug": "na_poznanie",
+        "tags": [
+            "reakcja_na_stres"
+        ],
+        "is_locked": false
+    },
+    {
+        "seed_key": "q010",
+        "body": "Jak zachowanie partnera/ki i atmosfera w ciągu dnia wpływa u Ciebie na sferę seksualną?",
+        "category_slug": "intymnosc",
+        "tags": [
+            "libido"
+        ],
+        "is_locked": false
+    },
+    {
+        "seed_key": "q011",
+        "body": "Które z poniższych rozwiązań mogłoby uczynić seks najbardziej satysfakcjonującym?",
+        "category_slug": "intymnosc",
+        "tags": [
+            "satysfakcja_z_seksu"
+        ],
+        "is_locked": false
+    },
+    {
+        "seed_key": "q012",
+        "body": "Wymień minimum 5 rzeczy, za które podziwiasz swojego partnera/kę. Które z czynności przychodzą Ci z trudem, które jemu/jej idą świetnie?",
+        "category_slug": "na_poznanie",
+        "tags": [
+            "podziw_i_talenty"
+        ],
+        "is_locked": false
+    },
+    {
+        "seed_key": "q013",
+        "body": "Jaką czynność partner/ka może wykonywać z zamkniętymi oczami? W jakich sytuacjach jest to przydatne?",
+        "category_slug": "na_poznanie",
+        "tags": [
+            "umiejętności"
+        ],
+        "is_locked": false
+    },
+    {
+        "seed_key": "q014",
+        "body": "W jakim wydaniu twój partner/ka jest najatrakcyjniejszy/a? Możesz wziąć pod uwagę np. ubiór, fryzurę, makijaż, ale też zachowanie.",
+        "category_slug": "intymnosc",
+        "tags": [
+            "atrakcyjność_fizyczna"
+        ],
+        "is_locked": false
+    },
+    {
+        "seed_key": "q015",
+        "body": "Co wpływa na jakościowo dobrze spędzony czas we dwoje? Które ze wspólnych chwil wspominasz najlepiej i dlaczego?",
+        "category_slug": "randka",
+        "tags": [
+            "wspólne_chwile"
+        ],
+        "is_locked": false
+    },
+    {
+        "seed_key": "q016",
+        "body": "Jakie pasje, cele, marzenia bądź poglądy podzielacie? Wymień wszystkie wspólne punkty, które przychodzą Ci do głowy.",
+        "category_slug": "na_poznanie",
+        "tags": [
+            "wspólne_cele"
+        ],
+        "is_locked": false
+    },
+    {
+        "seed_key": "q017",
+        "body": "Co pozwala Ci się zrelaksować po ciężkim dniu? Co może zrobić dla Ciebie partner/ka, a czego może unikać, gdy jesteś zmęczony/a lub zestresowany/a?",
+        "category_slug": "na_poznanie",
+        "tags": [
+            "odpoczynek"
+        ],
+        "is_locked": false
+    },
+    {
+        "seed_key": "q018",
+        "body": "Kto Cię inspiruje? Co wyróżnia tę osobę i w czym chciałbyś/chciałabyś ją naśladować? Może to być zarówno ktoś bliski, jak i nieznany Ci osobiście.",
+        "category_slug": "na_poznanie",
+        "tags": [
+            "autorytety"
+        ],
+        "is_locked": false
+    },
+    {
+        "seed_key": "q019",
+        "body": "Wymień rzeczy, których chciałbyś/chciałabyś dokonać przez najbliższe 5 lat.",
+        "category_slug": "na_poznanie",
+        "tags": [
+            "plany_na_przyszłość"
+        ],
+        "is_locked": false
+    },
+    {
+        "seed_key": "q020",
+        "body": "Dokończ zdania i je uzasadnij: Mój dzień staje się lepszy, kiedy… Mój ulubiony moment w ciągu dnia to… Czuję się przez Ciebie doceniony/a, gdy… Czuję, że mnie kochasz, gdy… Stresuję się, gdy… Czuję się ważny/a, gdy…",
+        "category_slug": "intymnosc",
+        "tags": [
+            "potrzeby_emocjonalne"
+        ],
+        "is_locked": false
+    },
+    {
+        "seed_key": "q021",
+        "body": "Jak postrzegasz siebie w związku? Przez co jesteś dobrym partnerem, a nad czym powinieneś jeszcze popracować?",
+        "category_slug": "na_poznanie",
+        "tags": [
+            "autorefleksja"
+        ],
+        "is_locked": false
+    },
+    {
+        "seed_key": "q022",
+        "body": "Weź kartkę i długopis, poza oczami partnerom wypisz jego ulubione trzy tematy do rozmów. Niech druga osoba je wymieni. Jeśli zgadłeś minimum dwa twój partner w ciągu tygodnia zaplanuje i zorganizuje randkę, jeśli nie zgadłeś, zaplanuj ją.",
+        "category_slug": "randka",
+        "tags": [
+            "gra_towarzyska"
+        ],
+        "is_locked": false
+    },
+    {
+        "seed_key": "q023",
+        "body": "Czy jest rzecz, którą chciałbyś wprowadzić do łóżka, ale nie robisz jej w obawie przed reakcją drugiej strony? Jeśli tak, to jaką?",
+        "category_slug": "intymnosc",
+        "tags": [
+            "fantazje_erotyczne"
+        ],
+        "is_locked": false
+    },
+    {
+        "seed_key": "q024",
+        "body": "Jak dużą rolę pełni dla Ciebie wygląd w twoim pożądaniu? Jakie są aspekty fizyczne, które je podsycają?",
+        "category_slug": "intymnosc",
+        "tags": [
+            "pożądanie"
+        ],
+        "is_locked": false
+    },
+    {
+        "seed_key": "q025",
+        "body": "Co sprawia lub mogłoby sprawić, że podczas wstępnej i seksu czułbyś się komfortowo i swobodnie? Co mógłby zrobić dla Ciebie twój partner?",
+        "category_slug": "intymnosc",
+        "tags": [
+            "komfort_w_łóżku"
+        ],
+        "is_locked": false
+    },
+    {
+        "seed_key": "q026",
+        "body": "Jakie znaczenie ma dla Ciebie zdanie otoczenia o twoim związku? Czy są jakieś rady związkowe innych, do których próbowałeś się stosować?",
+        "category_slug": "na_poznanie",
+        "tags": [
+            "opinia_innych"
+        ],
+        "is_locked": false
+    },
+    {
+        "seed_key": "q027",
+        "body": "Jakie cechy sprawiają, że postrzegasz osobę za wartościową? Które z tych cech posiada twój partner?",
+        "category_slug": "na_poznanie",
+        "tags": [
+            "wartości_i_cechy"
+        ],
+        "is_locked": false
+    },
+    {
+        "seed_key": "q028",
+        "body": "Co sprawia, że czujesz się zmotywowany? W jaki sposób twój partner wpływa na twoją motywację?",
+        "category_slug": "na_poznanie",
+        "tags": [
+            "motywacja"
+        ],
+        "is_locked": false
+    },
+    {
+        "seed_key": "q029",
+        "body": "Co według Ciebie potrafi uszczęśliwić twojego partnera? Jaki jest przepis na jego satysfakcję?",
+        "category_slug": "na_poznanie",
+        "tags": [
+            "szczęście_partnera"
+        ],
+        "is_locked": false
+    },
+    {
+        "seed_key": "q030",
+        "body": "Co myślisz o białym kłamstwie? Czy według Ciebie kłamstwo z intencją zadowolenia drugiej osoby jest dopuszczalne, czy stawiasz na prawdę, nawet jeśli jest gorzka?",
+        "category_slug": "na_poznanie",
+        "tags": [
+            "szczerość"
+        ],
+        "is_locked": false
+    },
+    {
+        "seed_key": "q031",
+        "body": "Bywają rzeczy ważne i ważniejsze. Co jest najbardziej istotne z wymienionych czynników: jakość gry wstępnej, stosunku, czy orgazm?",
+        "category_slug": "intymnosc",
+        "tags": [
+            "priorytety_seksualne"
+        ],
+        "is_locked": false
+    },
+    {
+        "seed_key": "q032",
+        "body": "Gdybyś miał podać komuś receptę na udany i długi związek, co byś w niej zawarł?",
+        "category_slug": "na_poznanie",
+        "tags": [
+            "recepta_na_związek"
+        ],
+        "is_locked": false
+    },
+    {
+        "seed_key": "q033",
+        "body": "Czy są zachowania, których nie byłbyś w stanie zaakceptować w związku? Mogą to być też poglądy lub podejścia, z którymi się nie utożsamiasz.",
+        "category_slug": "na_poznanie",
+        "tags": [
+            "granice"
+        ],
+        "is_locked": false
+    },
+    {
+        "seed_key": "q034",
+        "body": "Które z podejść twoich rodziców jest godne naśladowania, a których nie chciałbyś powtarzać w związku?",
+        "category_slug": "na_poznanie",
+        "tags": [
+            "wzorce_z_domu"
+        ],
+        "is_locked": false
+    },
+    {
+        "seed_key": "q035",
+        "body": "Jakie są zalety bycia w związku? Co daje Ci relacja, w której jesteś?",
+        "category_slug": "na_poznanie",
+        "tags": [
+            "wartość_relacji"
+        ],
+        "is_locked": false
+    },
+    {
+        "seed_key": "q036",
+        "body": "Jakich przydatnych umiejętności nauczył Cię partner?",
+        "category_slug": "na_poznanie",
+        "tags": [
+            "nauka_od_partnera"
+        ],
+        "is_locked": false
+    },
+    {
+        "seed_key": "q037",
+        "body": "Opisz definicję udanego seksu. Możesz uwzględnić grę wstępną i czas bezpośrednio po nim. Wymieńcie wspólne wnioski i różnice, które widzicie w waszych definicjach.",
+        "category_slug": "intymnosc",
+        "tags": [
+            "definicja_seksu"
+        ],
+        "is_locked": false
+    },
+    {
+        "seed_key": "q038",
+        "body": "W jaki sposób udany seks wpływa na twoje samopoczucie? Co daje Ci zbliżenie, pomijając przyjemność podczas stosunku?",
+        "category_slug": "intymnosc",
+        "tags": [
+            "emocje_po_seksie"
+        ],
+        "is_locked": false
+    },
+    {
+        "seed_key": "q039",
+        "body": "Co wyróżnia twojego partnera na tle innych osób? Jakie są jego pozytywne, niepowtarzalne cechy?",
+        "category_slug": "na_poznanie",
+        "tags": [
+            "wyjątkowość_partnera"
+        ],
+        "is_locked": false
+    },
+    {
+        "seed_key": "q040",
+        "body": "Co pozwala Ci uspokoić się po kłótni? Chwila dla siebie, rozmowa czy coś innego? Opisz, czego potrzebujesz, by poczuć się lepiej.",
+        "category_slug": "na_poznanie",
+        "tags": [
+            "rozwiązywanie_konfliktów"
+        ],
+        "is_locked": false
+    },
+    {
+        "seed_key": "q041",
+        "body": "Masz już plany lub zobowiązania, a twój partner prosi Cię o pomoc w sprawie wymagającej poświęcenia sporej ilości czasu. Co robisz?",
+        "category_slug": "na_poznanie",
+        "tags": [
+            "priorytety_i_kompromisy"
+        ],
+        "is_locked": false
+    },
+    {
+        "seed_key": "q042",
+        "body": "W jaki sposób najłatwiej podjąć Ci ważną decyzję? Potrzebujesz czasu, aby przeanalizować wszystkie za i przeciw, czy wolisz spontanicznie zadecydować?",
+        "category_slug": "na_poznanie",
+        "tags": [
+            "podejmowanie_decyzji"
+        ],
+        "is_locked": false
+    },
+    {
+        "seed_key": "q043",
+        "body": "W jaki sposób rozplanowujesz czas? Wypełniasz jak najwięcej zadań, żeby mieć więcej czasu na odpoczynek, czy wolisz wykonywać je wolniej przy mniejszym nakładzie pracy?",
+        "category_slug": "na_poznanie",
+        "tags": [
+            "zarządzanie_czasem"
+        ],
+        "is_locked": false
+    },
+    {
+        "seed_key": "q044",
+        "body": "Co bardziej dodaje Ci energii: pełny wrażeń wieczór ze znajomymi, czy samotny relaks np. przy filmie lub książce?",
+        "category_slug": "na_poznanie",
+        "tags": [
+            "introwersja_ekstrawersja"
+        ],
+        "is_locked": false
+    },
+    {
+        "seed_key": "q045",
+        "body": "Przytocz scenę z filmu lub książki, która mogłaby stanowić dla Ciebie erotyczną inspirację. Które elementy chciałbyś wykorzystać?",
+        "category_slug": "intymnosc",
+        "tags": [
+            "inspiracje_erotyczne"
+        ],
+        "is_locked": false
+    },
+    {
+        "seed_key": "q046",
+        "body": "W której czynności seksualnej Twój partner pozostanie mistrzem? Jeśli pytanie was nie dotyczy, wymień cechy uroku osobistego partnera, które Cię uwiodły.",
+        "category_slug": "intymnosc",
+        "tags": [
+            "pochwała_partnera"
+        ],
+        "is_locked": false
+    },
+    {
+        "seed_key": "q047",
+        "body": "Co wywołałoby u Ciebie większy entuzjazm: partner czekający na Ciebie w skąpym stroju z obietnicą pikantnego wieczoru, czy przygotowana kąpiel, masaż i subtelna, czuła noc?",
+        "category_slug": "intymnosc",
+        "tags": [
+            "preferencje_wieczorne"
+        ],
+        "is_locked": false
+    },
+    {
+        "seed_key": "q048",
+        "body": "Opisz dokładnie, gdzie i w jaki sposób chciałbyś być dotykany, całowany w ramach gry wstępnej.",
+        "category_slug": "intymnosc",
+        "tags": [
+            "mapa_dotyku"
+        ],
+        "is_locked": false
+    },
+    {
+        "seed_key": "q049",
+        "body": "Co sądzisz o otwartych związkach? Czy relacja wykraczająca poza dwie osoby może być udana?",
+        "category_slug": "na_poznanie",
+        "tags": [
+            "model_związku"
+        ],
+        "is_locked": false
+    },
+    {
+        "seed_key": "q050",
+        "body": "Jakie są silne strony waszego związku? Co sprawia, że można określić waszą relację jako niepowtarzalną?",
+        "category_slug": "na_poznanie",
+        "tags": [
+            "atuty_związku"
+        ],
+        "is_locked": false
+    },
+    {
+        "seed_key": "q051",
+        "body": "Wybierz zdanie opisujące najbardziej twoje odczucia w związku. Możesz je zmodyfikować lub rozwinąć.",
+        "category_slug": "na_poznanie",
+        "tags": [
+            "stan_emocjonalny"
+        ],
+        "is_locked": false
+    },
+    {
+        "seed_key": "q052",
+        "body": "Na jakie odstępstwa decyduje się Twój partner, by sprawić Ci radość? W jaki sposób ty dostosowujesz się do partnera?",
+        "category_slug": "na_poznanie",
+        "tags": [
+            "elastyczność_kompromis"
+        ],
+        "is_locked": false
+    },
+    {
+        "seed_key": "q053",
+        "body": "W który sposób najczęściej okazujesz uczucie swojemu partnerowi?",
+        "category_slug": "na_poznanie",
+        "tags": [
+            "języki_miłości"
+        ],
+        "is_locked": false
+    },
+    {
+        "seed_key": "q054",
+        "body": "Jaki jest Twój stosunek do seksu oralnego? Czy jest to dla Ciebie ważna część życia seksualnego, czy może zupełnie niepotrzebna?",
+        "category_slug": "intymnosc",
+        "tags": [
+            "seks_oralny"
+        ],
+        "is_locked": false
+    },
+    {
+        "seed_key": "q055",
+        "body": "Jakbyś zareagował na kilkudniowy wyjazd partnera w pojedynkę w ramach relaksu?",
+        "category_slug": "na_poznanie",
+        "tags": [
+            "zaufanie_przestrzeń"
+        ],
+        "is_locked": false
+    },
+    {
+        "seed_key": "q056",
+        "body": "Gdybyś cofnął się w czasie o 5 lat, jakie porady związkowe dałbyś młodszej wersji siebie?",
+        "category_slug": "na_poznanie",
+        "tags": [
+            "mądrość_życiowa"
+        ],
+        "is_locked": false
+    },
+    {
+        "seed_key": "q057",
+        "body": "Jakbyś zareagował, gdyby twój najlepszy przyjaciel, rodzeństwo lub dziecko przedstawiło Ci swojego partnera, który byłby twoim lustrzanym odbiciem?",
+        "category_slug": "na_poznanie",
+        "tags": [
+            "samoocena"
+        ],
+        "is_locked": false
+    },
+    {
+        "seed_key": "q058",
+        "body": "Jakie zachowania partnera są dla Ciebie oznaką głębokiego zaangażowania?",
+        "category_slug": "na_poznanie",
+        "tags": [
+            "zaangażowanie"
+        ],
+        "is_locked": false
+    },
+    {
+        "seed_key": "q059",
+        "body": "Jaki wpływ według Ciebie mają social media na dzisiejsze relacje? Jest on raczej pozytywny, czy negatywny?",
+        "category_slug": "na_poznanie",
+        "tags": [
+            "technologia"
+        ],
+        "is_locked": false
+    },
+    {
+        "seed_key": "q060",
+        "body": "Co sądzisz o oglądaniu filmów pornograficznych w relacji? Czy mogą stanowić formę inspiracji lub przydatnego narzędzia?",
+        "category_slug": "intymnosc",
+        "tags": [
+            "pornografia"
+        ],
+        "is_locked": false
+    },
+    {
+        "seed_key": "q061",
+        "body": "Jak reagujesz, gdy widzisz, że twój partner wzbudził zainteresowanie u innej osoby? Wprawia Cię to w podenerwowanie, czy raczej ogarnia Cię duma?",
+        "category_slug": "na_poznanie",
+        "tags": [
+            "zazdrość"
+        ],
+        "is_locked": true
+    },
+    {
+        "seed_key": "q062",
+        "body": "Jak często i z jakich powodów zdarza Ci się pochwalić swojego partnera?",
+        "category_slug": "na_poznanie",
+        "tags": [
+            "docenianie"
+        ],
+        "is_locked": true
+    },
+    {
+        "seed_key": "q063",
+        "body": "Na co w pierwszej kolejności przeznaczyłbyś wspólnie pozyskany milion złotych?",
+        "category_slug": "randka",
+        "tags": [
+            "finanse"
+        ],
+        "is_locked": true
+    },
+    {
+        "seed_key": "q064",
+        "body": "Gdybyś nie miał ograniczeń finansowych, jakie wakacje i w które miejsce chciałbyś się wybrać?",
+        "category_slug": "randka",
+        "tags": [
+            "podróże_marzeń"
+        ],
+        "is_locked": true
+    },
+    {
+        "seed_key": "q065",
+        "body": "Jaki zawód chciałbyś wykonywać, gdybyś wiedział, że pozostaniesz w nim całe życie?",
+        "category_slug": "na_poznanie",
+        "tags": [
+            "kariera_zawodowa"
+        ],
+        "is_locked": true
+    },
+    {
+        "seed_key": "q066",
+        "body": "Jakbyś wykorzystał swoje trzy życzenia? (Nieskończona liczba życzeń nie wchodzi w grę)",
+        "category_slug": "randka",
+        "tags": [
+            "marzenia"
+        ],
+        "is_locked": true
+    },
+    {
+        "seed_key": "q067",
+        "body": "Które z wymienionych miejsc jest najbliższe twoim marzeniom? Czego jeszcze nie mogłoby zabraknąć w twoim wymarzonym domu?",
+        "category_slug": "randka",
+        "tags": [
+            "dom_marzeń"
+        ],
+        "is_locked": true
+    },
+    {
+        "seed_key": "q068",
+        "body": "Gdyby wasze życie zostało obsadzone w filmie, jaki byłby jego gatunek i jaki nadałbyś mu tytuł?",
+        "category_slug": "randka",
+        "tags": [
+            "kreatywność_humor"
+        ],
+        "is_locked": true
+    },
+    {
+        "seed_key": "q069",
+        "body": "Co stanowi dla Ciebie najlepsze wsparcie, kiedy borykasz się problemem? Jaką formę ty dajesz najczęściej partnerowi?",
+        "category_slug": "na_poznanie",
+        "tags": [
+            "wsparcie_w_kryzysie"
+        ],
+        "is_locked": true
+    },
+    {
+        "seed_key": "q070",
+        "body": "Które z poniższych rzeczy stanowi dla Ciebie największe i najbardziej stresujące wyzwanie?",
+        "category_slug": "na_poznanie",
+        "tags": [
+            "lęki_i_stres"
+        ],
+        "is_locked": true
+    },
+    {
+        "seed_key": "q071",
+        "body": "Co wychodzi najlepiej, gdy łączycie siły z partnerem?",
+        "category_slug": "na_poznanie",
+        "tags": [
+            "praca_zespołowa"
+        ],
+        "is_locked": true
+    },
+    {
+        "seed_key": "q072",
+        "body": "Co myśliw o przyjaźni z płcią, która jest w kręgu naszych zainteresowań? Czy zaakceptowałbyś przyjaźń swojego partnera?",
+        "category_slug": "na_poznanie",
+        "tags": [
+            "zaufanie_przyjaźń"
+        ],
+        "is_locked": true
+    },
+    {
+        "seed_key": "q073",
+        "body": "Które zachowanie, podejście u ludzi zawsze będzie Cię razić i jest w Twoich oczach niewybaczalne?",
+        "category_slug": "na_poznanie",
+        "tags": [
+            "zasady_moralne"
+        ],
+        "is_locked": true
+    },
+    {
+        "seed_key": "q074",
+        "body": "Jakimi złotymi zasadami kierujesz się w życiu? Które wartości są dla Ciebie najważniejsze?",
+        "category_slug": "na_poznanie",
+        "tags": [
+            "życiowe_wartości"
+        ],
+        "is_locked": true
+    },
+    {
+        "seed_key": "q075",
+        "body": "Jaka czynność podczas dnia jest dla Ciebie nieodłączną częścią rutyny, z której nie byłbyś w stanie zrezygnować?",
+        "category_slug": "na_poznanie",
+        "tags": [
+            "codzienna_rutyna"
+        ],
+        "is_locked": true
+    },
+    {
+        "seed_key": "q076",
+        "body": "Co jest największą oznaką dojrzałości w związku?",
+        "category_slug": "na_poznanie",
+        "tags": [
+            "dojrzałość"
+        ],
+        "is_locked": true
+    },
+    {
+        "seed_key": "q077",
+        "body": "Czy istnieje lub istniała rzecz, której wstydziłbyś się zrobić przy swoim partnerze? Jeśli tak, jaka?",
+        "category_slug": "intymnosc",
+        "tags": [
+            "wstyd_i_bariery"
+        ],
+        "is_locked": true
+    },
+    {
+        "seed_key": "q078",
+        "body": "Jaka pora dnia i okoliczności są największym sprzymierzeńcem seksu?",
+        "category_slug": "intymnosc",
+        "tags": [
+            "czas_na_seks"
+        ],
+        "is_locked": true
+    },
+    {
+        "seed_key": "q079",
+        "body": "Czy możesz otwarcie porozmawiać z partnerem o trudnych emocjach? Czy są między wami tematy tabu?",
+        "category_slug": "intymnosc",
+        "tags": [
+            "komunikacja_tabu"
+        ],
+        "is_locked": true
+    },
+    {
+        "seed_key": "q080",
+        "body": "Która reakcja byłaby Ci najbliższa, gdyby partner chciał podzielić się z Tobą czymś, co przeszkadza mu w waszej relacji?",
+        "category_slug": "na_poznanie",
+        "tags": [
+            "przyjmowanie_krytyki"
+        ],
+        "is_locked": true
+    },
+    {
+        "seed_key": "q081",
+        "body": "Co najczęściej robisz, gdy nie odpowiada Ci zachowanie partnera?",
+        "category_slug": "na_poznanie",
+        "tags": [
+            "wyrażanie_niezadowolenia"
+        ],
+        "is_locked": true
+    },
+    {
+        "seed_key": "q082",
+        "body": "Partner opowiada Ci o swoim marzeniu, które chciałby spełnić, jednak jest ono trudne w realizacji. Jak zareagujesz?",
+        "category_slug": "na_poznanie",
+        "tags": [
+            "wspieranie_marzeń"
+        ],
+        "is_locked": true
+    },
+    {
+        "seed_key": "q083",
+        "body": "Na jaką czynność wiecznie brakuje Ci czasu?",
+        "category_slug": "na_poznanie",
+        "tags": [
+            "brak_czasu"
+        ],
+        "is_locked": true
+    },
+    {
+        "seed_key": "q084",
+        "body": "Jaką rolę gra dla Ciebie przeszłość partnera? Czy wpływa to na Twoje postrzeganie go w chwili obecnej?",
+        "category_slug": "na_poznanie",
+        "tags": [
+            "przeszłość"
+        ],
+        "is_locked": true
+    },
+    {
+        "seed_key": "q085",
+        "body": "Miłość, przyjaźń, czy namiętność – co dominuje w waszym związku? Który z tych składników uważasz za najważniejszy?",
+        "category_slug": "na_poznanie",
+        "tags": [
+            "filary_związku"
+        ],
+        "is_locked": true
+    },
+    {
+        "seed_key": "q086",
+        "body": "Jaka potrawa działa na Ciebie jak afrodyzjak?",
+        "category_slug": "intymnosc",
+        "tags": [
+            "kulinaria_afrodyzjaki"
+        ],
+        "is_locked": true
+    },
+    {
+        "seed_key": "q087",
+        "body": "Z której swojej części ciała jesteś najbardziej dumny? Która część ciała partnera jest idealna?",
+        "category_slug": "intymnosc",
+        "tags": [
+            "akceptacja_ciała"
+        ],
+        "is_locked": true
+    },
+    {
+        "seed_key": "q088",
+        "body": "Czy gesty, jak pocałunek w rękę czy otworzenie drzwi są dla Ciebie oznaką kultury i szacunku?",
+        "category_slug": "randka",
+        "tags": [
+            "szarmanckość_maniery"
+        ],
+        "is_locked": true
+    },
+    {
+        "seed_key": "q089",
+        "body": "Kto powinien płacić na randce? Czy uważasz, że płacenie pół na pół jest sprawiedliwe?",
+        "category_slug": "randka",
+        "tags": [
+            "płatności"
+        ],
+        "is_locked": true
+    },
+    {
+        "seed_key": "q090",
+        "body": "Do jakich obowiązków najciężej Ci się zebrać? Jaka czynność wymaga od Ciebie największych pokładów energii?",
+        "category_slug": "na_poznanie",
+        "tags": [
+            "obowiązki_domowe"
+        ],
+        "is_locked": true
+    },
+    {
+        "seed_key": "q091",
+        "body": "Widzisz bardzo atrakcyjną osobę przechodzącą koło Ciebie i partnera. Co robisz?",
+        "category_slug": "na_poznanie",
+        "tags": [
+            "reakcja_na_atrakcyjność"
+        ],
+        "is_locked": true
+    },
+    {
+        "seed_key": "q092",
+        "body": "Czy byłbyś zadowolony, gdyby twój partner traktował Cię dokładnie tak, jak ty traktujesz jego?",
+        "category_slug": "na_poznanie",
+        "tags": [
+            "wzajemność"
+        ],
+        "is_locked": true
+    },
+    {
+        "seed_key": "q093",
+        "body": "Jak często zdarza wam się spędzać czas przeznaczony tylko dla waszej dwójki bez smartfona, telewizji i komputera?",
+        "category_slug": "randka",
+        "tags": [
+            "czas_bez_ekranów"
+        ],
+        "is_locked": true
+    },
+    {
+        "seed_key": "q094",
+        "body": "Na jakie sposoby wykazujesz inicjatywę w związku? Jak wyraża ją Twój partner?",
+        "category_slug": "na_poznanie",
+        "tags": [
+            "inicjatywa"
+        ],
+        "is_locked": true
+    },
+    {
+        "seed_key": "q095",
+        "body": "Jak postrzegasz intercyzę? Czy świadczy ona o rozsądku, czy jest raczej oznaką braku zaufania?",
+        "category_slug": "na_poznanie",
+        "tags": [
+            "formalności_i_finanse"
+        ],
+        "is_locked": true
+    },
+    {
+        "seed_key": "q096",
+        "body": "Co myślisz o związkach na odległość? Byłbyś w stanie trwać w takim związku?",
+        "category_slug": "na_poznanie",
+        "tags": [
+            "związek_na_odległość"
+        ],
+        "is_locked": true
+    },
+    {
+        "seed_key": "q097",
+        "body": "Czy powinno się dzielić wszystkim z partnerem? Czy w związku powinno być miejsce na małe sekrety?",
+        "category_slug": "na_poznanie",
+        "tags": [
+            "prywatność"
+        ],
+        "is_locked": true
+    },
+    {
+        "seed_key": "q098",
+        "body": "Czy założenie rodziny w młodym wieku jest korzystne w dzisiejszym świecie?",
+        "category_slug": "na_poznanie",
+        "tags": [
+            "zakładanie_rodziny"
+        ],
+        "is_locked": true
+    },
+    {
+        "seed_key": "q099",
+        "body": "Jaka jest Twoja największa obawa dotycząca związku?",
+        "category_slug": "na_poznanie",
+        "tags": [
+            "lęki_relacyjne"
+        ],
+        "is_locked": true
+    },
+    {
+        "seed_key": "q100",
+        "body": "Które z poniższych rzeczy chciałbyś wprowadzić do związku? (Przestrzeń, bliskość emocjonalna, czas, bliskość fizyczna).",
+        "category_slug": "intymnosc",
+        "tags": [
+            "potrzeby_w_związku"
+        ],
+        "is_locked": true
+    }
 ]

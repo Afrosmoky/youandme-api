@@ -19,6 +19,7 @@ class Ritual extends Model
 
     /** @var list<string> */
     protected $fillable = [
+        'seed_key',
         'title',
         'body',
         'locale',

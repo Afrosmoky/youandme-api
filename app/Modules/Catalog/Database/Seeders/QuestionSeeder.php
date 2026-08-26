@@ -10,24 +10,34 @@ use RuntimeException;
 class QuestionSeeder extends Seeder
 {
     /**
-     * Size of the closed part of the deck (P7): the LAST 40 entries of the seed
-     * file are locked, the rest is free. A TEMPORARY, position-based split — the
-     * real 60/40 choice is Wiktoria's content decision and will arrive as a flag
-     * in the JSON. Deriving it from the position keeps
-     * questions_with_categories_pl.json untouched until then, and keeps the seed
-     * deterministic (re-seeding never reshuffles which cards are locked).
-     */
-    private const LOCKED_TAIL = 40;
-
-    /**
      * Re-seed the official deck from Wiktoria's parsed JSON: 100 questions, each
-     * with a category slug and 0-1 sub-tags. Idempotent via updateOrCreate on body.
-     * Depends on CategorySeeder having run first (questions FK -> categories).
+     * with a category slug and 0-1 sub-tags.
      *
-     * Answer options (S2) come from a SECOND file, keyed by the same body. They are
-     * deliberately not merged into questions_with_categories_pl.json: that file is
-     * machine-produced from Wiktoria's docx and gets overwritten whole on the next
-     * export, while the options come from another source and have to survive it.
+     * Keyed on seed_key (q001..q100), never on body. That is the whole point of
+     * slice (d): a question's text is content and content changes, so it cannot
+     * also be the thing that says which row we mean. Since the key carries the
+     * identity, `body` is now an ordinary updatable column — rewriting twenty
+     * questions into neutral forms is a re-seed, not surgery.
+     *
+     * There is deliberately NO fallback to matching by body. A fallback would be
+     * used exactly once — the first time a text changed — and would recreate the
+     * duplicate this seeder exists to prevent. A file entry whose key is missing
+     * from the database is simply a new question.
+     *
+     * is_locked is read from the file too, and REQUIRED there. It used to be
+     * derived from position (the last 40 entries), which meant appending a new
+     * category would silently re-draw the line between free and paid cards under
+     * couples who had already paid. Positions carry no meaning here any more —
+     * and neither does a default: whether a card is paid for is a decision
+     * somebody makes, not one the seeder falls back into.
+     *
+     * Answer options come from a SECOND file, joined on the same seed_key. They
+     * are deliberately not merged into questions_with_categories_pl.json: that
+     * file is machine-produced from Wiktoria's docx and gets overwritten whole on
+     * the next export, while the options come from another source and have to
+     * survive it.
+     *
+     * Depends on CategorySeeder having run first (questions FK -> categories).
      */
     public function run(): void
     {
@@ -38,7 +48,7 @@ class QuestionSeeder extends Seeder
             throw new RuntimeException("Cannot open seed file: {$path}");
         }
 
-        /** @var list<array{body: string, category_slug: string, tags?: list<string>}> $entries */
+        /** @var list<array{seed_key?: string, body: string, category_slug: string, tags?: list<string>, is_locked?: bool}> $entries */
         $entries = json_decode($json, true, flags: JSON_THROW_ON_ERROR);
 
         $options = $this->loadOptions();
@@ -46,17 +56,28 @@ class QuestionSeeder extends Seeder
         // Resolve slugs once to avoid a query per question.
         $categoryIds = Category::query()->pluck('id', 'slug');
 
-        // Index of the first locked entry. max(0, ...) so a short deck (tests,
-        // a trimmed file) locks everything rather than underflowing.
-        $firstLockedIndex = max(0, count($entries) - self::LOCKED_TAIL);
-
+        /** @var array<string, true> $seenKeys */
+        $seenKeys = [];
         /** @var array<string, true> $matchedOptions */
         $matchedOptions = [];
 
         foreach ($entries as $index => $entry) {
+            $seedKey = trim($entry['seed_key'] ?? '');
+            if ($seedKey === '') {
+                throw new RuntimeException(
+                    "Question at position {$index} has no seed_key. Run `php artisan catalog:assign-keys session` "
+                    .'before seeding a file that came out of a content export.'
+                );
+            }
+
+            if (isset($seenKeys[$seedKey])) {
+                throw new RuntimeException("Duplicate seed_key in the session deck: {$seedKey}.");
+            }
+            $seenKeys[$seedKey] = true;
+
             $body = trim($entry['body']);
             if ($body === '') {
-                continue;
+                throw new RuntimeException("Question {$seedKey} has an empty body.");
             }
 
             $categoryId = $categoryIds[$entry['category_slug']] ?? null;
@@ -64,43 +85,92 @@ class QuestionSeeder extends Seeder
                 throw new RuntimeException("Unknown category slug in seed data: {$entry['category_slug']}");
             }
 
-            if (isset($options[$body])) {
-                $matchedOptions[$body] = true;
+            if (! array_key_exists('is_locked', $entry)) {
+                throw new RuntimeException(
+                    "Question {$seedKey} has no is_locked. Whether a card is paid for is a content decision and "
+                    .'must be stated in the file — the seeder will not take a default for it.'
+                );
+            }
+
+            if (isset($options[$seedKey])) {
+                $matchedOptions[$seedKey] = true;
             }
 
             Question::updateOrCreate(
-                ['body' => $body],
+                ['seed_key' => $seedKey],
                 [
+                    'body' => $body,
                     'type' => 'session',
                     'locale' => 'pl',
                     'category_id' => $categoryId,
                     'tags' => $entry['tags'] ?? [],
-                    'is_locked' => $index >= $firstLockedIndex,
+                    'is_locked' => (bool) $entry['is_locked'],
                     // Written unconditionally, null included: a card that loses its
                     // options in the file must lose them in the database too, or
                     // re-seeding would quietly keep serving the old list.
-                    'options' => $options[$body] ?? null,
+                    'options' => $options[$seedKey] ?? null,
                 ],
             );
         }
 
-        // The two files are joined on a full question body, which is exactly the
-        // string a content re-export is most likely to touch. An option entry that
-        // matches nothing means the deck moved on without it — fail loudly here
-        // rather than ship a card that silently lost its answers.
+        $this->reportOrphans(array_keys($seenKeys));
+
+        // An option entry pointing at a key no card carries means the two files
+        // drifted apart — fail loudly here rather than ship a card that silently
+        // lost its answers.
         $unmatched = array_diff(array_keys($options), array_keys($matchedOptions));
         if ($unmatched !== []) {
             throw new RuntimeException(
-                'Options seed entries match no question body: '.implode(' | ', $unmatched)
+                'Options seed entries match no question seed_key: '.implode(', ', $unmatched)
             );
         }
     }
 
     /**
-     * Answer options indexed by question body, already in the shape the column
-     * stores: {items, multiple}. `multiple` says how the client lets the couple
-     * pick (one option or several) — the answer itself stays plain text either
-     * way, so nothing downstream of Catalog changes.
+     * Say something about rows the file no longer mentions.
+     *
+     * A question dropped from a content export is not deleted here and never will
+     * be by a seeder: couples' memories, played cards and likes point at it, and
+     * removing it would take their history with it. But it also stops being
+     * maintained the moment it leaves the file, and nothing else would ever
+     * mention it again — so the seeder says its name out loud and leaves the
+     * decision to a person.
+     *
+     * @param  list<string>  $keysInFile
+     */
+    private function reportOrphans(array $keysInFile): void
+    {
+        /** @var list<string> $orphans */
+        $orphans = Question::query()
+            ->where('type', 'session')
+            ->where('locale', 'pl')
+            ->whereNotNull('seed_key')
+            ->whereNotIn('seed_key', $keysInFile)
+            ->orderBy('seed_key')
+            ->pluck('seed_key')
+            ->all();
+
+        if ($orphans === [] || $this->command === null) {
+            return;
+        }
+
+        $this->command->warn(sprintf(
+            '%d session questions are in the database but no longer in the seed file: %s. Left untouched — '
+            .'couples still have history on them.',
+            count($orphans),
+            implode(', ', $orphans),
+        ));
+    }
+
+    /**
+     * Answer options indexed by seed_key, already in the shape the column stores:
+     * {items, multiple}. `multiple` says how the client lets the couple pick (one
+     * option or several) — the answer itself stays plain text either way, so
+     * nothing downstream of Catalog changes.
+     *
+     * The file keeps a `body` next to the key for whoever reads it, but the join
+     * is the key. Before (d) the body WAS the join, which made every option entry
+     * a hostage to its question's wording.
      *
      * @return array<string, array{items: list<string>, multiple: bool}>
      */
@@ -113,24 +183,27 @@ class QuestionSeeder extends Seeder
             throw new RuntimeException("Cannot open seed file: {$path}");
         }
 
-        /** @var list<array{body: string, options: list<string>, multiple: bool}> $entries */
+        /** @var list<array{seed_key?: string, options: list<string>, multiple: bool}> $entries */
         $entries = json_decode($json, true, flags: JSON_THROW_ON_ERROR);
 
-        $byBody = [];
+        $byKey = [];
 
-        foreach ($entries as $entry) {
-            $body = trim($entry['body']);
-
-            if ($entry['options'] === []) {
-                throw new RuntimeException("Empty options list in seed data for: {$body}");
+        foreach ($entries as $index => $entry) {
+            $seedKey = trim($entry['seed_key'] ?? '');
+            if ($seedKey === '') {
+                throw new RuntimeException("Options entry at position {$index} has no seed_key.");
             }
 
-            $byBody[$body] = [
+            if ($entry['options'] === []) {
+                throw new RuntimeException("Empty options list in seed data for: {$seedKey}");
+            }
+
+            $byKey[$seedKey] = [
                 'items' => $entry['options'],
                 'multiple' => $entry['multiple'],
             ];
         }
 
-        return $byBody;
+        return $byKey;
     }
 }

@@ -24,7 +24,7 @@ test('seeder populates tags', function (): void {
     expect(Question::whereJsonLength('tags', '>', 0)->count())->toBeGreaterThan(0);
 });
 
-test('seeder locks the last 40 entries of the deck and leaves the rest free', function (): void {
+test('the deck ships forty paid cards and sixty free', function (): void {
     $this->seed();
 
     $sessionDeck = Question::where('type', 'session')->where('locale', 'pl');
@@ -59,24 +59,24 @@ test('seeder attaches answer options to exactly 14 cards', function (): void {
         ->and(Question::where('type', 'daily')->whereNotNull('options')->count())->toBe(0);
 });
 
-test('every options entry finds a question with that exact body', function (): void {
+test('every options entry points at a seed_key the deck carries', function (): void {
     $deckPath = base_path('app/Modules/Catalog/Database/Seeders/data/questions_with_categories_pl.json');
     $optionsPath = base_path('app/Modules/Catalog/Database/Seeders/data/question_options_pl.json');
 
-    /** @var list<array{body: string}> $deck */
+    /** @var list<array{seed_key: string}> $deck */
     $deck = json_decode((string) file_get_contents($deckPath), true, flags: JSON_THROW_ON_ERROR);
-    /** @var list<array{body: string}> $options */
+    /** @var list<array{seed_key: string}> $options */
     $options = json_decode((string) file_get_contents($optionsPath), true, flags: JSON_THROW_ON_ERROR);
 
-    $bodies = array_map(fn (array $entry): string => trim($entry['body']), $deck);
+    $keys = array_column($deck, 'seed_key');
 
-    // The two files are joined on the whole question body — the one string a
-    // re-export of Wiktoria's docx is most likely to change. Without this the
-    // options would just stop being attached, and 14 cards would quietly go back
-    // to looking like open questions.
+    // The two files used to be joined on the whole question body — the one string
+    // a re-export of Wiktoria's docx is most likely to change, which would have
+    // detached the answers from fourteen cards without a word. Since (d) the join
+    // is the key, and this guards the key instead.
     $orphans = array_values(array_filter(
-        array_map(fn (array $entry): string => trim($entry['body']), $options),
-        fn (string $body): bool => ! in_array($body, $bodies, true),
+        array_column($options, 'seed_key'),
+        fn (string $key): bool => ! in_array($key, $keys, true),
     ));
 
     expect($orphans)->toBe([])

@@ -1,145 +1,159 @@
 [
-  {
-    "body": "Wybierz niespodziankę, która uszczęśliwiłaby Cię najbardziej i taką, która zadowoliłaby Cię najmniej. Wyjaśnij dlaczego.",
-    "options": [
-      "Wypełnienie za Ciebie wszystkich obowiązków w ciągu dnia",
-      "Spersonalizowany prezent od serca np. przedmiot związany z twoim hobby, własnoręcznie wykonana ozdoba",
-      "Wspólne zwiedzanie nowego miejsca",
-      "Seans filmowy z dużą ilością przytulania i innych form czułości fizycznej (niekoniecznie seksualnej)"
-    ],
-    "multiple": false
-  },
-  {
-    "body": "Kelner w restauracji przynosi Ci zamówienie bez składnika, który domawiałeś/aś. Jaka będzie twoja pierwsza reakcja?",
-    "options": [
-      "Od razu wołam za kelnerem i wygarniam mu jego powinności, bo każdy jest odpowiedzialny za swoją pracę",
-      "Odpuszczam i zjadam, każdemu zdarza się popełnić błąd, więc nie będę go dodatkowo stresował",
-      "Pytam się spokojnie obsługi, czy da się z tym coś zrobić w miarę możliwości, powinienem dostać co zamówiłem, ale też powinniśmy być dla siebie ludźmi",
-      "Żądam zwrotu pieniędzy i wychodzę, już nigdy nie przyjdę do tej restauracji, bo cenię sobie swój czas i pieniądze"
-    ],
-    "multiple": false
-  },
-  {
-    "body": "Które z poniższych rozwiązań mogłoby uczynić seks najbardziej satysfakcjonującym?",
-    "options": [
-      "Eksperymenty z ciekawymi gadżetami lub odgrywaniem ról",
-      "Atmosfera wyczekiwania i budowanie napięcia seksualnego przez cały dzień",
-      "Spontaniczny i dynamiczny stosunek",
-      "Zapach świec, estetyczne otoczenie i nastrojowa muzyka",
-      "Doświadczanie nowości i wprowadzanie ciągłych zmian"
-    ],
-    "multiple": false
-  },
-  {
-    "body": "Masz już plany lub zobowiązania, a twój partner prosi Cię o pomoc w sprawie wymagającej poświęcenia sporej ilości czasu. Co robisz?",
-    "options": [
-      "Rzucam wszystko i bez zastanowienia idę mu pomóc",
-      "Informuję o moich planach i o tym, że mogę pomóc po ich zrealizowaniu",
-      "Stanowczo odmawiam, by mieć wystarczająco czasu na swoje plany",
-      "Daję radę, w jaki sposób może poradzić sobie lepiej i szybciej lub proponuję zwrócenie się o pomoc kogoś innego"
-    ],
-    "multiple": false
-  },
-  {
-    "body": "Wybierz zdanie opisujące najbardziej twoje odczucia w związku. Możesz je zmodyfikować lub rozwinąć.",
-    "options": [
-      "Często czuję motylki w brzuchu i targa mną dużo emocji. Mam dużą potrzebę spędzać z partnerem jak najwięcej czasu",
-      "Czuję spokój i bezpieczeństwo przy partnerze. Mam wrażenie, że jest moim najlepszym przyjacielem i wsparciem",
-      "Czuję, że patrzymy w tym samym kierunku, uzupełniamy się w codziennych sprawach i zobowiązaniach. Łączą nas podobne cele",
-      "Mamy solidny fundament, dzięki któremu rozwiązujemy bieżące problemy. Czuję, że mogę liczyć na mojego partnera bez względu na przeszkody"
-    ],
-    "multiple": false
-  },
-  {
-    "body": "W który sposób najczęściej okazujesz uczucie swojemu partnerowi?",
-    "options": [
-      "Okazuję bliskość fizyczną np. przytulam, chwytam za rękę, masuję",
-      "Wysłuchuję i przeprowadzam głębokie rozmowy",
-      "Chętnie wykonuję wspólne aktywności. Planuję wspólną formę wypoczynku lub randkę",
-      "Daję mu małe upominki poza specjalnymi okazjami",
-      "Wykonuję drobne przysługi np. przygotowuję wspólny posiłek, naprawiam usterkę w jego przedmiocie"
-    ],
-    "multiple": false
-  },
-  {
-    "body": "Jakbyś zareagował na kilkudniowy wyjazd partnera w pojedynkę w ramach relaksu?",
-    "options": [
-      "Dobry pomysł, powinien się rozerwać, ja też wykorzystam ten czas dla siebie",
-      "Będę się zamartwiać, ale jeśli będziemy w stałym kontakcie, przystanę na to",
-      "Nie ma mowy, przecież możemy wybrać się gdzieś razem. Co zamierza robić beze mnie?",
-      "Z chęcią go nawet spakuję, w końcu będę mieć trochę świętego spokoju"
-    ],
-    "multiple": false
-  },
-  {
-    "body": "Które z wymienionych miejsc jest najbliższe twoim marzeniom? Czego jeszcze nie mogłoby zabraknąć w twoim wymarzonym domu?",
-    "options": [
-      "Dom z dużym ogrodem, w pobliżu rzeki, gór i lasu, gdzie nie brakuje ciszy i spokoju",
-      "Przestronny apartament w centrum miasta, na ostatnim piętrze wieżowca",
-      "Willa blisko plaży i morza, otoczona restauracjami i rozrywką",
-      "Duże mieszkanie wypełnione antykami i sztuką, w małym, przyjaznym miasteczku"
-    ],
-    "multiple": false
-  },
-  {
-    "body": "Co stanowi dla Ciebie najlepsze wsparcie, kiedy borykasz się problemem? Jaką formę ty dajesz najczęściej partnerowi?",
-    "options": [
-      "Pozostanie wysłuchanym, aby poczuć się zrozumianym",
-      "Dostarczenie dobrej rady, która pomoże znaleźć rozwiązanie",
-      "Przytulenie i zapewnienie, że nie jesteś sam, co da Ci poczucie bezpieczeństwa",
-      "Pozostawienie przestrzeni na własne przemyślenia i konfrontację z problemem"
-    ],
-    "multiple": true
-  },
-  {
-    "body": "Które z poniższych rzeczy stanowi dla Ciebie największe i najbardziej stresujące wyzwanie?",
-    "options": [
-      "Zorganizowanie przyjęcia urodzinowego i dobranie odpowiedniego prezentu",
-      "Zrobienie kolacji dla teściów",
-      "Dojście do porozumienia po konflikcie z partnerem",
-      "Zaplanowanie i przygotowanie wyjazdu lub wycieczki"
-    ],
-    "multiple": false
-  },
-  {
-    "body": "Która reakcja byłaby Ci najbliższa, gdyby partner chciał podzielić się z Tobą czymś, co przeszkadza mu w waszej relacji?",
-    "options": [
-      "Zakładam, że nie ma na co narzekać i staram się uświadomić mu to",
-      "Korzystając z okazji, zaczynam wymieniać wszystkie rzeczy, które mi przeszkadzają",
-      "Skupiam się na jego potrzebach, wysłuchuję i staram się wspólnie znaleźć rozwiązanie problemu",
-      "Postanawiam przemilczeć temat, aby nie doszło do niepotrzebnej kłótni"
-    ],
-    "multiple": false
-  },
-  {
-    "body": "Co najczęściej robisz, gdy nie odpowiada Ci zachowanie partnera?",
-    "options": [
-      "Wolę o tym nie wspominać i nie wszczynać konfliktu",
-      "Wyrzucam mu w złości wszystkie rzeczy, które robi wbrew moim oczekiwaniom",
-      "Mówię głośno przy znajomych lub rodzinie, jak irytuje mnie jego zachowanie",
-      "Dyskutuję z bliską osobą o moich problemach w związku",
-      "Rozmawiam z partnerem i tłumaczę moje odczucia względem jego zachowań"
-    ],
-    "multiple": false
-  },
-  {
-    "body": "Partner opowiada Ci o swoim marzeniu, które chciałby spełnić, jednak jest ono trudne w realizacji. Jak zareagujesz?",
-    "options": [
-      "Powinien zejść na ziemię! Staram się jak najszybciej wybić mu ten pomysł z głowy",
-      "Wspieram go w dążeniach i ufam, że poradzi sobie z każdym wyzwaniem",
-      "Rozważam za i przeciw, pomagam wymyślić jak najlepszy plan",
-      "Zaczynam dzielić się swoimi marzeniami"
-    ],
-    "multiple": false
-  },
-  {
-    "body": "Widzisz bardzo atrakcyjną osobę przechodzącą koło Ciebie i partnera. Co robisz?",
-    "options": [
-      "Patrzę wszędzie, byle nie w kierunku tej osoby, aby mój partner nie pomyślał, że się w nią wpatruję",
-      "Wskazuję partnerowi tę osobę i zaczynam komentować jej atrakcyjność",
-      "Przyglądam się jej bez słowa i bez skrępowania przy moim partnerze",
-      "Zerkam kątem oka tak, by mój partner tego nie zauważył"
-    ],
-    "multiple": false
-  }
+    {
+        "seed_key": "q001",
+        "body": "Wybierz niespodziankę, która uszczęśliwiłaby Cię najbardziej i taką, która zadowoliłaby Cię najmniej. Wyjaśnij dlaczego.",
+        "options": [
+            "Wypełnienie za Ciebie wszystkich obowiązków w ciągu dnia",
+            "Spersonalizowany prezent od serca np. przedmiot związany z twoim hobby, własnoręcznie wykonana ozdoba",
+            "Wspólne zwiedzanie nowego miejsca",
+            "Seans filmowy z dużą ilością przytulania i innych form czułości fizycznej (niekoniecznie seksualnej)"
+        ],
+        "multiple": false
+    },
+    {
+        "seed_key": "q009",
+        "body": "Kelner w restauracji przynosi Ci zamówienie bez składnika, który domawiałeś/aś. Jaka będzie twoja pierwsza reakcja?",
+        "options": [
+            "Od razu wołam za kelnerem i wygarniam mu jego powinności, bo każdy jest odpowiedzialny za swoją pracę",
+            "Odpuszczam i zjadam, każdemu zdarza się popełnić błąd, więc nie będę go dodatkowo stresował",
+            "Pytam się spokojnie obsługi, czy da się z tym coś zrobić w miarę możliwości, powinienem dostać co zamówiłem, ale też powinniśmy być dla siebie ludźmi",
+            "Żądam zwrotu pieniędzy i wychodzę, już nigdy nie przyjdę do tej restauracji, bo cenię sobie swój czas i pieniądze"
+        ],
+        "multiple": false
+    },
+    {
+        "seed_key": "q011",
+        "body": "Które z poniższych rozwiązań mogłoby uczynić seks najbardziej satysfakcjonującym?",
+        "options": [
+            "Eksperymenty z ciekawymi gadżetami lub odgrywaniem ról",
+            "Atmosfera wyczekiwania i budowanie napięcia seksualnego przez cały dzień",
+            "Spontaniczny i dynamiczny stosunek",
+            "Zapach świec, estetyczne otoczenie i nastrojowa muzyka",
+            "Doświadczanie nowości i wprowadzanie ciągłych zmian"
+        ],
+        "multiple": false
+    },
+    {
+        "seed_key": "q041",
+        "body": "Masz już plany lub zobowiązania, a twój partner prosi Cię o pomoc w sprawie wymagającej poświęcenia sporej ilości czasu. Co robisz?",
+        "options": [
+            "Rzucam wszystko i bez zastanowienia idę mu pomóc",
+            "Informuję o moich planach i o tym, że mogę pomóc po ich zrealizowaniu",
+            "Stanowczo odmawiam, by mieć wystarczająco czasu na swoje plany",
+            "Daję radę, w jaki sposób może poradzić sobie lepiej i szybciej lub proponuję zwrócenie się o pomoc kogoś innego"
+        ],
+        "multiple": false
+    },
+    {
+        "seed_key": "q051",
+        "body": "Wybierz zdanie opisujące najbardziej twoje odczucia w związku. Możesz je zmodyfikować lub rozwinąć.",
+        "options": [
+            "Często czuję motylki w brzuchu i targa mną dużo emocji. Mam dużą potrzebę spędzać z partnerem jak najwięcej czasu",
+            "Czuję spokój i bezpieczeństwo przy partnerze. Mam wrażenie, że jest moim najlepszym przyjacielem i wsparciem",
+            "Czuję, że patrzymy w tym samym kierunku, uzupełniamy się w codziennych sprawach i zobowiązaniach. Łączą nas podobne cele",
+            "Mamy solidny fundament, dzięki któremu rozwiązujemy bieżące problemy. Czuję, że mogę liczyć na mojego partnera bez względu na przeszkody"
+        ],
+        "multiple": false
+    },
+    {
+        "seed_key": "q053",
+        "body": "W który sposób najczęściej okazujesz uczucie swojemu partnerowi?",
+        "options": [
+            "Okazuję bliskość fizyczną np. przytulam, chwytam za rękę, masuję",
+            "Wysłuchuję i przeprowadzam głębokie rozmowy",
+            "Chętnie wykonuję wspólne aktywności. Planuję wspólną formę wypoczynku lub randkę",
+            "Daję mu małe upominki poza specjalnymi okazjami",
+            "Wykonuję drobne przysługi np. przygotowuję wspólny posiłek, naprawiam usterkę w jego przedmiocie"
+        ],
+        "multiple": false
+    },
+    {
+        "seed_key": "q055",
+        "body": "Jakbyś zareagował na kilkudniowy wyjazd partnera w pojedynkę w ramach relaksu?",
+        "options": [
+            "Dobry pomysł, powinien się rozerwać, ja też wykorzystam ten czas dla siebie",
+            "Będę się zamartwiać, ale jeśli będziemy w stałym kontakcie, przystanę na to",
+            "Nie ma mowy, przecież możemy wybrać się gdzieś razem. Co zamierza robić beze mnie?",
+            "Z chęcią go nawet spakuję, w końcu będę mieć trochę świętego spokoju"
+        ],
+        "multiple": false
+    },
+    {
+        "seed_key": "q067",
+        "body": "Które z wymienionych miejsc jest najbliższe twoim marzeniom? Czego jeszcze nie mogłoby zabraknąć w twoim wymarzonym domu?",
+        "options": [
+            "Dom z dużym ogrodem, w pobliżu rzeki, gór i lasu, gdzie nie brakuje ciszy i spokoju",
+            "Przestronny apartament w centrum miasta, na ostatnim piętrze wieżowca",
+            "Willa blisko plaży i morza, otoczona restauracjami i rozrywką",
+            "Duże mieszkanie wypełnione antykami i sztuką, w małym, przyjaznym miasteczku"
+        ],
+        "multiple": false
+    },
+    {
+        "seed_key": "q069",
+        "body": "Co stanowi dla Ciebie najlepsze wsparcie, kiedy borykasz się problemem? Jaką formę ty dajesz najczęściej partnerowi?",
+        "options": [
+            "Pozostanie wysłuchanym, aby poczuć się zrozumianym",
+            "Dostarczenie dobrej rady, która pomoże znaleźć rozwiązanie",
+            "Przytulenie i zapewnienie, że nie jesteś sam, co da Ci poczucie bezpieczeństwa",
+            "Pozostawienie przestrzeni na własne przemyślenia i konfrontację z problemem"
+        ],
+        "multiple": true
+    },
+    {
+        "seed_key": "q070",
+        "body": "Które z poniższych rzeczy stanowi dla Ciebie największe i najbardziej stresujące wyzwanie?",
+        "options": [
+            "Zorganizowanie przyjęcia urodzinowego i dobranie odpowiedniego prezentu",
+            "Zrobienie kolacji dla teściów",
+            "Dojście do porozumienia po konflikcie z partnerem",
+            "Zaplanowanie i przygotowanie wyjazdu lub wycieczki"
+        ],
+        "multiple": false
+    },
+    {
+        "seed_key": "q080",
+        "body": "Która reakcja byłaby Ci najbliższa, gdyby partner chciał podzielić się z Tobą czymś, co przeszkadza mu w waszej relacji?",
+        "options": [
+            "Zakładam, że nie ma na co narzekać i staram się uświadomić mu to",
+            "Korzystając z okazji, zaczynam wymieniać wszystkie rzeczy, które mi przeszkadzają",
+            "Skupiam się na jego potrzebach, wysłuchuję i staram się wspólnie znaleźć rozwiązanie problemu",
+            "Postanawiam przemilczeć temat, aby nie doszło do niepotrzebnej kłótni"
+        ],
+        "multiple": false
+    },
+    {
+        "seed_key": "q081",
+        "body": "Co najczęściej robisz, gdy nie odpowiada Ci zachowanie partnera?",
+        "options": [
+            "Wolę o tym nie wspominać i nie wszczynać konfliktu",
+            "Wyrzucam mu w złości wszystkie rzeczy, które robi wbrew moim oczekiwaniom",
+            "Mówię głośno przy znajomych lub rodzinie, jak irytuje mnie jego zachowanie",
+            "Dyskutuję z bliską osobą o moich problemach w związku",
+            "Rozmawiam z partnerem i tłumaczę moje odczucia względem jego zachowań"
+        ],
+        "multiple": false
+    },
+    {
+        "seed_key": "q082",
+        "body": "Partner opowiada Ci o swoim marzeniu, które chciałby spełnić, jednak jest ono trudne w realizacji. Jak zareagujesz?",
+        "options": [
+            "Powinien zejść na ziemię! Staram się jak najszybciej wybić mu ten pomysł z głowy",
+            "Wspieram go w dążeniach i ufam, że poradzi sobie z każdym wyzwaniem",
+            "Rozważam za i przeciw, pomagam wymyślić jak najlepszy plan",
+            "Zaczynam dzielić się swoimi marzeniami"
+        ],
+        "multiple": false
+    },
+    {
+        "seed_key": "q091",
+        "body": "Widzisz bardzo atrakcyjną osobę przechodzącą koło Ciebie i partnera. Co robisz?",
+        "options": [
+            "Patrzę wszędzie, byle nie w kierunku tej osoby, aby mój partner nie pomyślał, że się w nią wpatruję",
+            "Wskazuję partnerowi tę osobę i zaczynam komentować jej atrakcyjność",
+            "Przyglądam się jej bez słowa i bez skrępowania przy moim partnerze",
+            "Zerkam kątem oka tak, by mój partner tego nie zauważył"
+        ],
+        "multiple": false
+    }
 ]
