@@ -2,6 +2,7 @@
 
 use App\Modules\Game\Http\Controllers\DailyCardController;
 use App\Modules\Game\Http\Controllers\DeckController;
+use App\Modules\Game\Http\Controllers\LikedQuestionController;
 use App\Modules\Game\Http\Controllers\LocalGameController;
 use App\Modules\Game\Http\Controllers\QuestionController;
 use App\Modules\Game\Http\Controllers\QuestionLikeController;
@@ -30,6 +31,10 @@ Route::prefix('v1')->middleware('auth:sanctum')->group(function (): void {
     // sequences it offline, so it cannot ask card by card. Filtered exactly like
     // a session pool — this is where the server says what may be played.
     Route::get('questions/deck', [QuestionController::class, 'deck']);
+
+    // The couple's hearted cards. Declared before the {questionUlid} routes for
+    // readability only — they are POST/DELETE, so nothing here shadows anything.
+    Route::get('questions/liked', [LikedQuestionController::class, 'index']);
 
     // Question likes (toggle via two REST verbs). Question addressed by ulid as a
     // plain string param — resolved via Catalog Query in the Action, not by

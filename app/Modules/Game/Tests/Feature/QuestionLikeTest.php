@@ -154,3 +154,49 @@ test('one couple\'s like is not visible to another couple (per-couple)', functio
     ]);
     $this->getJson('/api/v1/questions/next')->assertOk()->assertJsonPath('question.liked', false);
 });
+
+test('liking a locked card the couple has not unlocked is refused', function (): void {
+    $user = createUserWithCouple();
+    $locked = Question::factory()->locked()->create();
+    Sanctum::actingAs($user);
+
+    // A client can legitimately learn a locked card's ulid from GET /deck (the
+    // shop lists them without their body). Without this guard that ulid would be
+    // a way to put paid content on the liked list and read it there.
+    $this->postJson("/api/v1/questions/{$locked->ulid}/like")
+        ->assertStatus(422)
+        ->assertJsonPath('errors.question_ulid.0', 'Karta jest niedostępna dla tej pary.');
+
+    expect(likeRow(activeCoupleOf($user), $locked))->toBeNull();
+});
+
+test('liking a locked card the couple unlocked works', function (): void {
+    $user = createUserWithCouple();
+    $couple = activeCoupleOf($user);
+    $locked = Question::factory()->locked()->create();
+    $couple->unlockedQuestions()->attach($locked->id, ['unlocked_at' => now(), 'source' => 'credits']);
+    Sanctum::actingAs($user);
+
+    $this->postJson("/api/v1/questions/{$locked->ulid}/like")
+        ->assertOk()
+        ->assertExactJson(['liked' => true]);
+
+    expect(likeRow($couple, $locked))->not->toBeNull();
+});
+
+test('unliking a locked card is never blocked', function (): void {
+    $user = createUserWithCouple();
+    $couple = activeCoupleOf($user);
+    $locked = Question::factory()->locked()->create();
+    $couple->likedQuestions()->attach($locked->id, ['liked_at' => now()]);
+    Sanctum::actingAs($user);
+
+    // Removing a heart takes nothing away from the couple, so the entitlement
+    // guard has no business standing in front of it — otherwise a like made
+    // before the door closed could never be cleaned up.
+    $this->deleteJson("/api/v1/questions/{$locked->ulid}/like")
+        ->assertOk()
+        ->assertExactJson(['liked' => false]);
+
+    expect(likeRow($couple, $locked))->toBeNull();
+});

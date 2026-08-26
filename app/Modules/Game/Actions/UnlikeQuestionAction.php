@@ -11,6 +11,10 @@ use Lorisleiva\Actions\Concerns\AsAction;
  * A couple un-likes a question (toggle off). Resolves the ulid through Catalog,
  * then detaches — idempotent: detaching a like that was never there is a no-op.
  * Unknown ulid → 404 (same contract as LikeQuestionAction).
+ *
+ * No entitlement guard, unlike its counterpart: taking a heart back gives the
+ * couple nothing, and rows written before that guard existed have to remain
+ * removable.
  */
 final class UnlikeQuestionAction
 {

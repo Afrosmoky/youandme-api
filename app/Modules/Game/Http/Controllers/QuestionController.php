@@ -12,6 +12,7 @@ use App\Modules\Game\Queries\GetDeckExhaustionQuery;
 use App\Modules\Game\Queries\GetNextQuestionInSessionQuery;
 use App\Modules\Game\Queries\IsQuestionLikedByCoupleQuery;
 use App\Modules\Game\Queries\ListLikedQuestionUlidsForCoupleQuery;
+use App\Modules\Game\Support\QuestionCardPayload;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -83,7 +84,7 @@ final class QuestionController
         $liked = IsQuestionLikedByCoupleQuery::run($couple, (int) $remainingIds[$currentIndex]);
 
         return response()->json([
-            'question' => $this->questionPayload($question, $liked),
+            'question' => QuestionCardPayload::build($question, $liked),
             'session' => new SessionResource($session),
         ]);
     }
@@ -167,7 +168,7 @@ final class QuestionController
         // client shows them that rather than a failure.
         $payload = [
             'questions' => array_map(
-                fn (QuestionData $question): array => $this->questionPayload(
+                fn (QuestionData $question): array => QuestionCardPayload::build(
                     $question,
                     isset($liked[$question->ulid]),
                 ),
@@ -194,50 +195,5 @@ final class QuestionController
         }
 
         return response()->json($payload);
-    }
-
-    /**
-     * Reproduce the Catalog QuestionResource shape from QuestionData (byte-1:1
-     * with P3) — category trimmed to slug + name — plus the couple's like state
-     * (added additively; liked is a Game concern, not part of QuestionData).
-     *
-     * One builder for both endpoints, and since S3a one shape: the deck carries
-     * `liked` too. P10 left it out on the grounds that a deck is a content
-     * listing and hearts are per couple — that reversed when the merged screen
-     * (P11 S3, §3.8) put a heart on every card of the local game, which is dealt
-     * from the deck and nowhere else.
-     *
-     * is_locked rides along for the client's "unlocked" badge. In both places it
-     * reads as "this couple paid for this card": the pool only ever contains free
-     * cards plus the ones they unlocked, so a locked card being served IS an
-     * unlocked one (GetSessionQuestionPoolQuery).
-     *
-     * @return array<string, mixed>
-     */
-    private function questionPayload(QuestionData $question, bool $liked): array
-    {
-        $payload = [
-            'ulid' => $question->ulid,
-            'body' => $question->body,
-            'type' => $question->type,
-            'category' => $question->category ? [
-                'slug' => $question->category->slug,
-                'name' => $question->category->name,
-            ] : null,
-            'tags' => $question->tags,
-            'liked' => $liked,
-        ];
-
-        // Last, so /questions/next keeps the exact key order it has had since P3.
-        $payload['is_locked'] = $question->isLocked;
-
-        // Appended after is_locked for the same reason: every key that was there
-        // in P3 stays where it was. null for an open card, {items, multiple} for
-        // one answered by picking — passed through exactly as stored, so the
-        // client reads options?.items and options?.multiple and nothing here has
-        // to know how a picker looks.
-        $payload['options'] = $question->options;
-
-        return $payload;
     }
 }
