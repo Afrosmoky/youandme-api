@@ -7,3 +7,4 @@ Route::get('/', function () {
 });
 
 Route::view('/privacy', 'privacy');
+Route::view('/child-safety', 'child-safety');
