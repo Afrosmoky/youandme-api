@@ -5,8 +5,8 @@ namespace App\Modules\Game\Http\Controllers;
 use App\Modules\Game\Actions\AssignWeeklyRitualAction;
 use App\Modules\Game\Models\Couple;
 use App\Modules\Game\Queries\GetCurrentRitualForCoupleQuery;
+use App\Modules\Game\Support\RitualWeek;
 use Carbon\CarbonImmutable;
-use Carbon\CarbonInterface;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -16,10 +16,12 @@ use Illuminate\Http\Response;
  * with the content pulled downstream from Catalog. Not peer-combining, so it stays
  * in Game.
  *
- * Cold start: a couple with no assignment (fresh registration mid-week) is
- * assigned lazily from this week's Sunday, so it does not have to wait until the
- * next cron. The write goes through the Action (Query stays read-only): read →
- * null? → assign → read.
+ * Cold start AND every new week: the read matches this local week's Sunday
+ * exactly, so a couple with no row for it — a fresh registration mid-week, or
+ * anyone whose local Sunday has opened since the last cron run — is assigned
+ * lazily here. The write goes through the Action (Query stays read-only): read →
+ * null? → assign → read. This is what makes the feature heal itself when the
+ * schedule stops; the cron only gets there first.
  *
  * The couple's local date is resolved here from users.timezone and passed down, so
  * the Query/Action stay timezone-agnostic.
@@ -35,7 +37,7 @@ final class WeeklyRitualController
         $ritual = GetCurrentRitualForCoupleQuery::run($couple, $localDate);
 
         if ($ritual === null) {
-            AssignWeeklyRitualAction::run($couple, $localDate->startOfWeek(CarbonInterface::SUNDAY));
+            AssignWeeklyRitualAction::run($couple, RitualWeek::weekStart($localDate));
             $ritual = GetCurrentRitualForCoupleQuery::run($couple, $localDate);
         }
 

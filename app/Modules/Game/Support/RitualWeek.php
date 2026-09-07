@@ -6,17 +6,37 @@ use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
 
 /**
- * The "day X of 7" counter — a pure calendar computation, not a stored column.
- * Days elapsed since started_on, plus one, clamped to 1..7.
+ * Calendar arithmetic for the weekly ritual — pure computation, no stored column.
+ *
+ * Both helpers normalise their inputs to a date string first. started_on is a
+ * date stored in UTC while the local date carries the couple's timezone, so any
+ * raw instant arithmetic would count the offset as hours (the lesson from the
+ * daily card). Re-anchoring to the calendar is what makes the two comparable.
  */
 final class RitualWeek
 {
+    /**
+     * The Sunday that opens the couple's current local week — the identity of a
+     * ritual assignment. One definition, used by the read, the lazy assignment
+     * and the completion write alike: they MUST agree on which row is "current",
+     * or a couple could complete a row it is not being shown.
+     */
+    public static function weekStart(CarbonInterface $localDate): CarbonImmutable
+    {
+        return CarbonImmutable::parse($localDate->toDateString())
+            ->startOfWeek(CarbonInterface::SUNDAY);
+    }
+
+    /**
+     * The "day X of 7" counter: days elapsed since started_on, plus one.
+     *
+     * The 1..7 clamp is a safety belt, not the load-bearing part. It used to hide
+     * the stale-assignment bug (a month-old row read as "day 7 of 7" forever);
+     * since the read was narrowed to the current week, an assignment is at most
+     * six days old and the clamp is true by construction.
+     */
     public static function dayOfWeek(CarbonInterface $startedOn, CarbonInterface $localDate): int
     {
-        // Compare CALENDAR days, not instants: started_on is stored in UTC while
-        // localDate carries the couple's timezone, so a raw diff would count the
-        // offset as hours. Normalising both to their date string re-anchors them to
-        // the same clock (same lesson as the daily card).
         $start = CarbonImmutable::parse($startedOn->toDateString());
         $today = CarbonImmutable::parse($localDate->toDateString());
 

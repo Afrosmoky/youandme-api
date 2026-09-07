@@ -16,6 +16,15 @@ Artisan::command('inspire', function () {
 // 00:30 UTC (not Sunday evening) so the assignment lands before the mobile
 // client's local Sunday-evening ritual push fires in any timezone — the
 // earliest that push can occur is 05:00 UTC (UTC+14: Sunday 19:00 local).
+//
+// THE DAY AND HOUR ARE LOAD-BEARING — do not move this run without reading
+// GetCurrentRitualForCoupleQuery first. The command stamps the row with
+// now()->startOfWeek(SUNDAY) in UTC, while the read matches the Sunday of the
+// couple's OWN local week, by equality. The two agree only because the run
+// happens just after Sunday opens in UTC: shift it to, say, Saturday evening and
+// every row would be stamped with the previous week's Sunday, matching nothing
+// the couples are being shown. Nothing would error — the rows would simply stop
+// being found, and the lazy path would quietly write a second one per couple.
 Schedule::command('rituals:assign-weekly')->weeklyOn(CarbonInterface::SUNDAY, '00:30');
 
 // Ad-reward counters are daily buckets — anything older than a week is dead
