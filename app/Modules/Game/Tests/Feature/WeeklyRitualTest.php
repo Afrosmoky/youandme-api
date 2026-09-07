@@ -3,6 +3,7 @@
 use App\Modules\Catalog\Models\Ritual;
 use App\Modules\Game\Models\CoupleWeeklyRitual;
 use Carbon\CarbonImmutable;
+use Illuminate\Support\Facades\DB;
 use Laravel\Sanctum\Sanctum;
 
 function seedRituals(int $n = 5): void
@@ -194,6 +195,163 @@ test('a couple west of UTC is not shown next week\'s ritual a day early', functi
 
     // No third row was written along the way.
     expect($couple->weeklyRituals()->count())->toBe(2);
+
+    CarbonImmutable::setTestNow();
+});
+
+test('completing the ritual sets the marker and the read reports it', function (): void {
+    CarbonImmutable::setTestNow(CarbonImmutable::parse('2026-07-15 09:00:00', 'UTC'));
+    seedRituals();
+    $user = createUserWithCouple();
+    $couple = activeCoupleOf($user);
+    Sanctum::actingAs($user);
+
+    $this->getJson('/api/v1/weekly-ritual')->assertOk()->assertJsonPath('completed', false);
+
+    $this->putJson('/api/v1/weekly-ritual/completed')
+        ->assertOk()
+        ->assertExactJson(['completed' => true]);
+
+    expect($couple->weeklyRituals()->first()->completed_at)->not->toBeNull();
+    $this->getJson('/api/v1/weekly-ritual')->assertOk()->assertJsonPath('completed', true);
+
+    CarbonImmutable::setTestNow();
+});
+
+test('completing twice does not rewrite the instant', function (): void {
+    CarbonImmutable::setTestNow(CarbonImmutable::parse('2026-07-15 09:00:00', 'UTC'));
+    seedRituals();
+    $user = createUserWithCouple();
+    $couple = activeCoupleOf($user);
+    Sanctum::actingAs($user);
+
+    $this->getJson('/api/v1/weekly-ritual')->assertOk();
+    $this->putJson('/api/v1/weekly-ritual/completed')->assertOk();
+    $first = $couple->weeklyRituals()->first()->completed_at;
+
+    // An hour later, a second tap (or a retried request).
+    CarbonImmutable::setTestNow(CarbonImmutable::parse('2026-07-15 10:00:00', 'UTC'));
+    $this->putJson('/api/v1/weekly-ritual/completed')->assertOk()->assertJsonPath('completed', true);
+
+    expect($couple->weeklyRituals()->first()->completed_at->equalTo($first))->toBeTrue();
+
+    CarbonImmutable::setTestNow();
+});
+
+test('completing can be undone', function (): void {
+    CarbonImmutable::setTestNow(CarbonImmutable::parse('2026-07-15 09:00:00', 'UTC'));
+    seedRituals();
+    $user = createUserWithCouple();
+    $couple = activeCoupleOf($user);
+    Sanctum::actingAs($user);
+
+    $this->getJson('/api/v1/weekly-ritual')->assertOk();
+    $this->putJson('/api/v1/weekly-ritual/completed')->assertOk();
+
+    $this->deleteJson('/api/v1/weekly-ritual/completed')
+        ->assertOk()
+        ->assertExactJson(['completed' => false]);
+
+    expect($couple->weeklyRituals()->first()->completed_at)->toBeNull();
+    $this->getJson('/api/v1/weekly-ritual')->assertOk()->assertJsonPath('completed', false);
+
+    // And undoing what was never done is not an error either.
+    $this->deleteJson('/api/v1/weekly-ritual/completed')->assertOk()->assertJsonPath('completed', false);
+
+    CarbonImmutable::setTestNow();
+});
+
+test('completion cannot be aimed at another couple', function (): void {
+    // The endpoint takes no identifier, so the only way to try is to smuggle one in
+    // the body. It must be ignored: the couple comes from the token.
+    CarbonImmutable::setTestNow(CarbonImmutable::parse('2026-07-15 09:00:00', 'UTC'));
+    seedRituals();
+    $mine = createUserWithCouple();
+    $myCouple = activeCoupleOf($mine);
+    $theirCouple = activeCoupleOf(createUserWithCouple());
+    $ritual = Ritual::query()->orderBy('ordering')->firstOrFail();
+    CoupleWeeklyRitual::create(['couple_id' => $theirCouple->id, 'ritual_id' => $ritual->id, 'started_on' => '2026-07-12']);
+    Sanctum::actingAs($mine);
+
+    $this->getJson('/api/v1/weekly-ritual')->assertOk();
+    $this->putJson('/api/v1/weekly-ritual/completed', [
+        'couple_id' => $theirCouple->id,
+        'started_on' => '2026-07-12',
+    ])->assertOk();
+
+    expect($myCouple->weeklyRituals()->first()->completed_at)->not->toBeNull()
+        ->and($theirCouple->weeklyRituals()->first()->completed_at)->toBeNull();
+
+    CarbonImmutable::setTestNow();
+});
+
+test('a new week starts uncompleted with nothing cleaning up after the old one', function (): void {
+    CarbonImmutable::setTestNow(CarbonImmutable::parse('2026-07-15 09:00:00', 'UTC'));
+    seedRituals();
+    $user = createUserWithCouple();
+    $couple = activeCoupleOf($user);
+    Sanctum::actingAs($user);
+
+    $this->getJson('/api/v1/weekly-ritual')->assertOk();
+    $this->putJson('/api/v1/weekly-ritual/completed')->assertOk();
+
+    // Next week, no cron, no reset — just the next read.
+    CarbonImmutable::setTestNow(CarbonImmutable::parse('2026-07-22 09:00:00', 'UTC'));
+    $this->getJson('/api/v1/weekly-ritual')
+        ->assertOk()
+        ->assertJsonPath('started_on', '2026-07-19')
+        ->assertJsonPath('completed', false);
+
+    // Last week's confirmation is still on last week's row.
+    expect($couple->weeklyRituals()->where('started_on', '2026-07-12')->first()->completed_at)->not->toBeNull()
+        ->and($couple->weeklyRituals()->where('started_on', '2026-07-19')->first()->completed_at)->toBeNull();
+
+    CarbonImmutable::setTestNow();
+});
+
+test('completing with no assignment for this week is a 404, not a lazy assignment', function (): void {
+    // The client crossed midnight into a new week with the app open. Marking must
+    // not be what creates the row — mobile re-reads and shows the new ritual.
+    CarbonImmutable::setTestNow(CarbonImmutable::parse('2026-07-15 09:00:00', 'UTC'));
+    seedRituals();
+    $user = createUserWithCouple();
+    $couple = activeCoupleOf($user);
+    Sanctum::actingAs($user);
+
+    $this->putJson('/api/v1/weekly-ritual/completed')->assertNotFound();
+
+    expect($couple->weeklyRituals()->count())->toBe(0);
+
+    CarbonImmutable::setTestNow();
+});
+
+test('completion endpoints require authentication', function (): void {
+    seedRituals();
+
+    $this->putJson('/api/v1/weekly-ritual/completed')->assertUnauthorized();
+    $this->deleteJson('/api/v1/weekly-ritual/completed')->assertUnauthorized();
+});
+
+test('completing a ritual touches nothing in the session, daily-card, memory or progress loops', function (): void {
+    CarbonImmutable::setTestNow(CarbonImmutable::parse('2026-07-15 09:00:00', 'UTC'));
+    seedRituals();
+    $user = createUserWithCouple();
+    $couple = activeCoupleOf($user);
+    $couple->forceFill(['streak_current' => 3, 'streak_longest' => 5])->save();
+    Sanctum::actingAs($user);
+
+    $this->getJson('/api/v1/weekly-ritual')->assertOk();
+    $this->putJson('/api/v1/weekly-ritual/completed')->assertOk();
+
+    $couple->refresh();
+    // Confirming a ritual is not progress, not a streak and not a card. Stage II
+    // owns the consequences — this guard is here to notice if they arrive early.
+    expect($couple->streak_current)->toBe(3)
+        ->and($couple->streak_longest)->toBe(5)
+        ->and($couple->gameSessions()->count())->toBe(0)
+        ->and($couple->seenQuestions()->count())->toBe(0)
+        ->and($couple->memories()->count())->toBe(0)
+        ->and(DB::table('couple_milestone_unlocks')->where('couple_id', $couple->id)->count())->toBe(0);
 
     CarbonImmutable::setTestNow();
 });

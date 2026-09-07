@@ -55,6 +55,7 @@ final class GetCurrentRitualForCoupleQuery
             ritual: $ritual,
             startedOn: $assignment->started_on->toDateString(),
             dayOfWeek: RitualWeek::dayOfWeek($assignment->started_on, $localDate),
+            completed: $assignment->completed_at !== null,
         );
     }
 }

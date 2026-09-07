@@ -54,6 +54,12 @@ Route::prefix('v1')->middleware('auth:sanctum')->group(function (): void {
     // the Sunday cron; a fresh couple is assigned lazily on first read.
     Route::get('weekly-ritual', [WeeklyRitualController::class, 'show']);
 
+    // "We did it", as two idempotent verbs. No identifier in either: the couple
+    // comes from the token, the week from its own clock — so there is nothing to
+    // point at someone else's ritual, or at a week that has already closed.
+    Route::put('weekly-ritual/completed', [WeeklyRitualController::class, 'complete']);
+    Route::delete('weekly-ritual/completed', [WeeklyRitualController::class, 'uncomplete']);
+
     // Local game (P10): the phone plays the session and reports the cards it
     // dealt afterwards, in one batch. Throttled — a report happens once per
     // session, and this is the one endpoint through which a client could inflate
