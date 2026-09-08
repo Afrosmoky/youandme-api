@@ -6,10 +6,10 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Youandme\Auth\Support\DeepLink;
 use Youandme\Auth\Actions\SendVerificationEmailAction;
 use Youandme\Auth\Actions\VerifyEmailAction;
 use Youandme\Auth\Queries\GetVerificationStatusQuery;
+use Youandme\Auth\Support\DeepLink;
 
 final class EmailVerificationController
 {
