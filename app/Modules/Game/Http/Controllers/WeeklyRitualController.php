@@ -90,8 +90,13 @@ final class WeeklyRitualController
         $couple = Couple::findOrFail($user->active_couple_id);
         $localDate = CarbonImmutable::now($user->timezone)->startOfDay();
 
-        SetWeeklyRitualCompletionAction::run($couple, $localDate, $completed);
+        $assignment = SetWeeklyRitualCompletionAction::run($couple, $localDate, $completed);
 
-        return response()->json(['completed' => $completed]);
+        // Read the answer off the row, not off the request. Echoing $completed back
+        // would make the client agree with itself: mobile reconciles its state from
+        // what the server returns, so a source that only repeats the question can
+        // never correct it. Harmless while every call succeeds, and exactly wrong
+        // the moment a refusal or a clamp gets added to the Action.
+        return response()->json(['completed' => $assignment->completed_at !== null]);
     }
 }

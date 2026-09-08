@@ -355,3 +355,25 @@ test('completing a ritual touches nothing in the session, daily-card, memory or 
 
     CarbonImmutable::setTestNow();
 });
+
+test('completing an already completed ritual still answers true', function (): void {
+    // The everyday shape of the same call: the second PUT keeps the first instant
+    // and the answer stays true, read off the row.
+    CarbonImmutable::setTestNow(CarbonImmutable::parse('2026-07-15 09:00:00', 'UTC'));
+    seedRituals();
+    $user = createUserWithCouple();
+    $couple = activeCoupleOf($user);
+    Sanctum::actingAs($user);
+
+    $this->getJson('/api/v1/weekly-ritual')->assertOk();
+    $this->putJson('/api/v1/weekly-ritual/completed')->assertOk();
+    $stored = $couple->weeklyRituals()->first()->completed_at;
+
+    $this->putJson('/api/v1/weekly-ritual/completed')
+        ->assertOk()
+        ->assertExactJson(['completed' => true]);
+
+    expect($couple->weeklyRituals()->first()->completed_at->equalTo($stored))->toBeTrue();
+
+    CarbonImmutable::setTestNow();
+});
