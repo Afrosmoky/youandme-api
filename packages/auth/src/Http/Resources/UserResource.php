@@ -24,6 +24,11 @@ class UserResource extends JsonResource
             'locale' => $this->locale,
             'email_verified_at' => $this->email_verified_at?->toIso8601ZuluString(),
             'created_at' => $this->created_at->toIso8601ZuluString(),
+            // Which sign-in providers the account is linked to. The app needs
+            // is_apple_linked before deleting the account: only then does it ask
+            // for a fresh Apple authorization code to revoke our tokens.
+            'is_apple_linked' => $this->apple_id !== null,
+            'is_google_linked' => $this->google_id !== null,
         ];
     }
 }

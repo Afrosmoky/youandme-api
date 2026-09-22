@@ -28,7 +28,9 @@ test('google sign-in creates a new user and returns 201', function (): void {
             'user' => ['ulid', 'email', 'nickname', 'email_verified_at', 'created_at'],
             'token',
         ])
-        ->assertJsonPath('user.email', 'nowy@example.com');
+        ->assertJsonPath('user.email', 'nowy@example.com')
+        ->assertJsonPath('user.is_google_linked', true)
+        ->assertJsonPath('user.is_apple_linked', false);
 
     $response->assertJsonStructure(['couple' => ['ulid', 'partner_name_local']])
         ->assertJsonPath('couple.partner_name_local', null);

@@ -9,9 +9,28 @@ test('GET /me returns the authenticated user profile', function (): void {
     $this->getJson('/api/v1/me')
         ->assertOk()
         ->assertJsonStructure([
-            'user' => ['ulid', 'email', 'nickname', 'timezone', 'locale', 'email_verified_at', 'created_at'],
+            'user' => ['ulid', 'email', 'nickname', 'timezone', 'locale', 'email_verified_at', 'created_at', 'is_apple_linked', 'is_google_linked'],
         ])
         ->assertJsonPath('user.ulid', $user->ulid);
+});
+
+test('GET /me reports which sign-in providers the account is linked to', function (): void {
+    $user = createUserWithCouple(['apple_id' => 'apple-123']);
+    Sanctum::actingAs($user);
+
+    $this->getJson('/api/v1/me')
+        ->assertOk()
+        ->assertJsonPath('user.is_apple_linked', true)
+        ->assertJsonPath('user.is_google_linked', false);
+});
+
+test('GET /me reports an email-only account as linked to no provider', function (): void {
+    Sanctum::actingAs(createUserWithCouple());
+
+    $this->getJson('/api/v1/me')
+        ->assertOk()
+        ->assertJsonPath('user.is_apple_linked', false)
+        ->assertJsonPath('user.is_google_linked', false);
 });
 
 test('GET /me includes the active couple', function (): void {

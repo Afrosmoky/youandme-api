@@ -21,7 +21,9 @@ test('apple sign-in creates a user with the relay email and returns 201', functi
     $response = $this->postJson('/api/v1/auth/apple', ['id_token' => 'fake-token']);
 
     $response->assertCreated()
-        ->assertJsonPath('user.email', 'relay@privaterelay.appleid.com');
+        ->assertJsonPath('user.email', 'relay@privaterelay.appleid.com')
+        ->assertJsonPath('user.is_apple_linked', true)
+        ->assertJsonPath('user.is_google_linked', false);
 
     expect(User::where('apple_id', 'apple-abc')->exists())->toBeTrue();
     Event::assertDispatched(UserRegistered::class);

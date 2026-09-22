@@ -21,6 +21,8 @@ final class UserData extends Data
         public readonly string $locale,
         public readonly ?string $emailVerifiedAt,
         public readonly string $createdAt,
+        public readonly bool $isAppleLinked,
+        public readonly bool $isGoogleLinked,
     ) {}
 
     public static function fromModel(User $user): self
@@ -33,6 +35,8 @@ final class UserData extends Data
             locale: $user->locale,
             emailVerifiedAt: $user->email_verified_at?->toIso8601ZuluString(),
             createdAt: $user->created_at->toIso8601ZuluString(),
+            isAppleLinked: $user->apple_id !== null,
+            isGoogleLinked: $user->google_id !== null,
         );
     }
 }
