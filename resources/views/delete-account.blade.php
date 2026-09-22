@@ -30,7 +30,7 @@
     <div class="rule"></div>
 
     <h1>Usuwanie konta</h1>
-    <p class="upd">Aplikacja „Ja i Ty" · [nazwa wydawcy]</p>
+    <p class="upd">Aplikacja „Ja i Ty"</p>
 
     <p>Na tej stronie opisujemy, jak usunąć konto w aplikacji „Ja i Ty" i co się wtedy dzieje z Waszymi danymi.</p>
 
@@ -51,9 +51,9 @@
     <h2>Co może zostać przez pewien czas</h2>
     <ul>
         <li><strong>Wpis o usunięciu konta:</strong> w logach serwera zostaje wpis z wewnętrznym identyfikatorem konta i datą usunięcia, bez adresu e-mail. Dzięki niemu możemy potwierdzić, że konto zostało usunięte.</li>
-        <li><strong>Logi serwera</strong> wygasają po [X] dniach.</li>
+        <li><strong>Logi serwera</strong> wygasają po 14 dniach.</li>
         <li><strong>Raporty awarii</strong> (nie zawierają treści Waszych odpowiedzi ani wspomnień) wygasają zgodnie z ustawieniami dostawcy, Sentry.</li>
-        <li><strong>Kopie zapasowe bazy</strong> są nadpisywane po [Y] dniach.</li>
+        <li><strong>Kopie zapasowe bazy</strong> są usuwane po 30 dniach.</li>
     </ul>
 
     <h2>Nie masz dostępu do aplikacji?</h2>

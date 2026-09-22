@@ -68,7 +68,7 @@
     <p>Nie sprzedajemy Waszych danych i nie udostępniamy ich w celach reklamowych.</p>
 
     <h2>Jak długo przechowujemy dane</h2>
-    <p>Dane konta i Wasze treści przechowujemy tak długo, jak istnieje konto. Konto usuwamy od razu: razem z nim znikają wszystkie powiązane z nim dane. W logach serwera zostaje tylko wpis z wewnętrznym identyfikatorem konta i datą usunięcia, bez adresu e-mail. Logi serwera wygasają po [X] dniach, a kopie zapasowe bazy są nadpisywane po [Y] dniach. Raporty awarii przechowujemy przez ograniczony czas.</p>
+    <p>Dane konta i Wasze treści przechowujemy tak długo, jak istnieje konto. Konto usuwamy od razu: razem z nim znikają wszystkie powiązane z nim dane. W logach serwera zostaje tylko wpis z wewnętrznym identyfikatorem konta i datą usunięcia, bez adresu e-mail. Logi serwera wygasają po 14 dniach, a kopie zapasowe bazy są usuwane po 30 dniach. Raporty awarii przechowujemy przez ograniczony czas.</p>
 
     <h2>Twoje prawa</h2>
     <p>Przysługuje Ci prawo do: dostępu do swoich danych, ich sprostowania, usunięcia, ograniczenia przetwarzania, przenoszenia oraz wniesienia sprzeciwu. Masz też prawo wniesienia skargi do organu nadzorczego (w Polsce: Prezes Urzędu Ochrony Danych Osobowych).</p>
