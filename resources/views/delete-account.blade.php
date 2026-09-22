@@ -57,7 +57,8 @@
     </ul>
 
     <h2>Nie masz dostępu do aplikacji?</h2>
-    <p>Napisz na <a href="mailto:kontakt@jaity.app?subject=Usuni%C4%99cie%20konta">kontakt@jaity.app</a> z tematem „Usunięcie konta". Napisz z adresu przypisanego do konta i podaj swój nick z aplikacji. Jeśli logujesz się przez Apple z ukrytym adresem e-mail, sam nick wystarczy, żeby znaleźć konto. Usuniemy je bez zbędnej zwłoki, najpóźniej w ciągu miesiąca, i potwierdzimy to mailowo.</p>
+    <p>Napisz na <a href="mailto:kontakt@jaity.app?subject=Usuni%C4%99cie%20konta">kontakt@jaity.app</a> z tematem „Usunięcie konta". Napisz z adresu przypisanego do konta. Jeśli logujesz się przez Apple z ukrytym adresem, napisz do nas z dowolnego adresu i podaj swój ukryty adres Apple (znajdziesz go w ustawieniach Apple ID, w sekcji „Ukryj mój adres e-mail”). Wyślemy prośbę o potwierdzenie na adres zapisany przy koncie, a konto usuniemy po Twojej odpowiedzi.</p>
+    <p>Prośby mailowe realizujemy bez zbędnej zwłoki, najpóźniej w ciągu miesiąca, i potwierdzamy usunięcie mailowo.</p>
 
     <p>Więcej o tym, jak przetwarzamy dane: <a href="/privacy">polityka prywatności</a>.</p>
 
