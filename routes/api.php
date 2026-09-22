@@ -39,6 +39,11 @@ Route::prefix('v1')->group(function (): void {
     Route::middleware('auth:sanctum')->group(function (): void {
         Route::get('me', [ProfileController::class, 'show']);
         Route::patch('me', [ProfileController::class, 'update']);
+        // Account deletion (store requirement): erases the user and their couple
+        // across every module. Throttled — it is irreversible and does network
+        // work (the Apple token revocation).
+        Route::delete('me', [ProfileController::class, 'destroy'])
+            ->middleware('throttle:5,1');
 
         // Session-answer save (peer-combines memory + session). GET /memories
         // (a pure list) is registered by the Memories module.

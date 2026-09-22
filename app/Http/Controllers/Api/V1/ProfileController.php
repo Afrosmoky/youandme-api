@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Actions\DeleteAccountAction;
 use App\Modules\Game\Actions\UpdateCoupleSettingsAction;
 use App\Modules\Game\Data\UpdateCoupleSettingsInput;
 use App\Modules\Game\Http\Resources\CoupleResource;
 use App\Modules\Game\Models\Couple;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Youandme\Auth\Actions\UpdateProfileAction;
 use Youandme\Auth\Http\Requests\UpdateProfileRequest;
@@ -16,7 +18,8 @@ use Youandme\Auth\Http\Resources\UserResource;
 /**
  * App composition root for GET /me and PATCH /me — both return the couple, and
  * PATCH orchestrates Auth (profile fields) + Game (couple settings) in one
- * transaction. See docs r1-architecture-proposal §3.1.
+ * transaction. See docs r1-architecture-proposal §3.1. DELETE /me erases the
+ * account across every module (DeleteAccountAction).
  */
 final class ProfileController
 {
@@ -52,5 +55,12 @@ final class ProfileController
             'user' => new UserResource($user),
             'couple' => $couple ? new CoupleResource($couple) : null,
         ]);
+    }
+
+    public function destroy(Request $request): Response
+    {
+        DeleteAccountAction::run($request->user());
+
+        return response()->noContent();
     }
 }
