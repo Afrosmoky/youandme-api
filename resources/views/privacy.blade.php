@@ -30,7 +30,7 @@
     <div class="rule"></div>
 
     <h1>Polityka prywatności</h1>
-    <p class="upd">Ostatnia aktualizacja: 12 sierpnia 2026</p>
+    <p class="upd">Ostatnia aktualizacja: 22 września 2026</p>
 
     <p>Aplikacja „Ja i Ty" to gra dla par. Traktujemy Wasze dane — a zwłaszcza to, co piszecie sobie nawzajem — poważnie. Ta polityka wyjaśnia, jakie dane zbieramy, po co, komu je powierzamy i jakie masz prawa.</p>
 
@@ -68,11 +68,11 @@
     <p>Nie sprzedajemy Waszych danych i nie udostępniamy ich w celach reklamowych.</p>
 
     <h2>Jak długo przechowujemy dane</h2>
-    <p>Dane konta i Wasze treści przechowujemy tak długo, jak istnieje konto. Po usunięciu konta usuwamy powiązane z nim dane w rozsądnym terminie (z zastrzeżeniem danych, które musimy zachować z przyczyn prawnych lub bezpieczeństwa). Logi i raporty awarii przechowujemy przez ograniczony czas.</p>
+    <p>Dane konta i Wasze treści przechowujemy tak długo, jak istnieje konto. Konto usuwamy od razu: razem z nim znikają wszystkie powiązane z nim dane. W logach serwera zostaje tylko wpis z wewnętrznym identyfikatorem konta i datą usunięcia, bez adresu e-mail. Logi serwera wygasają po [X] dniach, a kopie zapasowe bazy są nadpisywane po [Y] dniach. Raporty awarii przechowujemy przez ograniczony czas.</p>
 
     <h2>Twoje prawa</h2>
     <p>Przysługuje Ci prawo do: dostępu do swoich danych, ich sprostowania, usunięcia, ograniczenia przetwarzania, przenoszenia oraz wniesienia sprzeciwu. Masz też prawo wniesienia skargi do organu nadzorczego (w Polsce: Prezes Urzędu Ochrony Danych Osobowych).</p>
-    <p>Aby skorzystać z tych praw lub usunąć konto, napisz do nas: <a href="mailto:kontakt@jaity.app">kontakt@jaity.app</a>.</p>
+    <p>Konto usuniesz w aplikacji (Profil → Usuń konto) albo mailowo. Szczegóły znajdziesz na stronie <a href="/delete-account">Usuwanie konta</a>. W sprawie pozostałych praw napisz do nas: <a href="mailto:kontakt@jaity.app">kontakt@jaity.app</a>.</p>
 
     <h2>Bezpieczeństwo</h2>
     <p>Połączenie z aplikacją jest szyfrowane (HTTPS/TLS). Hasła przechowujemy wyłącznie w postaci zahaszowanej, a token dostępu na urządzeniu — w bezpiecznym magazynie systemowym.</p>
