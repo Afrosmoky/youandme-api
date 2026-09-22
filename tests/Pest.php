@@ -1,10 +1,22 @@
 <?php
 
+use App\Modules\Catalog\Models\Question;
 use App\Modules\Game\Models\Couple;
+use App\Modules\Game\Models\CoupleWeeklyRitual;
+use App\Modules\Game\Models\GameSession;
+use App\Modules\Game\Models\Referral;
+use App\Modules\Memories\Models\Memory;
+use App\Modules\Premium\Models\PromoCode;
+use App\Modules\Progress\Models\ProgressMilestone;
+use App\Modules\Rewards\Actions\GrantCreditsAction;
+use App\Modules\Rewards\Actions\IssueAdRewardNonceAction;
 use App\Modules\Rewards\Models\CoupleReward;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Tests\TestCase;
 use Youandme\Auth\Models\User;
+use Youandme\Notifications\Actions\RegisterDeviceTokenAction;
 
 /*
 |--------------------------------------------------------------------------
@@ -100,6 +112,57 @@ function createUserWithCouple(array $attributes = []): User
 function activeCoupleOf(User $user): Couple
 {
     return Couple::findOrFail($user->active_couple_id);
+}
+
+/**
+ * Give an account (a user from createUserWithCouple) a row in every table that
+ * can hold its data: the whole footprint account deletion has to erase. Returns
+ * the two outside users its referrals point at, so a test can tell them apart
+ * from a control account.
+ *
+ * Kept in step with the schema by AccountDeletionCoverageTest, which fails when a
+ * table referencing a user or a couple gets no row from here.
+ *
+ * @return array{referrer: User, referred: User}
+ */
+function seedAccountFootprint(User $user): array
+{
+    $couple = activeCoupleOf($user);
+    $question = Question::factory()->create();
+
+    // Memories: a live one tied to a session, and one the couple already removed.
+    $session = GameSession::factory()->create(['couple_id' => $couple->id]);
+    Memory::factory()->for($user)->create(['game_session_id' => $session->id, 'question_id' => $question->id]);
+    Memory::factory()->for($user)->create()->delete();
+
+    // Game.
+    DB::table('couple_question_seen')->insert(['couple_id' => $couple->id, 'question_id' => $question->id, 'seen_at' => now()]);
+    DB::table('couple_question_likes')->insert(['couple_id' => $couple->id, 'question_id' => $question->id]);
+    DB::table('couple_unlocked_questions')->insert(['couple_id' => $couple->id, 'question_id' => $question->id, 'source' => 'credits']);
+    CoupleWeeklyRitual::factory()->create(['couple_id' => $couple->id]);
+    $referrer = createUserWithCouple();
+    $referred = createUserWithCouple();
+    Referral::create(['referrer_user_id' => $referrer->id, 'referred_user_id' => $user->id]);
+    Referral::create(['referrer_user_id' => $user->id, 'referred_user_id' => $referred->id]);
+
+    // Progress, Premium.
+    DB::table('couple_milestone_unlocks')->insert(['couple_id' => $couple->id, 'milestone_id' => ProgressMilestone::factory()->create()->id]);
+    DB::table('couple_redeemed_codes')->insert(['couple_id' => $couple->id, 'promo_code_id' => PromoCode::factory()->create()->id, 'redeemed_at' => now()]);
+
+    // Rewards.
+    GrantCreditsAction::run($couple->id, 3);
+    DB::table('couple_daily_ad_rewards')->insert(['couple_id' => $couple->id, 'reward_date' => now()->toDateString(), 'count' => 1]);
+    IssueAdRewardNonceAction::run($couple->id, $user->id);
+
+    // Notifications.
+    RegisterDeviceTokenAction::run($user->ulid, 'fcm-'.Str::random(20), 'android');
+
+    // Auth.
+    $user->createToken('mobile');
+    DB::table('password_reset_tokens')->insert(['email' => $user->email, 'token' => Str::random(40), 'created_at' => now()]);
+    DB::table('sessions')->insert(['id' => Str::random(40), 'user_id' => $user->id, 'payload' => '', 'last_activity' => now()->timestamp]);
+
+    return ['referrer' => $referrer, 'referred' => $referred];
 }
 
 /**
