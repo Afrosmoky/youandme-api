@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Youandme\Auth\Models\User;
+use Youandme\Auth\Support\AppleAuthClient;
+use Youandme\Auth\Support\AppleAuthClientInterface;
 use Youandme\Auth\Support\AppleTokenVerifier;
 use Youandme\Auth\Support\AppleTokenVerifierInterface;
 use Youandme\Auth\Support\GoogleTokenVerifier;
@@ -18,6 +20,7 @@ class AuthServiceProvider extends ServiceProvider
         // One interface per provider (Adapter pattern) — see CLAUDE.md P2.
         $this->app->bind(GoogleTokenVerifierInterface::class, GoogleTokenVerifier::class);
         $this->app->bind(AppleTokenVerifierInterface::class, AppleTokenVerifier::class);
+        $this->app->bind(AppleAuthClientInterface::class, AppleAuthClient::class);
     }
 
     public function boot(): void

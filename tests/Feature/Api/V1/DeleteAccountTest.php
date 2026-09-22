@@ -6,6 +6,9 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Laravel\Sanctum\Sanctum;
 use Youandme\Auth\Models\User;
+use Youandme\Auth\Support\AppleAuthClientInterface;
+use Youandme\Auth\Support\AppleAuthException;
+use Youandme\Auth\Support\AppleTokenGrant;
 use Youandme\Auth\Support\AppleTokenVerifierInterface;
 use Youandme\Auth\Support\GoogleTokenVerifierInterface;
 
@@ -127,4 +130,86 @@ test('the same Google account can sign in again after the account is deleted', f
     mockSocialSignIn(GoogleTokenVerifierInterface::class, 'google-abc', 'ola@gmail.com');
 
     $this->postJson('/api/v1/auth/google', ['id_token' => 'fake-token'])->assertCreated();
+});
+
+/** An Apple-linked account, signed in, with Apple's side mocked. */
+function appleAccount(): array
+{
+    $user = createUserWithCouple(['apple_id' => 'apple-sub-1']);
+    Sanctum::actingAs($user);
+    $client = test()->mock(AppleAuthClientInterface::class);
+    $client->shouldReceive('isConfigured')->andReturnTrue()->byDefault();
+
+    return [$user, $client];
+}
+
+test('an Apple account with a fresh code has its Apple tokens revoked and is deleted', function (): void {
+    [$user, $client] = appleAccount();
+    $client->shouldReceive('exchangeAuthorizationCode')->with('fresh-code')->once()->andReturn(new AppleTokenGrant('r-token', 'id-token'));
+    mockSocialSignIn(AppleTokenVerifierInterface::class, 'apple-sub-1', 'relay@privaterelay.appleid.com');
+    $client->shouldReceive('revokeRefreshToken')->with('r-token')->once();
+
+    $this->deleteJson('/api/v1/me', ['apple_authorization_code' => 'fresh-code'])->assertNoContent();
+
+    expect(User::withTrashed()->whereKey($user->id)->exists())->toBeFalse();
+});
+
+test('an Apple account without a code is still deleted', function (): void {
+    [$user, $client] = appleAccount();
+    $client->shouldNotReceive('exchangeAuthorizationCode');
+    Log::spy();
+
+    $this->deleteJson('/api/v1/me')->assertNoContent();
+
+    expect(User::withTrashed()->whereKey($user->id)->exists())->toBeFalse();
+    Log::shouldHaveReceived('warning')->with('Apple token revocation skipped: no authorization code sent')->once();
+});
+
+test('an Apple account is still deleted when Apple fails', function (): void {
+    [$user, $client] = appleAccount();
+    $client->shouldReceive('exchangeAuthorizationCode')->andThrow(new AppleAuthException('Apple /auth/token failed with HTTP 400 (invalid_grant).'));
+
+    $this->deleteJson('/api/v1/me', ['apple_authorization_code' => 'stale-code'])->assertNoContent();
+
+    expect(User::withTrashed()->whereKey($user->id)->exists())->toBeFalse();
+});
+
+test('an Apple account is still deleted when the Apple key is not configured', function (): void {
+    [$user, $client] = appleAccount();
+    $client->shouldReceive('isConfigured')->andReturnFalse();
+    $client->shouldNotReceive('exchangeAuthorizationCode');
+
+    $this->deleteJson('/api/v1/me', ['apple_authorization_code' => 'fresh-code'])->assertNoContent();
+
+    expect(User::withTrashed()->whereKey($user->id)->exists())->toBeFalse();
+});
+
+test('a code from a different Apple ID revokes nothing, logs no identifier and still deletes', function (): void {
+    [$user, $client] = appleAccount();
+    $client->shouldReceive('exchangeAuthorizationCode')->andReturn(new AppleTokenGrant('r-token', 'id-token'));
+    mockSocialSignIn(AppleTokenVerifierInterface::class, 'apple-sub-OTHER', 'other@privaterelay.appleid.com');
+    $client->shouldNotReceive('revokeRefreshToken');
+    Log::spy();
+
+    $this->deleteJson('/api/v1/me', ['apple_authorization_code' => 'fresh-code'])->assertNoContent();
+
+    expect(User::withTrashed()->whereKey($user->id)->exists())->toBeFalse();
+    Log::shouldHaveReceived('warning')->withArgs(fn (string $message, array $context = []): bool => $message === 'Apple token revocation skipped: authorization code belongs to a different Apple ID'
+        && $context === [])->once();
+});
+
+test('a refused deletion does not touch Apple', function (): void {
+    [$user, $client] = appleAccount();
+    Couple::factory()->create(['user_a_id' => createUserWithCouple()->id, 'user_b_id' => $user->id]);
+    $client->shouldNotReceive('exchangeAuthorizationCode');
+
+    $this->deleteJson('/api/v1/me', ['apple_authorization_code' => 'fresh-code'])->assertConflict();
+});
+
+test('the Apple authorization code must be a string', function (): void {
+    Sanctum::actingAs(createUserWithCouple());
+
+    $this->deleteJson('/api/v1/me', ['apple_authorization_code' => ['nope']])
+        ->assertUnprocessable()
+        ->assertJsonValidationErrors('apple_authorization_code');
 });

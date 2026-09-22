@@ -19,6 +19,8 @@
 /public/hot
 /public/storage
 /storage/*.key
+# Apple signing keys (Sign in with Apple .p8) never belong in the repo.
+*.p8
 /storage/pail
 /vendor
 _ide_helper.php

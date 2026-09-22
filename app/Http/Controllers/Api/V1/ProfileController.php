@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Actions\DeleteAccountAction;
+use App\Http\Requests\DeleteAccountRequest;
 use App\Modules\Game\Actions\UpdateCoupleSettingsAction;
 use App\Modules\Game\Data\UpdateCoupleSettingsInput;
 use App\Modules\Game\Http\Resources\CoupleResource;
@@ -57,9 +58,12 @@ final class ProfileController
         ]);
     }
 
-    public function destroy(Request $request): Response
+    public function destroy(DeleteAccountRequest $request): Response
     {
-        DeleteAccountAction::run($request->user());
+        /** @var ?string $appleAuthorizationCode */
+        $appleAuthorizationCode = $request->validated('apple_authorization_code');
+
+        DeleteAccountAction::run($request->user(), $appleAuthorizationCode);
 
         return response()->noContent();
     }

@@ -29,6 +29,24 @@ return [
     'apple' => [
         // iOS app bundle ID; the `aud` claim of Apple ID tokens.
         'client_id' => env('APPLE_CLIENT_ID'),
+
+        // Sign in with Apple key, used only to revoke our tokens when an account
+        // is deleted (App Store 5.1.1(v)). Team ID and Key ID come from the Apple
+        // developer portal (Keys → the Sign in with Apple key).
+        //
+        // private_key_path points at the downloaded AuthKey_<KEYID>.p8. On the
+        // server the file lives OUTSIDE the application directory (so no deploy,
+        // backup of the release or `git add` can pick it up), is chmod 600 and is
+        // owned by the user PHP-FPM runs as. Never commit it and never paste its
+        // contents into .env. Relative paths resolve from the project root, which
+        // is for local development only.
+        //
+        // Any of the three unset means "no revocation": the deletion still goes
+        // through and a warning is logged. Revocation switches on with a .env
+        // change alone, no app build needed.
+        'team_id' => env('APPLE_TEAM_ID'),
+        'key_id' => env('APPLE_KEY_ID'),
+        'private_key_path' => env('APPLE_PRIVATE_KEY_PATH'),
     ],
 
     // Firebase Cloud Messaging (server push, P7). One setting: the path to the

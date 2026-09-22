@@ -6,6 +6,7 @@ use App\Exceptions\AccountDeletionRefusedException;
 use App\Modules\Game\Actions\DeleteCoupleAction;
 use App\Modules\Game\Actions\DeleteReferralsForUserAction;
 use App\Modules\Game\Actions\LockCouplesOfUserAction;
+use App\Modules\Game\Queries\IsUserInSharedCoupleQuery;
 use App\Modules\Game\Support\CoupleMembership;
 use App\Modules\Memories\Actions\DeleteMemoriesForCoupleAction;
 use App\Modules\Premium\Actions\DeleteRedeemedCodesForCoupleAction;
@@ -16,6 +17,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Lorisleiva\Actions\Concerns\AsAction;
 use Youandme\Auth\Actions\DeleteUserAction;
+use Youandme\Auth\Actions\RevokeAppleTokensAction;
 use Youandme\Auth\Actions\SetActiveCoupleForUserAction;
 use Youandme\Auth\Models\User;
 use Youandme\Notifications\Actions\DeleteDeviceTokensForUserAction;
@@ -37,6 +39,12 @@ use Youandme\Notifications\Actions\DeleteDeviceTokensForUserAction;
  * - the per-user rows (referrals, ad nonces, device tokens) next, and the users
  *   row itself last.
  *
+ * Apple first, outside the transaction: a network call must not hold the locks,
+ * and the order costs nothing if the deletion then fails — Sign in with Apple
+ * returns the same sub after a revocation, so the account is still reachable.
+ * The refusal of a shared couple is checked before that, so a deletion that will
+ * not happen revokes nothing.
+ *
  * AccountDeletionCoverageTest fails when a new table referencing a user or a
  * couple is not reached from here.
  *
@@ -46,9 +54,16 @@ final class DeleteAccountAction
 {
     use AsAction;
 
-    public function handle(User $user): void
+    public function handle(User $user, ?string $appleAuthorizationCode = null): void
     {
         $userUlid = $user->ulid;
+
+        if (IsUserInSharedCoupleQuery::run($user->id)) {
+            throw new AccountDeletionRefusedException;
+        }
+
+        // Best-effort: never throws, logs what it skipped.
+        RevokeAppleTokensAction::run($user, $appleAuthorizationCode);
 
         DB::transaction(function () use ($user): void {
             // The laravel-actions static proxy is untyped.
