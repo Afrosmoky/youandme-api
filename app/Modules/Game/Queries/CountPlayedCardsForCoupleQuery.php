@@ -19,6 +19,14 @@ use Lorisleiva\Actions\Concerns\AsAction;
  * milestone register it feeds is monotonic too, and here that costs nothing —
  * where the count came from memories it took a deliberate withTrashed to hold.
  *
+ * It deliberately does NOT know about couples.deck_reset_at. A deck reset renews
+ * what the couple may be dealt (ListSeenQuestionIdsInCurrentDeckQuery), never what
+ * they have played: the rows stay, and every one of them keeps counting here. Do
+ * not add a seen_at filter, do not route this through a "current deck" helper,
+ * and do not count through a relation someone may one day scope — any of those
+ * would silently shrink the map, and with it the milestones, for every couple
+ * that ever pressed "Zacznij od nowa". Pinned by DeckResetTest.
+ *
  * Takes an id, not a Couple: every caller (the milestone listener, GET /progress)
  * has only the id, and hydrating a model to COUNT a pivot would be a query for
  * nothing.

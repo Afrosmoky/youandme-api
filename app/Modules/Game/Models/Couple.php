@@ -118,6 +118,10 @@ class Couple extends Model
      * deliberately outside it (the map counts the question game, the daily card
      * has the streak).
      *
+     * Unscoped on purpose: it spans every deck the couple played. The deal reads
+     * the current deck through ListSeenQuestionIdsInCurrentDeckQuery instead;
+     * filtering this relation would shrink every count taken through it.
+     *
      * @return BelongsToMany<Question, $this>
      */
     public function seenQuestions(): BelongsToMany

@@ -4,6 +4,7 @@ use App\Modules\Catalog\Models\Question;
 use App\Modules\Game\Actions\MarkQuestionsPlayedAction;
 use App\Modules\Game\Events\CardsPlayed;
 use App\Modules\Game\Models\Couple;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
 
@@ -55,6 +56,26 @@ test('records seen_at for a newly played card', function (): void {
         ->value('seen_at');
 
     expect($seenAt)->not->toBeNull();
+});
+
+test('replaying a card moves its seen_at forward without adding a row', function (): void {
+    $couple = coupleForPlayedCards();
+    $question = Question::factory()->create();
+    $couple->seenQuestions()->attach($question->id, ['seen_at' => now()->subMonth()]);
+
+    $newly = MarkQuestionsPlayedAction::run($couple, [$question->id]);
+
+    $seenAt = DB::table('couple_question_seen')
+        ->where('couple_id', $couple->id)
+        ->where('question_id', $question->id)
+        ->value('seen_at');
+
+    // Load-bearing for the deck reset: a stale seen_at would put a card replayed
+    // after the reset back into every following deal. And 0, not 1 — the map had
+    // already counted the card.
+    expect($newly)->toBe(0)
+        ->and(Carbon::parse($seenAt)->greaterThan(now()->subMinute()))->toBeTrue()
+        ->and(DB::table('couple_question_seen')->where('couple_id', $couple->id)->count())->toBe(1);
 });
 
 test('announces CardsPlayed even when nothing was new (self-healing consumer)', function (): void {

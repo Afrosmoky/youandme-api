@@ -24,8 +24,15 @@ use Lorisleiva\Actions\Concerns\AsAction;
  * serve the same card again months later without touching anything counted here.
  *
  * Idempotent by the composite PK — syncWithoutDetaching is set semantics, so a
- * retried report costs one statement and changes nothing. Returns how many cards
- * were NEW to the set.
+ * retried report never adds a row. Returns how many cards were NEW to the set,
+ * which is also how far the progress map moved: a card replayed after a deck
+ * reset returns 0, because the map had already counted it.
+ *
+ * Since the deck reset, seen_at carries a third meaning: which deck a card was
+ * played in. For a card already in the set, syncWithoutDetaching issues an UPDATE
+ * that moves seen_at to now — and that is load-bearing. It is what keeps a card
+ * replayed after a reset out of the next deal; an insert-or-ignore here would
+ * deal it again in every following deck. Pinned by MarkQuestionsPlayedActionTest.
  */
 final class MarkQuestionsPlayedAction
 {

@@ -12,6 +12,7 @@ use App\Modules\Game\Queries\GetDeckExhaustionQuery;
 use App\Modules\Game\Queries\GetNextQuestionInSessionQuery;
 use App\Modules\Game\Queries\IsQuestionLikedByCoupleQuery;
 use App\Modules\Game\Queries\ListLikedQuestionUlidsForCoupleQuery;
+use App\Modules\Game\Queries\ListSeenQuestionIdsInCurrentDeckQuery;
 use App\Modules\Game\Support\QuestionCardPayload;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -117,8 +118,10 @@ final class QuestionController
     {
         $couple = Couple::findOrFail($request->user()->active_couple_id);
 
-        /** @var list<int> $seenIds */
-        $seenIds = $couple->seenQuestions()->pluck('questions.id')->all();
+        // The current deck only — cards played before the couple's last reset are
+        // dealt again. The same list feeds the exhaustion reason below, so the two
+        // cannot disagree about what is left.
+        $seenIds = ListSeenQuestionIdsInCurrentDeckQuery::run($couple);
 
         /** @var list<int> $unlockedIds */
         $unlockedIds = $couple->unlockedQuestions()->pluck('questions.id')->all();

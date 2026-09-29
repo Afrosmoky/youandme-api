@@ -7,12 +7,13 @@ use App\Modules\Catalog\Queries\GetSessionQuestionPoolQuery;
 use App\Modules\Game\Events\SessionStarted;
 use App\Modules\Game\Models\Couple;
 use App\Modules\Game\Models\GameSession;
+use App\Modules\Game\Queries\ListSeenQuestionIdsInCurrentDeckQuery;
 use Lorisleiva\Actions\Concerns\AsAction;
 
 /**
- * Creates a fresh session for a couple: resolves the couple's already-seen
- * question ids (Game's own couple_question_seen) and asks Catalog for a random
- * pool of unseen session questions. Returns null when the pool is empty (caller
+ * Creates a fresh session for a couple: resolves the question ids already seen
+ * in the couple's current deck (Game's own couple_question_seen, bounded by the
+ * last deck reset) and asks Catalog for a random pool of unseen session questions. Returns null when the pool is empty (caller
  * turns that into a 422). The caller guards against an already-active session.
  *
  * P7: the couple's unlocked ids (Game's own couple_unlocked_questions) go in as
@@ -31,8 +32,7 @@ final class StartGameSessionAction
 
     public function handle(Couple $couple, ?string $categorySlug): ?GameSession
     {
-        /** @var list<int> $seenIds */
-        $seenIds = $couple->seenQuestions()->pluck('questions.id')->all();
+        $seenIds = ListSeenQuestionIdsInCurrentDeckQuery::run($couple);
 
         /** @var list<int> $unlockedIds */
         $unlockedIds = $couple->unlockedQuestions()->pluck('questions.id')->all();
