@@ -31,7 +31,7 @@ test('after a reset only cards seen since the reset belong to the deck', functio
 });
 
 test('a card seen at the reset instant already belongs to the new deck', function (): void {
-    $this->freezeTime();
+    $this->freezeSecond();
     $couple = Couple::factory()->create(['deck_reset_at' => now()]);
     $question = Question::factory()->create();
     $couple->seenQuestions()->attach($question->id, ['seen_at' => now()]);

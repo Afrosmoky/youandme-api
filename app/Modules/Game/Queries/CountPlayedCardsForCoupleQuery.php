@@ -25,7 +25,7 @@ use Lorisleiva\Actions\Concerns\AsAction;
  * not add a seen_at filter, do not route this through a "current deck" helper,
  * and do not count through a relation someone may one day scope — any of those
  * would silently shrink the map, and with it the milestones, for every couple
- * that ever pressed "Zacznij od nowa". Pinned by DeckResetTest.
+ * that ever pressed "Zacznij od nowa". Pinned by DeckResetProgressTest.
  *
  * Takes an id, not a Couple: every caller (the milestone listener, GET /progress)
  * has only the id, and hydrating a model to COUNT a pivot would be a query for

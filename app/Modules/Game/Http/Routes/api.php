@@ -2,6 +2,7 @@
 
 use App\Modules\Game\Http\Controllers\DailyCardController;
 use App\Modules\Game\Http\Controllers\DeckController;
+use App\Modules\Game\Http\Controllers\DeckResetController;
 use App\Modules\Game\Http\Controllers\LikedQuestionController;
 use App\Modules\Game\Http\Controllers\LocalGameController;
 use App\Modules\Game\Http\Controllers\QuestionController;
@@ -31,6 +32,12 @@ Route::prefix('v1')->middleware('auth:sanctum')->group(function (): void {
     // sequences it offline, so it cannot ask card by card. Filtered exactly like
     // a session pool — this is where the server says what may be played.
     Route::get('questions/deck', [QuestionController::class, 'deck']);
+
+    // "Zacznij od nowa": the next deal is the full deck again, while the progress
+    // map keeps every card already played. Throttled — a reset is a deliberate
+    // tap, not something a client should ever loop on.
+    Route::post('questions/deck/reset', [DeckResetController::class, 'store'])
+        ->middleware('throttle:10,1');
 
     // The couple's hearted cards. Declared before the {questionUlid} routes for
     // readability only — they are POST/DELETE, so nothing here shadows anything.
