@@ -45,6 +45,7 @@ class Couple extends Model
         'streak_current' => 'integer',
         'streak_longest' => 'integer',
         'daily_push_hour' => 'integer',
+        'deck_reset_at' => 'datetime',
     ];
 
     /**
