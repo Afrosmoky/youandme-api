@@ -3,6 +3,7 @@
 namespace App\Listeners;
 
 use App\Modules\Rewards\Events\AdRewardGranted;
+use App\Support\CardCount;
 use Youandme\Auth\Models\User;
 use Youandme\Notifications\Actions\SendPushAction;
 use Youandme\Notifications\Data\PushMessageData;
@@ -38,8 +39,8 @@ final class SendAdRewardPushOnGrant
         SendPushAction::run(
             $user->ulid,
             new PushMessageData(
-                title: 'Kredyt przyznany',
-                body: 'Nagroda za obejrzaną reklamę jest już na Waszym koncie.',
+                title: __('push.ad_reward_granted.title', [], 'pl'),
+                body: __('push.ad_reward_granted.body', ['cards' => CardCount::accusative($event->data->amount)], 'pl'),
                 data: [
                     'type' => 'ad_reward_granted',
                     'amount' => (string) $event->data->amount,

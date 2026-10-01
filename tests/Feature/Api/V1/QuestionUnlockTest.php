@@ -44,7 +44,8 @@ test('without enough credits nothing is charged and nothing is unlocked', functi
 
     $this->postJson("/api/v1/questions/{$locked->ulid}/unlock")
         ->assertUnprocessable()
-        ->assertJsonPath('errors.credits.0', 'Za mało kredytów, aby odblokować tę kartę.');
+        ->assertJsonPath('message', 'Macie za mało kart do odblokowania.')
+        ->assertJsonPath('errors.credits.0', 'Żeby otworzyć tę kartę, zdobądźcie więcej w Nagrodach.');
 
     // The entitlement write is rolled back with the failed debit — no free card.
     expect(creditsOfCouple($coupleId))->toBe(0)

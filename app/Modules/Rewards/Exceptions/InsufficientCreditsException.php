@@ -19,8 +19,9 @@ final class InsufficientCreditsException extends RuntimeException
     public function render(Request $request): JsonResponse
     {
         return response()->json([
-            'message' => 'Za mało kredytów.',
-            'errors' => ['credits' => ['Za mało kredytów, aby odblokować tę kartę.']],
+            // The couple never sees the word "credit": the unit is the card.
+            'message' => 'Macie za mało kart do odblokowania.',
+            'errors' => ['credits' => ['Żeby otworzyć tę kartę, zdobądźcie więcej w Nagrodach.']],
         ], JsonResponse::HTTP_UNPROCESSABLE_ENTITY);
     }
 }

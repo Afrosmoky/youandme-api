@@ -45,7 +45,8 @@ test('a granted ad reward pushes the user who watched it', function (): void {
                 return $token === 'phone-token'
                     && $message->data['type'] === 'ad_reward_granted'
                     && $message->data['amount'] === '1'
-                    && $message->title !== '';
+                    && $message->title === 'Nowa karta do odblokowania'
+                    && $message->body === 'Za obejrzaną reklamę dostaliście 1 kartę do odblokowania.';
             })
             ->andReturnTrue();
     });

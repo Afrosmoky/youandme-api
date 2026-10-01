@@ -12,6 +12,11 @@ declare(strict_types=1);
  */
 
 return [
+    'ad_reward_granted' => [
+        'title' => 'Nowa karta do odblokowania',
+        // :cards is App\Support\CardCount::accusative(amount) — "1 kartę".
+        'body' => 'Za obejrzaną reklamę dostaliście :cards do odblokowania.',
+    ],
     'memory_anniversary' => [
         'year' => [
             'title' => '{1} Rok temu|[2,4] :count lata temu|[5,*] :count lat temu',
