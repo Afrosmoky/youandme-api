@@ -11,6 +11,7 @@ use App\Modules\Progress\Models\ProgressMilestone;
 use App\Modules\Rewards\Actions\GrantCreditsAction;
 use App\Modules\Rewards\Actions\IssueAdRewardNonceAction;
 use App\Modules\Rewards\Models\CoupleReward;
+use Illuminate\Foundation\Testing\DatabaseTruncation;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -66,6 +67,13 @@ pest()->extend(TestCase::class)
 pest()->extend(TestCase::class)
     ->use(RefreshDatabase::class)
     ->in(__DIR__.'/../app/Modules/Progress/Tests');
+
+// Races between real processes (pcntl_fork): the rows must be committed for the
+// children to see them, so truncation instead of a wrapping transaction. Runs
+// last in phpunit.xml and cleans up after itself.
+pest()->extend(TestCase::class)
+    ->use(DatabaseTruncation::class)
+    ->in('Concurrency');
 
 /*
 |--------------------------------------------------------------------------

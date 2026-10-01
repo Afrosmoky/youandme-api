@@ -32,6 +32,10 @@
         <testsuite name="Progress">
             <directory>app/Modules/Progress/Tests</directory>
         </testsuite>
+        <!-- Last: real parallel processes on committed rows (DatabaseTruncation). -->
+        <testsuite name="Concurrency">
+            <directory>tests/Concurrency</directory>
+        </testsuite>
     </testsuites>
     <source>
         <include>
