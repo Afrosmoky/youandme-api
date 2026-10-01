@@ -1,3 +1,21 @@
+# youandme-api
+
+Backend API aplikacji „Ja i Ty” (Laravel). Poniżej zostaje domyślny opis frameworka.
+
+## Testy lokalnie
+
+Pełny zestaw uruchamiaj z podniesionym limitem pamięci:
+
+```
+php -d memory_limit=1G vendor/bin/pest
+```
+
+Przy domyślnych 128M lokalnego PHP przebieg pada w połowie (`Allowed memory size ... exhausted`). CI tego nie widzi, bo `setup-php` ustawia `memory_limit=-1`. Pojedyncze pliki i testsuite'y przechodzą bez flagi.
+
+Testsuite `Concurrency` (`tests/Concurrency/`) uruchamia równoległe procesy (`pcntl_fork`) na zacommitowanych wierszach (`DatabaseTruncation`), dlatego idzie jako ostatni. Wymaga rozszerzeń PHP `pcntl` i `posix`; w CI są dopisane w `.github/workflows/test.yml`.
+
+---
+
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
 <p align="center">
