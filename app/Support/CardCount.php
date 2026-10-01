@@ -9,7 +9,7 @@ namespace App\Support;
  * form from one number and gets the other wrong.
  *
  * Accusative only, because that is the only case the copy needs; write the
- * sentence around a verb that takes it (macie, kosztuje, dostaliście).
+ * sentence around a verb that takes it (wybraliście, dostaliście).
  */
 final class CardCount
 {

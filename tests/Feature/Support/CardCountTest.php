@@ -22,9 +22,3 @@ test('a number of cards is declined for that number', function (int $count, stri
     [25, '25 kart'],
     [112, '112 kart'],
 ]);
-
-test('two numbers in one sentence are declined independently', function (): void {
-    $sentence = sprintf('kosztuje %s, a macie %s', CardCount::accusative(5), CardCount::accusative(2));
-
-    expect($sentence)->toBe('kosztuje 5 kart, a macie 2 karty');
-});

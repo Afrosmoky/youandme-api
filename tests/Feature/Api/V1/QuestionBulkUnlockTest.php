@@ -58,8 +58,7 @@ test('without enough credits for every new card nothing is charged and nothing i
     $this->postJson('/api/v1/questions/unlock', ['question_ulids' => $cards->pluck('ulid')->all()])
         ->assertUnprocessable()
         ->assertJsonPath('message', 'Macie za mało kart do odblokowania.')
-        // Two numbers, each declined on its own.
-        ->assertJsonPath('errors.credits.0', 'Odblokowanie wybranych kart kosztuje 5 kart, a macie 2 karty.')
+        ->assertJsonPath('errors.credits.0', 'Wybraliście 5 kart, a możecie odblokować 2.')
         ->assertJsonPath('credits', 2)
         ->assertJsonPath('required', 5);
 
@@ -78,7 +77,7 @@ test('the shortfall counts only cards that would be new', function (): void {
     $this->postJson('/api/v1/questions/unlock', ['question_ulids' => $cards->pluck('ulid')->all()])
         ->assertUnprocessable()
         ->assertJsonPath('required', 2)
-        ->assertJsonPath('errors.credits.0', 'Odblokowanie wybranych kart kosztuje 2 karty, a macie 1 kartę.');
+        ->assertJsonPath('errors.credits.0', 'Wybraliście 2 karty, a możecie odblokować 1.');
 
     // The owned card is still owned, the others did not appear.
     expect(entitledCardsOf($coupleId))->toBe(1)
