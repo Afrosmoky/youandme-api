@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\V1\DailyCardController;
 use App\Http\Controllers\Api\V1\MemoryController;
 use App\Http\Controllers\Api\V1\ProfileController;
 use App\Http\Controllers\Api\V1\ProgressController;
+use App\Http\Controllers\Api\V1\QuestionBulkUnlockController;
 use App\Http\Controllers\Api\V1\QuestionUnlockController;
 use App\Http\Controllers\Api\V1\RedeemController;
 use App\Http\Controllers\Api\V1\RewardsController;
@@ -63,6 +64,13 @@ Route::prefix('v1')->group(function (): void {
         // in one transaction. GET /deck (Game) and GET /rewards (Rewards) are
         // registered by their own modules — only the write spans both.
         Route::post('questions/{questionUlid}/unlock', [QuestionUnlockController::class, 'store']);
+
+        // Buy several locked cards at once (list of ulids, all or nothing). Same
+        // composition as the single unlock, which stays for released builds.
+        // Throttled per user: under auth:sanctum Laravel keys the limiter by the
+        // authenticated user, so couples behind one NAT do not share it.
+        Route::post('questions/unlock', [QuestionBulkUnlockController::class, 'store'])
+            ->middleware('throttle:10,1');
 
         // Balance + reward values + card price + closed cards left. Moved here
         // from Rewards (same path, same middleware, original fields unchanged —
