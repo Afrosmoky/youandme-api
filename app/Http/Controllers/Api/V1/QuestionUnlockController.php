@@ -13,6 +13,7 @@ use App\Modules\Game\Support\UnlockSource;
 use App\Modules\Rewards\Actions\SpendCreditsAction;
 use App\Modules\Rewards\Exceptions\InsufficientCreditsException;
 use App\Modules\Rewards\Queries\GetCreditBalanceQuery;
+use App\Support\CardUnlockPrice;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -38,13 +39,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 final class QuestionUnlockController
 {
-    /**
-     * Wiktoria's economy: 1 credit = 1 locked card. A product number, and the
-     * app layer is where the two modules meet — Rewards must not learn the price
-     * of a card, Game must not learn that cards cost credits at all.
-     */
-    private const UNLOCK_COST = 1;
-
     public function store(Request $request, string $questionUlid): JsonResponse
     {
         $coupleId = $request->user()->active_couple_id;
@@ -76,7 +70,7 @@ final class QuestionUnlockController
                 throw new QuestionAlreadyUnlockedException;
             }
 
-            if (! SpendCreditsAction::run($coupleId, self::UNLOCK_COST)) {
+            if (! SpendCreditsAction::run($coupleId, CardUnlockPrice::CREDITS)) {
                 throw new InsufficientCreditsException;
             }
         });

@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\V1\ProfileController;
 use App\Http\Controllers\Api\V1\ProgressController;
 use App\Http\Controllers\Api\V1\QuestionUnlockController;
 use App\Http\Controllers\Api\V1\RedeemController;
+use App\Http\Controllers\Api\V1\RewardsController;
 use App\Http\Controllers\Api\V1\SocialAuthController;
 use Illuminate\Support\Facades\Route;
 
@@ -62,6 +63,12 @@ Route::prefix('v1')->group(function (): void {
         // in one transaction. GET /deck (Game) and GET /rewards (Rewards) are
         // registered by their own modules — only the write spans both.
         Route::post('questions/{questionUlid}/unlock', [QuestionUnlockController::class, 'store']);
+
+        // Balance + reward values + card price + closed cards left. Moved here
+        // from Rewards (same path, same middleware, original fields unchanged —
+        // released builds read it): the response peer-combines Rewards, the
+        // app-layer price and Game's deck.
+        Route::get('rewards', [RewardsController::class, 'show']);
 
         // Promo code: validation + register (Premium) and the deck unlock (Game)
         // in one transaction. Throttled — a code is guessable material, and this

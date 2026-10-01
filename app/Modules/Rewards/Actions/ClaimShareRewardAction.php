@@ -3,6 +3,7 @@
 namespace App\Modules\Rewards\Actions;
 
 use App\Modules\Rewards\Models\CoupleReward;
+use App\Modules\Rewards\Support\OneTimeRewardPolicy;
 use Illuminate\Support\Facades\DB;
 use Lorisleiva\Actions\Concerns\AsAction;
 
@@ -22,12 +23,6 @@ use Lorisleiva\Actions\Concerns\AsAction;
  */
 final class ClaimShareRewardAction
 {
-    /**
-     * Credits unlocked by sharing. A product number (placeholder 5, to confirm with
-     * Wiktoria) — not a technical constant; changing it is a one-value edit.
-     */
-    private const SHARE_REWARD_CREDITS = 5;
-
     use AsAction;
 
     public function handle(int $coupleId): void
@@ -41,7 +36,7 @@ final class ClaimShareRewardAction
                 ->update(['share_reward_claimed_at' => now()]);
 
             if ($claimed === 1) {
-                GrantCreditsAction::run($coupleId, self::SHARE_REWARD_CREDITS);
+                GrantCreditsAction::run($coupleId, OneTimeRewardPolicy::SHARE_REWARD_CREDITS);
             }
         });
     }

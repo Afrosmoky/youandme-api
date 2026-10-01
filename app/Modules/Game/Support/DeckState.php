@@ -26,4 +26,13 @@ final readonly class DeckState
     {
         return $this->lockedTotal > 0 && $this->unlockedCount >= $this->lockedTotal;
     }
+
+    /**
+     * Closed cards this couple does not own yet. Never negative: unlockedCount is
+     * the intersection with the current closed deck (see GetDeckStateForCoupleQuery).
+     */
+    public function lockedRemaining(): int
+    {
+        return $this->lockedTotal - $this->unlockedCount;
+    }
 }
